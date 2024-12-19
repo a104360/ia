@@ -1,0 +1,37 @@
+class Combustivel:
+    def __init__(self,level,limit,consumption = 10):
+        """
+            level - indica o nivel de combustivel (litros)
+
+            consumption - indica os litros consumidos a cada 100Km
+        """
+        self.level = level
+        self.limit = limit
+        self.consumption = consumption
+
+    def spend(self,km : int):
+        """Decreases the amount of fuel in the tank, according to the consumption by 100Km"""
+        decrease = round((km * self.consumption)/100) 
+        if decrease > self.level:
+            self.level = 0
+            return
+        self.level -= decrease
+    
+    def fill(self,liters = 10000):
+        """
+            Increases the amount of fuel, regarding the limit
+            
+            If no amount is passed, it either goes up to the limit or 10000L, if the limit is greater
+        """
+        increase = self.level + liters
+        if increase > self.limit:
+            self.level = self.limit
+            return
+        self.level = increase
+
+    def getLevel(self):
+        return self.level
+    
+    def getAutonomy(self):
+        remaining = round((self.level * 100) / self.consumption)
+        return remaining
