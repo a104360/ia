@@ -1,7 +1,7 @@
 import Combustivel
 
 class Veiculo:
-    def __init__(self, name, capacidade, time, tipo, id = -1,combustivel = 150):   
+    def __init__(self, name, capacidade, id = -1,combustivel = 150,time = None, tipo = None):   
         self.id = id #id
         self.name = str(name) #nome do veiculo
         self.capacidade = capacidade #capacidade máxima de carga
@@ -38,9 +38,11 @@ class Veiculo:
 
     # Métodos para 'combustivel'
     def walkedKm(self,km:int):
+        """Removes the liters equivalent to the amount of miles travelled"""
         self.combustivel.spend(km)
 
     def refuel(self,liters : int):
+        """Fills the fuel tank with the indicated liters"""
         self.combustivel.fill(liters)
 
     def getAutonomy(self):

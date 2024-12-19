@@ -30,8 +30,13 @@ class Combustivel:
         self.level = increase
 
     def getLevel(self):
+        """Returns the amount of fuel remaining in the tank"""
         return self.level
     
     def getAutonomy(self):
+        """Returns the amount of Kilometers that the tank supports"""
         remaining = round((self.level * 100) / self.consumption)
         return remaining
+    
+    def getConsumption(self):
+        return self.consumption
