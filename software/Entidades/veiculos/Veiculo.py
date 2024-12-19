@@ -1,7 +1,7 @@
 
 
 class Veiculo:
-    def __init__(self, name, capacidade, combustivel, time, tipo, id = -1):     #  construtor do nodo....."
+    def __init__(self, name, capacidade, combustivel, time, tipo, id = -1):   
         self.id = id #id
         self.name = str(name) #nome do veiculo
         self.capacidade = capacidade #capacidade máxima de carga

@@ -1,0 +1,82 @@
+[
+    {
+        "id": 1,
+        "name": "Road Runner-1",
+        "capacidade": 372,
+        "combustivel": 328.7904037623539,
+        "time": 16.2934756919308,
+        "tipo": "Drone"
+    },
+    {
+        "id": 2,
+        "name": "Road Runner-2",
+        "capacidade": 1017,
+        "combustivel": 685.5798483062069,
+        "time": 17.09634473110409,
+        "tipo": "Helicoptero"
+    },
+    {
+        "id": 3,
+        "name": "Falcon-3",
+        "capacidade": 1641,
+        "combustivel": 216.9450950948878,
+        "time": 5.0309198557852435,
+        "tipo": "Carro"
+    },
+    {
+        "id": 4,
+        "name": "Trailblazer-4",
+        "capacidade": 972,
+        "combustivel": 536.6351025757299,
+        "time": 9.936662174088063,
+        "tipo": "Carro"
+    },
+    {
+        "id": 5,
+        "name": "Falcon-5",
+        "capacidade": 221,
+        "combustivel": 547.9114378516076,
+        "time": 19.614404617585983,
+        "tipo": "Camiao"
+    },
+    {
+        "id": 6,
+        "name": "Trailblazer-6",
+        "capacidade": 318,
+        "combustivel": 826.1477134533294,
+        "time": 13.99403329250349,
+        "tipo": "Barco"
+    },
+    {
+        "id": 7,
+        "name": "Road Runner-7",
+        "capacidade": 275,
+        "combustivel": 735.4340031496425,
+        "time": 10.399726192456749,
+        "tipo": "Camiao"
+    },
+    {
+        "id": 8,
+        "name": "Eagle-8",
+        "capacidade": 1979,
+        "combustivel": 438.81458579424384,
+        "time": 14.310392358470143,
+        "tipo": "Barco"
+    },
+    {
+        "id": 9,
+        "name": "Road Runner-9",
+        "capacidade": 359,
+        "combustivel": 845.1828259108629,
+        "time": 3.20911455627564,
+        "tipo": "Carro"
+    },
+    {
+        "id": 10,
+        "name": "Falcon-10",
+        "capacidade": 1143,
+        "combustivel": 387.1416981574382,
+        "time": 8.383596619961635,
+        "tipo": "Camiao"
+    }
+]
