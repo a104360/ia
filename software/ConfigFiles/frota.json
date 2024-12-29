@@ -1,13 +1,5 @@
 [
     {
-        "id": 1,
-        "name": "Road Runner-1",
-        "capacidade": 372,
-        "combustivel": 328,
-        "time": 16,
-        "tipo": "Drone"
-    },
-    {
         "id": 2,
         "name": "Road Runner-2",
         "capacidade": 1017,

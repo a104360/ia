@@ -9,7 +9,7 @@ class Regiao:
         self.y = y #coordenadas y
         self.z = z #coordenadas z
         self.densidade = densidade #densidade populacional
-        self.acesso = acesso #acesso fasil ou dificil
+        self.acesso = acesso #acesso facil ou dificil
         self.ambiente = ambiente #meio ambiente(chuva, sol, etc)
         self.necessidades = [] #recursos que a regiao necessita (pode ser uma lista com o recurso juntamente com o tempo max a que ele pode chegar ou separar em 2 listas)
 

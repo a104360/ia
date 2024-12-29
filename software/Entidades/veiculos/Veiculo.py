@@ -10,7 +10,7 @@ class Veiculo:
         self.tipo = tipo #se e drone, helicóptero, barco, camiao, etc.
 
     def __str__(self):
-        return "veiculo " + self.name
+        return f"ID : {self.id}\nNome : {self.name}\nCarga maxima : {self.capacidade}\n" + self.combustivel.__str__()
 
     def __repr__(self):
         return "veiculo " + self.name
@@ -49,6 +49,8 @@ class Veiculo:
         """Returns how many Km the vehicle can drive"""
         return self.combustivel.getAutonomy()
 
+    # Next methods are almost certain to go away
+
     # Métodos para 'time'
     def setTime(self, time):
         self.time = time
@@ -60,5 +62,6 @@ class Veiculo:
     def setTipo(self, tipo):
         self.tipo = tipo
 
-    def getTipo(self):
-        return self.tipo
+    def getType(self):
+        return None
+         
