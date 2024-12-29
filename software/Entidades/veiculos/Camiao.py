@@ -1,8 +1,8 @@
 import Veiculo
 
 class Camiao(Veiculo.Veiculo):
-    def __init__(self,capacidade = 110,combustivel = 50,name = "Road Runner",id = -1):
-        super().__init__(name,capacidade,id,combustivel)
+    def __init__(self, name = "Road Beast", id = -1, capacidade = 300, cargaAtual = 0, bens = {}, level = 400, limit = 800, combustivel = 18, tipo = "Camiao"):
+        super().__init__(name, id, capacidade, cargaAtual, bens, level, limit, combustivel, tipo)
 
     def __str__(self):
         return "\n(Camiao)\n" + super().__str__()

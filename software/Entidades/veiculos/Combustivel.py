@@ -10,7 +10,7 @@ class Combustivel:
         self.consumption = consumption
 
     def __str__(self):
-        return f"nivel (litros) : {self.level}L\nlimite (litros) : {self.limit}L\nConsumo: {self.consumption}L/100Km\n"
+        return f"Nivel (litros) : {self.level}L\nLimite (litros) : {self.limit}L\nConsumo: {self.consumption}L/100Km\n"
 
     def spend(self,km : int):
         """Decreases the amount of fuel in the tank, according to the consumption by 100Km"""

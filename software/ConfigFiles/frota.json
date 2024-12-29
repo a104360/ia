@@ -1,28 +1,28 @@
 [
     {
         "id": 2,
-        "name": "Road Runner-2",
+        "name": "Air Runner-2",
         "capacidade": 1017,
         "combustivel": 685,
         "tipo": "Helicoptero"
     },
     {
         "id": 3,
-        "name": "Falcon-3",
+        "name": "Road Man-3",
         "capacidade": 1641,
         "combustivel": 216,
         "tipo": "Carro"
     },
     {
         "id": 4,
-        "name": "Trailblazer-4",
+        "name": "Road Man-4",
         "capacidade": 972,
         "combustivel": 536,
         "tipo": "Carro"
     },
     {
         "id": 5,
-        "name": "Falcon-5",
+        "name": "Road Beast-5",
         "capacidade": 221,
         "combustivel": 547,
         "tipo": "Camiao"
@@ -36,28 +36,28 @@
     },
     {
         "id": 7,
-        "name": "Road Runner-7",
+        "name": "Road Beast-7",
         "capacidade": 275,
         "combustivel": 735,
         "tipo": "Camiao"
     },
     {
         "id": 8,
-        "name": "Eagle-8",
+        "name": "Trailblazer-8",
         "capacidade": 1979,
         "combustivel": 438,
         "tipo": "Barco"
     },
     {
         "id": 9,
-        "name": "Road Runner-9",
+        "name": "Road Man-9",
         "capacidade": 359,
         "combustivel": 845,
         "tipo": "Carro"
     },
     {
         "id": 10,
-        "name": "Falcon-10",
+        "name": "Road Beast-10",
         "capacidade": 1143,
         "combustivel": 387,
         "tipo": "Camiao"

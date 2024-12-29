@@ -1,11 +1,14 @@
 import Combustivel
+from Carga import Carga
+from Bem import Bem
+from typing import List
 
 class Veiculo:
-    def __init__(self, name, capacidade, id = -1,combustivel = 150, tipo = None):   
+    def __init__(self, name, id = -1, capacidade = 100, cargaAtual = 0, bens = {}, level = 150, limit = 300, consumption = 10, tipo = None):   
         self.id = id #id
         self.name = str(name) #nome do veiculo
-        self.capacidade = capacidade #capacidade máxima de carga
-        self.combustivel = Combustivel.Combustivel(combustivel,75,9) #autonomia de combustivel
+        self.capacidade = Carga(capacidade, cargaAtual, bens) #carga do veiculo
+        self.combustivel = Combustivel.Combustivel(level, limit, consumption) #autonomia de combustivel
         self.tipo = tipo #se e drone, helicóptero, barco, camiao, etc.
 
     def __str__(self):
@@ -29,11 +32,21 @@ class Veiculo:
         return self.name
 
     # Métodos para 'capacidade'
-    def setCapacidade(self, capacidade):
-        self.capacidade = capacidade
+    def loadCarga(self, bens: List[Bem]):
+        """Adiciona bens ao veiculo"""
+        self.capacidade.restock(bens)
 
-    def getCapacidade(self):
-        return self.capacidade
+    def takeCarga(self, bens: List[Bem]):
+        """Retira bens ao veiculo"""
+        return self.capacidade.distribute(bens)
+    
+    def getCargaAvailable(self):
+        """Returns a carga disponivel do veiculo"""
+        return self.capacidade.getCargaDisponivel()
+    
+    def getBensAvailable(self):
+        """Returns os bens do veiculo"""
+        return self.capacidade.getBens()
 
     # Métodos para 'combustivel'
     def walkedKm(self,km:int):
