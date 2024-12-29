@@ -4,7 +4,6 @@
         "name": "Road Runner-2",
         "capacidade": 1017,
         "combustivel": 685,
-        "time": 17,
         "tipo": "Helicoptero"
     },
     {
@@ -12,7 +11,6 @@
         "name": "Falcon-3",
         "capacidade": 1641,
         "combustivel": 216,
-        "time": 5,
         "tipo": "Carro"
     },
     {
@@ -20,7 +18,6 @@
         "name": "Trailblazer-4",
         "capacidade": 972,
         "combustivel": 536,
-        "time": 9,
         "tipo": "Carro"
     },
     {
@@ -28,7 +25,6 @@
         "name": "Falcon-5",
         "capacidade": 221,
         "combustivel": 547,
-        "time": 19,
         "tipo": "Camiao"
     },
     {
@@ -36,7 +32,6 @@
         "name": "Trailblazer-6",
         "capacidade": 318,
         "combustivel": 826,
-        "time": 13,
         "tipo": "Barco"
     },
     {
@@ -44,7 +39,6 @@
         "name": "Road Runner-7",
         "capacidade": 275,
         "combustivel": 735,
-        "time": 10,
         "tipo": "Camiao"
     },
     {
@@ -52,7 +46,6 @@
         "name": "Eagle-8",
         "capacidade": 1979,
         "combustivel": 438,
-        "time": 14,
         "tipo": "Barco"
     },
     {
@@ -60,7 +53,6 @@
         "name": "Road Runner-9",
         "capacidade": 359,
         "combustivel": 845,
-        "time": 3,
         "tipo": "Carro"
     },
     {
@@ -68,7 +60,6 @@
         "name": "Falcon-10",
         "capacidade": 1143,
         "combustivel": 387,
-        "time": 8,
         "tipo": "Camiao"
     }
 ]

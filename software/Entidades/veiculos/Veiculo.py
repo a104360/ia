@@ -1,12 +1,11 @@
 import Combustivel
 
 class Veiculo:
-    def __init__(self, name, capacidade, id = -1,combustivel = 150,time = None, tipo = None):   
+    def __init__(self, name, capacidade, id = -1,combustivel = 150, tipo = None):   
         self.id = id #id
         self.name = str(name) #nome do veiculo
         self.capacidade = capacidade #capacidade máxima de carga
         self.combustivel = Combustivel.Combustivel(combustivel,75,9) #autonomia de combustivel
-        self.time = time #tempos de viagem
         self.tipo = tipo #se e drone, helicóptero, barco, camiao, etc.
 
     def __str__(self):
@@ -48,15 +47,6 @@ class Veiculo:
     def getAutonomy(self):
         """Returns how many Km the vehicle can drive"""
         return self.combustivel.getAutonomy()
-
-    # Next methods are almost certain to go away
-
-    # Métodos para 'time'
-    def setTime(self, time):
-        self.time = time
-
-    def getTime(self):
-        return self.time
 
     # Métodos para 'tipo'
     def setTipo(self, tipo):
