@@ -1,7 +1,7 @@
 import Combustivel
 from Carga import Carga
 from Bem import Bem
-from typing import List
+from typing import List, Tuple
 
 class Veiculo:
     def __init__(self, name, id = -1, capacidade = 100, cargaAtual = 0, bens = {}, level = 150, limit = 300, consumption = 10, tipo = None):   
@@ -29,15 +29,15 @@ class Veiculo:
         return "veiculo " + self.name
 
     # Métodos para 'id'
-    def setId(self, id):
+    def setId(self, id : int):
         self.id = id
 
     def getId(self):
         return self.id
 
     # Métodos para 'name'
-    def setName(self, name):
-        self.name = str(name)
+    def setName(self, name : str):
+        self.name = name
 
     def getName(self):
         return self.name
@@ -60,11 +60,11 @@ class Veiculo:
         return self.capacidade.getBens()
 
     # Métodos para 'combustivel'
-    def walkedKm(self,km:int):
+    def walkedKm(self, km : int):
         """Removes the liters equivalent to the amount of miles travelled"""
         self.combustivel.spend(km)
 
-    def refuel(self,liters : int):
+    def refuel(self, liters : int):
         """Fills the fuel tank with the indicated liters"""
         self.combustivel.fill(liters)
 
@@ -73,7 +73,7 @@ class Veiculo:
         return self.combustivel.getAutonomy()
 
     # Métodos para 'tipo'
-    def setTipo(self, tipo):
+    def setTipo(self, tipo : str):
         self.tipo = tipo
 
     def getType(self):
