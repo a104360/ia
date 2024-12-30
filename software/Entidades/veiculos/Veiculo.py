@@ -5,11 +5,22 @@ from typing import List
 
 class Veiculo:
     def __init__(self, name, id = -1, capacidade = 100, cargaAtual = 0, bens = {}, level = 150, limit = 300, consumption = 10, tipo = None):   
-        self.id = id #id
-        self.name = str(name) #nome do veiculo
-        self.capacidade = Carga(capacidade, cargaAtual, bens) #carga do veiculo
-        self.combustivel = Combustivel.Combustivel(level, limit, consumption) #autonomia de combustivel
-        self.tipo = tipo #se e drone, helicóptero, barco, camiao, etc.
+        """
+            id - valor único de cada veiculo
+
+            name - nome do veiculo
+
+            capacidade - carga do veiculo
+
+            combustivel - autonomia de combustivel
+
+            tipo - se e drone, helicóptero, barco, camiao, etc.
+        """
+        self.id = id
+        self.name = str(name)
+        self.capacidade = Carga(capacidade, cargaAtual, bens)
+        self.combustivel = Combustivel.Combustivel(level, limit, consumption)
+        self.tipo = tipo
 
     def __str__(self):
         return f"ID : {self.id}\nNome : {self.name}\nCarga maxima : {self.capacidade}\n" + self.combustivel.__str__()

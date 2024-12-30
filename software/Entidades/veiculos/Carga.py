@@ -12,7 +12,7 @@ class Carga:
         """
         self.maxCarga = maxCarga
         self.cargaAtual = cargaAtual
-        self.bens: dict[int, Bem] = bens
+        self.bens: List[int, Bem] = bens
 
     def __str__(self):
         bens_info = "\n".join(bem.__str__() for bem in self.bens.values())
