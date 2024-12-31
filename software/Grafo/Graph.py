@@ -2,10 +2,12 @@
 from collections import deque
 import math
 from queue import Queue
+import random
 
 import networkx as nx  # biblioteca de tratamento de grafos necessária para desnhar graficamente o grafo
 import matplotlib.pyplot as plt  # idem
-from Grafo import Node
+from typing import List
+from Entidades.Zona import Zona
 
 
 # Constructor
@@ -20,7 +22,7 @@ from Grafo import Node
 
 class Graph:
     def __init__(self, directed=False):
-        self.m_nodes = []  
+        self.m_zonas : List[Zona] = []  
         self.m_directed = directed
         self.m_graph = {}  
         self.m_h = {}  
@@ -31,18 +33,57 @@ class Graph:
     def __str__(self):
         out = ""
         for key in self.m_graph.keys():
-            out = out + "node" + str(key) + ": " + str(self.m_graph[key]) + "\n"
+            out = out + "zona" + str(key) + ": " + str(self.m_graph[key]) + "\n"
         return out
+
+    #############
+    # funcao para ver se a zona tem alguma zona não bloqueada que leve a si, para que n existam bloqueios no randotron
+    #############
+
+
+    #############
+    #    modifica valores para outros de maneira semi-random
+    #############
+    def randotron(self):
+        """
+        Para cada zona em m_zonas, muda alguns dos seus parametros para refletir a vida real
+        """
+        for zona in self.m_zonas:
+            acessos = [random.randint(0, 1) for _ in range(3)] # lista com 3 valores random 0 ou 1
+            zona.setAcessibilidade(acessos)
+
+            populacao = random.randint(0, 100)
+            prioritou = False
+            gravidade = zona.getGravidade()
+            densidade = zona.getDensidade()
+            if populacao < 10 and densidade != 1:
+                zona.setDensidade(densidade - 1)
+                if populacao == 0 and gravidade != 0:
+                    prioritou = True
+                    zona.setGravidade(gravidade - 1)
+
+            elif populacao > 90 and densidade != 5:
+                zona.setDensidade(densidade + 1)
+                if populacao == 100 and gravidade != 5:
+                    prioritou = True
+                    zona.setGravidade(gravidade + 1)
+
+            #num rando de 1 a 100 e se prioritou for false aumentar a gravidade se ...
+
+            iteracao = zona.getIteracoes()
+            #3 num random para os clima de 0 a 100, se for 100 a prob eles sao bloq por 1 ronda e a prob passa a -5, se a prob for neg incrementar e ...
+            #algo para aumentar os produtos, como se a densidade aumentar e a gravidade, depois guardar a localizacao dos veiculos e algo para fazer descarga e assim
+            return
 
     ################################
     #   encontrar regiao pelo nome
     ################################
 
-    def get_node_by_name(self, name):
-        search_node = Node.Node(name)
-        for node in self.m_nodes:
-            if node == search_node:
-                return node
+    def get_zona_by_name(self, name):
+        search_zona = Zona.Zona(name)
+        for zona in self.m_zonas:
+            if zona == search_zona:
+                return zona
           
         return None
 
@@ -62,46 +103,46 @@ class Graph:
     #   adicionar   aresta no grafo
     ######################
 
-    def add_edge(self, node1, node2, weight):
-        n1 = Node.Node(node1)
-        n2 = Node.Node(node2)
-        if (n1 not in self.m_nodes):
-            n1_id = len(self.m_nodes)  # numeração sequencial
+    def add_edge(self, zona1, zona2, distance):
+        n1 = Zona.Zona(zona1)
+        n2 = Zona.Zona(zona2)
+        if (n1 not in self.m_zonas):
+            n1_id = len(self.m_zonas)  # numeração sequencial
             n1.setId(n1_id)
-            self.m_nodes.append(n1)
-            self.m_graph[node1] = []
+            self.m_zonas.append(n1)
+            self.m_graph[zona1] = []
         else:
-            n1 = self.get_node_by_name(node1)
+            n1 = self.get_zona_by_name(zona1)
 
-        if (n2 not in self.m_nodes):
-            n2_id = len(self.m_nodes)  # numeração sequencial
+        if (n2 not in self.m_zonas):
+            n2_id = len(self.m_zonas)  # numeração sequencial
             n2.setId(n2_id)
-            self.m_nodes.append(n2)
-            self.m_graph[node2] = []
+            self.m_zonas.append(n2)
+            self.m_graph[zona2] = []
         else:
-            n2 = self.get_node_by_name(node2)
+            n2 = self.get_zona_by_name(zona2)
 
-        self.m_graph[node1].append((node2, weight)) 
+        self.m_graph[zona1].append((zona2, distance)) 
 
         if not self.m_directed:
-            self.m_graph[node2].append((node1, weight))
+            self.m_graph[zona2].append((zona1, distance))
 
     #############################
     # devolver regiaos
     #############################
 
-    def getNodes(self):
-        return self.m_nodes
+    def getZonas(self):
+        return self.m_zonas
 
     #######################
     #    devolver o custo de uma aresta
     #######################
 
-    def get_arc_cost(self, node1, node2):
+    def get_arc_cost(self, zona1, zona2):
         custoT = math.inf
-        a = self.m_graph[node1]  # lista de arestas para aquele regiao
+        a = self.m_graph[zona1]  # lista de arestas para aquele regiao
         for (regiao, custo) in a:
-            if regiao == node2:
+            if regiao == zona2:
                 custoT = custo
 
         return custoT
@@ -153,14 +194,14 @@ class Graph:
         cost = 0
 
         while q:
-            node = q.popleft()
+            zona = q.popleft()
 
-            for (adjacent,nodeCost) in self.m_graph[node]:
+            for (adjacent,zonaCost) in self.m_graph[zona]:
                 if adjacent not in visited:
                     visited.add(adjacent)
                     q.append(adjacent)
 
-                    path[adjacent] = path[node] + (adjacent,nodeCost)
+                    path[adjacent] = path[zona] + (adjacent,zonaCost)
                     
                     if adjacent == end:
                         finalPath = path[start]
@@ -189,20 +230,20 @@ class Graph:
 
     def desenha(self):
         ##criar lista de vertices
-        lista_v = self.m_nodes
+        lista_v = self.m_zonas
         lista_a = []
         g = nx.Graph()
         for regiao in lista_v:
             n = regiao.getName()
-            g.add_node(n)
+            g.add_Zona(n)
             for (adjacente, peso) in self.m_graph[n]:
                 lista = (n, adjacente)
                 # lista_a.append(lista)
-                g.add_edge(n, adjacente, weight=peso)
+                g.add_edge(n, adjacente, distance=peso)
 
         pos = nx.spring_layout(g)
-        nx.draw_networkx(g, pos, with_labels=True, font_weight='bold')
-        labels = nx.get_edge_attributes(g, 'weight')
+        nx.draw_networkx(g, pos, with_labels=True, font_distance='bold')
+        labels = nx.get_edge_attributes(g, 'distance')
         nx.draw_networkx_edge_labels(g, pos, edge_labels=labels)
 
         plt.draw()
@@ -213,8 +254,8 @@ class Graph:
     ####################################
 
     def add_heuristica(self, n, estima):
-        n1 = Node.Node(n)
-        if n1 in self.m_nodes:
+        n1 = Zona.Zona(n)
+        if n1 in self.m_zonas:
             self.m_h[n] = estima
 
 
@@ -232,47 +273,47 @@ class Graph:
         q = deque([start])
         custoPath = {start:([start],0)}
 
-        # String nextNode
-        currentNode = start 
+        # String nextZona
+        currentZona = start 
         
         # vizinhos mantém as ligações ao regiao que estamos a analisar
-        vizinhos = self.getNeighbours(currentNode)
+        vizinhos = self.getNeighbours(currentZona)
 
         while vizinhos:
-            visited.add(currentNode)
+            visited.add(currentZona)
             # heuristics guarda o nome dos regiaos e a sua heuristica
             heuristics = []
 
-            for (node, custo) in vizinhos:
-                if node not in visited:
+            for (zona, custo) in vizinhos:
+                if zona not in visited:
 
-                    q.append(node)
-                    lista = custoPath[currentNode][0].copy()
-                    lista.append(node)
-                    custoNode = custoPath[currentNode][1]
-                    custoPath[node] = (lista,custoNode+custo)
+                    q.append(zona)
+                    lista = custoPath[currentZona][0].copy()
+                    lista.append(zona)
+                    custoZona = custoPath[currentZona][1]
+                    custoPath[zona] = (lista,custoZona+custo)
 
-                    heuristics.append((node,self.getH(node) + custoPath[node][1]))
+                    heuristics.append((zona,self.getH(zona) + custoPath[zona][1]))
             
             heuristics.sort(key=lambda x: x[1])
             
-            # nextNode = (nome,heuristic)
-            nextNode = heuristics[0]
+            # nextZona = (nome,heuristic)
+            nextZona = heuristics[0]
 
             changePath = path[0]
-            changePath.append(nextNode[0])
+            changePath.append(nextZona[0])
             changeCost = path[1]
-            changeCost += self.get_arc_cost(currentNode,nextNode[0])
+            changeCost += self.get_arc_cost(currentZona,nextZona[0])
             path = (changePath,changeCost)
 
             #print(path)
 
-            if nextNode[0] == end:
+            if nextZona[0] == end:
                 return path
 
             
-            currentNode = nextNode[0]
-            vizinhos = self.getNeighbours(nextNode[0])
+            currentZona = nextZona[0]
+            vizinhos = self.getNeighbours(nextZona[0])
 
         return ([],-1)
         
@@ -299,40 +340,40 @@ class Graph:
         #set com nomes dos regiaos
         visited = {start}
 
-        # String nextNode
-        currentNode = start 
+        # String nextZona
+        currentZona = start 
         
         # vizinhos mantém as ligações ao regiao que estamos a analisar
-        vizinhos = self.getNeighbours(currentNode)
+        vizinhos = self.getNeighbours(currentZona)
 
         while vizinhos:
-            visited.add(currentNode)
+            visited.add(currentZona)
             # heuristics guarda o nome dos regiaos e a sua heuristica
             heuristics = []
 
-            for node in vizinhos:
-                if node[0] not in visited:
-                    heuristics.append((node[0],self.getH(node[0])))
+            for zona in vizinhos:
+                if zona[0] not in visited:
+                    heuristics.append((zona[0],self.getH(zona[0])))
             
             heuristics.sort(key=lambda x: x[1])
             
-            # nextNode = (nome,heuristic)
-            nextNode = heuristics[0]
+            # nextZona = (nome,heuristic)
+            nextZona = heuristics[0]
 
             changePath = path[0]
-            changePath.append(nextNode[0])
+            changePath.append(nextZona[0])
             changeCost = path[1]
-            changeCost += self.get_arc_cost(currentNode,nextNode[0])
+            changeCost += self.get_arc_cost(currentZona,nextZona[0])
             path = (changePath,changeCost)
 
             #print(path)
 
-            if nextNode[0] == end:
+            if nextZona[0] == end:
                 return path
 
             
-            currentNode = nextNode[0]
-            vizinhos = self.getNeighbours(nextNode[0])
+            currentZona = nextZona[0]
+            vizinhos = self.getNeighbours(nextZona[0])
 
         return ([],-1)
 

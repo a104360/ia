@@ -1,4 +1,4 @@
-# Classe nodo para definiçao dos nodos
+from typing import List
 
 class Node:
     def __init__(self, name, id=-1):     #  construtor do nodo....."

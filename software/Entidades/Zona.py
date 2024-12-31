@@ -1,9 +1,9 @@
 from veiculos.Bem import Bem
 from Clima import Clima
-from typing import List, Tuple
+from typing import List
 
 class Zona:
-    def __init__(self, name, id=-1, bloqueado = False, gravidade=0, densidade=0, abastecimento = 100, acessibilidade = None, clima = {}, necessidades={}):     
+    def __init__(self, name, id=-1, bloqueado = False, gravidade=0, densidade=0, abastecimento = 100, acessibilidade = None, clima = {}, necessidades={}, iteracoes = 0):     
         """
             id - valor único de cada Zona
 
@@ -17,13 +17,15 @@ class Zona:
 
             prioridade - o quão prioritária esta Zona é, sendo 1 o que menor prioridade tem
 
-            abastecimento - combustivel que cada veiculo pode reabastecer em 1 hora
+            abastecimento - combustivel que cada veiculo pode reabastecer ao esperar 1 iteração
 
             acessibilidade - lista [marítima, terrestre, aérea] (0 não tem ou 1 tem)
 
             clima - Lista de objetos Clima associados à Zona
 
             necessidades - dicionário de Bens que a Zona necessita
+
+            iteracoes - número de iterações que passou desde a ultima vez que a prioridade foi 0
         """
         self.id = id
         self.name = name
@@ -36,6 +38,14 @@ class Zona:
         self.abastecimento = abastecimento
         self.clima : List[Clima] = clima 
         self.necessidades: List[Bem] = necessidades
+        self.iteracoes = iteracoes
+
+    def __eq__(self, other):
+        """Compara os objetos Zona apenas pelo nome"""
+        if isinstance(other, Zona):
+            return self.nome == other.nome
+        return False
+    
 
     def calculatePrioridade(self, gravidade : int, densidade : int):
         """Calcula a prioridade com base na gravidade e densidade."""
@@ -108,6 +118,7 @@ class Zona:
         """Retorna a prioridade da Zona."""
         return self.prioridade
 
+    # Métodos para 'acessibilidade'
     def setAcessibilidadeMaritima(self, acessivel: bool):
         """Define se a Zona é acessível por via marítima."""
         self.acessibilidade[0] = acessivel
@@ -120,8 +131,7 @@ class Zona:
         """Define se a Zona é acessível por via aérea."""
         self.acessibilidade[2] = acessivel
 
-    # Métodos para 'acessibilidade'
-    def setAcessibilidade(self, acessibilidade : List[Clima]):
+    def setAcessibilidade(self, acessibilidade : List[int]):
         """Define a acessibilidade da Zona."""
         if len(acessibilidade) != 3 or not all(x in [0, 1] for x in acessibilidade):
             return
@@ -239,3 +249,12 @@ class Zona:
             else :
                 necessidade_existente : Bem = self.necessidades[necessidade]
                 necessidade_existente.setPeso(necessidade_existente.getPeso() - peso_removido)
+
+    #Metodos para iteracoes
+    def setIteracoes(self, iteracoes : int):
+        """Define a iteracao da Zona."""
+        self.iteracoes = iteracoes
+
+    def getIteracoes(self):
+        """Retorna a iteracao da Zona."""
+        return self.iteracoes

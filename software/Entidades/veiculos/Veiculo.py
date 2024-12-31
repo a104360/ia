@@ -1,7 +1,7 @@
 import Combustivel
 from Carga import Carga
 from Bem import Bem
-from typing import List, Tuple
+from typing import List
 
 class Veiculo:
     def __init__(self, name, id = -1, capacidade = 100, cargaAtual = 0, bens = {}, level = 150, limit = 300, consumption = 10, tipo = None):   
