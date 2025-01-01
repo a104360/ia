@@ -1,4 +1,4 @@
-from veiculos import Veiculo
+from . import Veiculo
 
 class Aviao(Veiculo.Veiculo):
     def __init__(self, name = "Falcon", id = -1, capacidade = 300, cargaAtual = 0, bens = {}, level = 300, limit = 450, combustivel = 15, tipo = "Aviao"):

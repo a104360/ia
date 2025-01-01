@@ -1,6 +1,6 @@
-from veiculos import Combustivel
-from veiculos import Carga
-from veiculos import Bem
+from . import Combustivel
+from . import Carga
+from . import Bem
 
 class Veiculo:
     def __init__(self, name, id = -1, capacidade = 100, cargaAtual = 0, bens = {}, level = 150, limit = 300, consumption = 10, tipo = None):   

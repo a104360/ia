@@ -1,4 +1,4 @@
-from veiculos.Bem import Bem
+from . import Bem
 
 class Carga:
     def __init__(self, maxCarga: int, cargaAtual: int = 0, bens: list[Bem] = {}):

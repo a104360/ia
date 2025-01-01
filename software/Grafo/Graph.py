@@ -79,7 +79,7 @@ class Graph:
     ################################
 
     def get_zona_by_name(self, name):
-        search_zona = Zona.Zona(name)
+        search_zona = Zona(name)
         for zona in self.m_zonas:
             if zona == search_zona:
                 return zona
@@ -103,8 +103,8 @@ class Graph:
     ######################
 
     def add_edge(self, zona1, zona2, distance):
-        n1 = Zona.Zona(zona1)
-        n2 = Zona.Zona(zona2)
+        n1 = Zona(zona1)
+        n2 = Zona(zona2)
         if (n1 not in self.m_zonas):
             n1_id = len(self.m_zonas)  # numeração sequencial
             n1.setId(n1_id)
@@ -253,7 +253,7 @@ class Graph:
     ####################################
 
     def add_heuristica(self, n, estima):
-        n1 = Zona.Zona(n)
+        n1 = Zona(n)
         if n1 in self.m_zonas:
             self.m_h[n] = estima
 

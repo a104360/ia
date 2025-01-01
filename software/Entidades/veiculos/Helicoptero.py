@@ -1,4 +1,4 @@
-from veiculos import Veiculo
+from . import Veiculo
 
 class Helicoptero(Veiculo.Veiculo):
     def __init__(self, name = "Air Runner", id = -1, capacidade = 200, cargaAtual = 0, bens = {}, level = 150, limit = 300, combustivel = 10, tipo = "Helicoptero"):

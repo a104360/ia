@@ -1,6 +1,5 @@
-from types import NoneType
-from veiculos import Bem
-from Clima import Clima
+from .veiculos import Bem
+from . import Clima
 
 class Zona:
     def __init__(self, name, id=-1, bloqueado = False, gravidade=0, densidade=0, abastecimento = 100, acessibilidade = None, clima = {}, necessidades={}, iteracoes = 0):     
@@ -43,7 +42,7 @@ class Zona:
     def __eq__(self, other):
         """Compara os objetos Zona apenas pelo nome"""
         if isinstance(other, Zona):
-            return self.nome == other.nome
+            return self.name == other.name
         return False
     
 
