@@ -234,14 +234,14 @@ class Graph:
         g = nx.Graph()
         for regiao in lista_v:
             n = regiao.getName()
-            g.add_Zona(n)
+            g.add_node(n)
             for (adjacente, peso) in self.m_graph[n]:
                 lista = (n, adjacente)
                 # lista_a.append(lista)
                 g.add_edge(n, adjacente, distance=peso)
 
         pos = nx.spring_layout(g)
-        nx.draw_networkx(g, pos, with_labels=True, font_distance='bold')
+        nx.draw_networkx(g, pos, with_labels=True)
         labels = nx.get_edge_attributes(g, 'distance')
         nx.draw_networkx_edge_labels(g, pos, edge_labels=labels)
 

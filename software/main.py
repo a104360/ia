@@ -60,6 +60,7 @@ def main():
         print("6-BFS")
         print("7-A*")
         print("8-Gulosa")
+        print("9-Iniciar")
         print("0-Saír")
 
         saida = int(input("introduza a sua opcao-> "))
@@ -96,6 +97,8 @@ def main():
             fim = input("Regiao final->")
             print(g.greedy(inicio, fim))
             l = input("prima enter para continuar")
+        elif saida == 9:
+            simular()
         else:
             print("you didn't add anything")
             l = input("prima enter para continuar")
@@ -103,3 +106,10 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+def simular():
+    #INICIALIZAR AS VARIÁVEIS
+    #CICLO PARA TRATAR AS ITERAÇÕES
+    #APRESENTAR MÉTRICAS
+    print(2)

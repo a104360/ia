@@ -24,7 +24,7 @@ class Clima:
 
     def isBlocking(self) -> bool:
         """
-        Verifica se o clima está bloqueando. Retorna True se a probabilidade for 100 ou bloquante for True.
+        Verifica se o clima é bloqueante. Retorna True se a probabilidade for 100 ou bloquante for True.
         """
 
         return self.probabilidade == 100 or self.bloqueante

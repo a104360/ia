@@ -1,5 +1,9 @@
 import json
-from veiculos import *
+from veiculos import Camiao
+from veiculos import Carro
+from veiculos import Helicoptero
+from veiculos import Aviao
+from veiculos import Barco
 
 
 class Enterprise:
