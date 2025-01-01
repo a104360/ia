@@ -9,17 +9,20 @@ from . import Zona
 
 
 class Empresa:
-    def __init__(self):
+    def __init__(self,tempoTotal):
         self.frota = dict()
         self.posicoesAgentes = dict()
+        self.tempoTotal = tempoTotal
+        self.tabelaCustos = dict(str,int)
     
-    def decisao(self,zonas : list[Zona.Zona],agentes : list[Veiculo.Veiculo]):
+    def decisao(self,zonas : list[Zona.Zona],agentes : list[Veiculo.Veiculo]) -> int:
         """
             Função para tomada de decisão a cada iteração
         """
         None
 
-    def runSimulation(self,time = 48):
+    def runSimulation(self,time = 2880):
+        self.tempoTotal = time
         """
             Função responsável por efetuar as alterações do estado.
         """

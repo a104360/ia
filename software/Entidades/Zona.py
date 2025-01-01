@@ -2,7 +2,7 @@ from .veiculos import Bem
 from . import Clima
 
 class Zona:
-    def __init__(self, name, id=-1, bloqueado = False, gravidade=0, densidade=0, abastecimento = 100, acessibilidade = None, clima = {}, necessidades={}, iteracoes = 0):     
+    def __init__(self, name, id=-1, bloqueado = False, gravidade=0, densidade=0, abastecimento = 100, acessibilidade = None, clima = None, necessidades={}, iteracoes = 0,janela = 0,tempo = 0):     
         """
             id - valor único de cada Zona
 
@@ -24,7 +24,7 @@ class Zona:
 
             necessidades - dicionário de Bens que a Zona necessita
 
-            iteracoes - número de iterações que passou desde a ultima vez que a prioridade foi 0
+            iteracoes - valor a adicionar à prioridade se passarem iterações sem ser visitado
         """
         self.id = id
         self.name = name
@@ -35,9 +35,10 @@ class Zona:
         if acessibilidade != None and (len(acessibilidade) == 3 and all(x in [False,True] for x in acessibilidade)): self.acessibilidade = acessibilidade
         else: self.acessibilidade = [False, False, False]
         self.abastecimento = abastecimento
-        self.clima = list(necessidades) #: List[Clima] = clima 
-        self.necessidades = list(necessidades) #: List[Bem] = necessidades
-        self.iteracoes = iteracoes
+        self.clima = clima
+        self.necessidades = dict(necessidades)
+        self.iteracoes = iteracoes 
+        self.janela = janela
 
     def __eq__(self, other):
         """Compara os objetos Zona apenas pelo nome"""
@@ -112,7 +113,8 @@ class Zona:
         self.prioridade = self.calculatePrioridade(self.gravidade, self.densidade)
 
     def getDensidade(self):
-        """Retorna a densidade populacional da Zona."""
+        """Retorna a densidade populacional da Zona.
+        ->[1,5]"""
         return self.densidade
 
     # Métodos para 'prioridade'
@@ -163,14 +165,9 @@ class Zona:
                 return 1
         return 0
 
-    def addClima(self, clima : Clima):
+    def setClima(self, clima : Clima):
         """Adiciona ou substitui um objeto Clima à Zona."""
-        self.clima[clima] = clima
-
-    def removeClima(self, clima : Clima):
-        """Remove um objeto Clima da Zona."""
-        if clima in self.clima:
-            self.clima.pop(clima)
+        self.clima = clima
 
     # Métodos para 'necessidades'
     def setNecessidades(self, necessidades: list[Bem.Bem]):
@@ -260,3 +257,6 @@ class Zona:
     def getIteracoes(self):
         """Retorna a iteracao da Zona."""
         return self.iteracoes
+    
+    def passaTempo(self,time : int):
+        self.janela -= time

@@ -55,6 +55,10 @@ class Bem:
         """muda o tipo do Bem"""
         self.tipo = tipo
     
+    def getDistributionTime(self):
+        if self.peso > 20: return 1
+        else: return 5
+
 class Leite(Bem):
     def __init__(self, id: int, peso: int):
         super().__init__(id, nome = "Leite", peso = peso, tipo = "Liquido")

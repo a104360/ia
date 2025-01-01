@@ -48,7 +48,7 @@ class Carga:
         """
         for bem in bens:
             if bem in self.bens:
-                bem_removido: Bem = self.bens[bem]
+                bem_removido: Bem.Bem = self.bens[bem]
                 peso_removido = bem_removido.getPeso()
 
                 # Verifica se o peso do bem removido é igual ao peso atual
@@ -56,12 +56,18 @@ class Carga:
                     # Remove o bem do dicionário sem afetar o peso diretamente
                     self.bens.pop(bem)
                 else :
-                    bem_existente : Bem = self.bens[bem]
+                    bem_existente : Bem.Bem = self.bens[bem]
                     bem_existente.setPeso(bem_existente.getPeso() - peso_removido)
                                         
                 # Atualiza a carga atual
                 self.cargaAtual -= peso_removido
 
+
+    def getDistributionTime(self,bens : list[Bem.Bem]):
+        total = 0
+        for b in bens:
+            total += b.getDistributionTime()
+        return total
 
     def getBemById(self, id: int):
         """

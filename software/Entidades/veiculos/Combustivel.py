@@ -24,13 +24,17 @@ class Combustivel:
         """
             Increases the amount of fuel, regarding the limit
             
-            If no amount is passed, it either goes up to the limit or 10000L, if the limit is greater
+            If no amount is passed, it either goes up to the limit or 10000L, if the limit is greater than 10000L
         """
         increase = self.level + liters
         if increase > self.limit:
             self.level = self.limit
-            return
+            return 
         self.level = increase
+    
+    def getFillTime(self):
+        """The refill time is always 10 min"""
+        return 10
 
     def getLevel(self):
         """Returns the amount of fuel remaining in the tank"""

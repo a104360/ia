@@ -7,9 +7,9 @@ class Clima:
 
         tipo - nome do clima
 
-        bloqueante - Indica se o clima é bloqueante.
+        bloqueante - Indica se o clima é bloqueante. (bool)
 
-        probabilidade - Indica a probabilidade do clima ocorrer.
+        probabilidade - Indica a probabilidade do clima ocorrer. ([-5,10])
         """
         self.id = id
         self.tipo = tipo
