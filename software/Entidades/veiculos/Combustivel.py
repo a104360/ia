@@ -32,10 +32,6 @@ class Combustivel:
             return 
         self.level = increase
     
-    def getFillTime(self):
-        """The refill time is always 10 min"""
-        return 10
-
     def getLevel(self):
         """Returns the amount of fuel remaining in the tank"""
         return self.level

@@ -25,9 +25,9 @@ class Clima:
     def isBlocking(self) -> bool:
         """
         Verifica se o clima é bloqueante. Retorna True se a probabilidade for 100 ou bloquante for True.
+        Se probabilidade for 10, bloqueia a zona 1 iteracao
         """
-
-        return self.probabilidade == 100 or self.bloqueante
+        return self.probabilidade == 10 or self.bloqueante
 
     # Métodos para setar e obter o ID
     def setId(self, id):

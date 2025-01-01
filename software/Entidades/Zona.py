@@ -160,10 +160,9 @@ class Zona:
     # Métodos para 'clima'
     def isGoingToBeBlocked(self):
         """Verifica se a Zona será bloqueada com base nos climas."""
-        for temp in self.clima:
-            if temp.isBlocking():
-                self.iteracoes += 1
-                return 1
+        if self.clima.isBlocking():
+            self.iteracoes += 1
+            return 1
         return 0
 
     def setClima(self, clima : Clima):
