@@ -1,12 +1,12 @@
-import Veiculo
-import Camiao
-import Aviao
-import Barco
-import Carro
-import Helicoptero
+from Entidades.veiculos import Veiculo
+from Entidades.veiculos import Camiao
+from Entidades.veiculos import Aviao
+from Entidades.veiculos import Barco
+from Entidades.veiculos import Carro
+from Entidades.veiculos import Helicoptero
 import json
 
-file = open("../../ConfigFiles/frota.json","r")
+file = open("./ConfigFiles/frota.json","r")
 
 stringV = json.load(file)
 

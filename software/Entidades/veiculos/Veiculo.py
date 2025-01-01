@@ -1,5 +1,5 @@
 from . import Combustivel
-from . import Carga
+from .Carga import Carga
 from . import Bem
 
 class Veiculo:

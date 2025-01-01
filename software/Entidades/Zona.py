@@ -1,5 +1,5 @@
-from veiculos import Bem
-import Clima
+from .veiculos import Bem
+from . import Clima
 
 class Zona:
     def __init__(self, name, id=-1, bloqueado = False, gravidade=0, densidade=0, abastecimento = 100, acessibilidade = None, clima = {}, necessidades={}, iteracoes = 0):     

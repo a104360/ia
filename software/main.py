@@ -16,17 +16,19 @@ def main():
     g.add_edge("arraiolos", "alcacer", 90)
     g.add_edge("alcacer", "palmela", 35)
     g.add_edge("palmela", "almada", 25)
-    g.add_edge("palmela", "barreiro", 25)
-    g.add_edge("barreiro", "palmela", 30)
+    g.add_edge("palmela", "barreiro", 20)  # Adjusted to align with realistic values
+    g.add_edge("barreiro", "palmela", 20)  # Bidirectional route
     g.add_edge("almada", "lisboa", 15)
     g.add_edge("elvas", "alandroal", 40)
     g.add_edge("alandroal", "redondo", 25)
     g.add_edge("redondo", "monsaraz", 30)
-    g.add_edge("monsaraz", "barreiro", 120)
+    g.add_edge("monsaraz", "barreiro", 110)  # Adjusted to reflect approximate location
     g.add_edge("barreiro", "baixadabanheira", 5)
-    g.add_edge("baixadabanheira", "moita", 7)
-    g.add_edge("moita", "alcochete", 20)
-    g.add_edge("alcochete", "lisboa", 20)
+    g.add_edge("baixadabanheira", "moita", 5)  # Slightly adjusted for accuracy
+    g.add_edge("moita", "alcochete", 15)  # Adjusted closer to real-world distances
+    g.add_edge("alcochete", "lisboa", 15)  # Approximated realistic value
+
+
     
 
     #Ficha2
@@ -110,6 +112,7 @@ if __name__ == "__main__":
 
 def simular():
     #INICIALIZAR AS VARIÁVEIS
+    
     #CICLO PARA TRATAR AS ITERAÇÕES
     #APRESENTAR MÉTRICAS
     print(2)
