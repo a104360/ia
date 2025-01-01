@@ -25,7 +25,7 @@ class Veiculo:
         return f"ID : {self.id}\nNome : {self.name}\nCarga maxima : {self.capacidade}\n" + self.combustivel.__str__()
 
     def __repr__(self):
-        return "veiculo " + self.name
+        return self.__str__()#"veiculo " + self.name
 
     # Métodos para 'id'
     def setId(self, id : int):
