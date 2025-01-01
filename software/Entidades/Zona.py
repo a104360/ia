@@ -31,7 +31,7 @@ class Zona:
         self.bloquado = bloqueado
         self.gravidade = gravidade
         self.densidade = densidade
-        self.prioridade = self.calculatePrioridade(gravidade, densidade)
+        self.prioridade = self.calculatePrioridade()
         if acessibilidade != None and (len(acessibilidade) == 3 and all(x in [False,True] for x in acessibilidade)): self.acessibilidade = acessibilidade
         else: self.acessibilidade = [False, False, False]
         self.abastecimento = abastecimento
@@ -47,9 +47,9 @@ class Zona:
         return False
     
 
-    def calculatePrioridade(self, gravidade : int, densidade : int):
-        """Calcula a prioridade com base na gravidade e densidade."""
-        return gravidade * densidade
+    def calculatePrioridade(self):
+        """Calcula a prioridade com base na gravidade, densidade e iteracoes."""
+        return self.gravidade + self.densidade + self.iteracoes
 
     def __str__(self):
         return (f"Zona : {self.name}\nID : {self.id}\nBlocked : {self.bloquado}\n"+
@@ -100,7 +100,7 @@ class Zona:
     def setGravidade(self, gravidade : int):
         """Define a gravidade da Zona."""
         self.gravidade = gravidade
-        self.prioridade = self.calculatePrioridade(self.gravidade, self.densidade)
+        self.prioridade = self.calculatePrioridade()
 
     def getGravidade(self):
         """Retorna a gravidade da Zona."""
@@ -110,7 +110,7 @@ class Zona:
     def setDensidade(self, densidade : int):
         """Define a densidade populacional da Zona."""
         self.densidade = densidade
-        self.prioridade = self.calculatePrioridade(self.gravidade, self.densidade)
+        self.prioridade = self.calculatePrioridade()
 
     def getDensidade(self):
         """Retorna a densidade populacional da Zona.
@@ -162,6 +162,7 @@ class Zona:
         """Verifica se a Zona será bloqueada com base nos climas."""
         for temp in self.clima:
             if temp.isBlocking():
+                self.iteracoes += 1
                 return 1
         return 0
 
@@ -253,10 +254,20 @@ class Zona:
     def setIteracoes(self, iteracoes : int):
         """Define a iteracao da Zona."""
         self.iteracoes = iteracoes
+        self.prioridade = self.calculatePrioridade()
 
     def getIteracoes(self):
         """Retorna a iteracao da Zona."""
         return self.iteracoes
     
+    #Metodos para janela
+    def setJanela(self, janela : int):
+        """Define a janela da Zona."""
+        self.janela = janela
+    
+    def getJanela(self):
+        """Retorna a janela da Zona."""
+        return self.janela
+
     def passaTempo(self,time : int):
         self.janela -= time
