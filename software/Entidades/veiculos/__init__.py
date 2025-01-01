@@ -1,6 +1,9 @@
-import Camiao
-import Carro
-import Barco
-import Aviao
-import Helicoptero
-import Veiculo
+import veiculos.Camiao
+import veiculos.Carro
+import veiculos.Barco
+import veiculos.Aviao
+import veiculos.Helicoptero
+import veiculos.Veiculo
+import veiculos.Bem
+import veiculos.Veiculo
+import veiculos.Carga

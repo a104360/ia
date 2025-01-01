@@ -1,8 +1,7 @@
-from Bem import Bem
-from typing import List
+from veiculos.Bem import Bem
 
 class Carga:
-    def __init__(self, maxCarga: int, cargaAtual: int = 0, bens: List[Bem] = {}):
+    def __init__(self, maxCarga: int, cargaAtual: int = 0, bens: list[Bem] = {}):
         """
             maxCarga - a capacidade máxima da carga
 
@@ -12,19 +11,19 @@ class Carga:
         """
         self.maxCarga = maxCarga
         self.cargaAtual = cargaAtual
-        self.bens: List[Bem] = bens
+        self.bens: list[Bem] = bens
 
     def __str__(self):
         bens_info = "\n".join(bem.__str__() for bem in self.bens)
         return f"Capacidade Máxima: {self.maxCarga}kg\nCarga Atual: {self.cargaAtual}kg\nBens:\n{bens_info}"
 
-    def restock(self, bens: List[Bem]):
+    def restock(self, bens: list[Bem]):
         """
         Adiciona uma lista de objetos do tipo 'Bem' à carga.
         Se o bem já existir, atualiza seu peso somando ao peso atual,
         respeitando o limite de capacidade.
 
-        bens - Lista de objetos do tipo 'Bem' (List[Bem])
+        bens - Lista de objetos do tipo 'Bem' (list[Bem])
         """
         for bem in bens:
             if bem in self.bens:
@@ -41,7 +40,7 @@ class Carga:
                     self.bens.append(bem)
                     self.cargaAtual += bem.getPeso()
 
-    def distribute(self, bens: List[Bem]):
+    def distribute(self, bens: list[Bem]):
         """
         Remove uma lista de objetos do tipo 'Bem' da carga.
 

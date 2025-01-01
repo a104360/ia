@@ -1,4 +1,4 @@
-import Veiculo
+from veiculos import Veiculo
 
 class Carro(Veiculo.Veiculo):
     def __init__(self, name = "Road Man", id = -1, capacidade = 100, cargaAtual = 0, bens = {}, level = 150, limit = 300, combustivel = 8, tipo = "Barco"):

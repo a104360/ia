@@ -1,7 +1,6 @@
-import Combustivel
-from Carga import Carga
-from Bem import Bem
-from typing import List
+from veiculos import Combustivel
+from veiculos import Carga
+from veiculos import Bem
 
 class Veiculo:
     def __init__(self, name, id = -1, capacidade = 100, cargaAtual = 0, bens = {}, level = 150, limit = 300, consumption = 10, tipo = None):   
@@ -43,11 +42,11 @@ class Veiculo:
         return self.name
 
     # Métodos para 'capacidade'
-    def loadCarga(self, bens: List[Bem]):
+    def loadCarga(self, bens: list[Bem.Bem]):
         """Adiciona bens ao veiculo"""
         self.capacidade.restock(bens)
 
-    def takeCarga(self, bens: List[Bem]):
+    def takeCarga(self, bens: list[Bem.Bem]):
         """Retira bens ao veiculo"""
         return self.capacidade.distribute(bens)
     

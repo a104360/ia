@@ -6,7 +6,6 @@ import random
 
 import networkx as nx  # biblioteca de tratamento de grafos necessária para desnhar graficamente o grafo
 import matplotlib.pyplot as plt  # idem
-from typing import List
 from Entidades.Zona import Zona
 
 
@@ -22,7 +21,7 @@ from Entidades.Zona import Zona
 
 class Graph:
     def __init__(self, directed=False):
-        self.m_zonas : List[Zona] = []  
+        self.m_zonas : list[Zona] = []  
         self.m_directed = directed
         self.m_graph = {}  
         self.m_h = {}  

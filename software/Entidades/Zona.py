@@ -1,6 +1,6 @@
-from veiculos.Bem import Bem
+from types import NoneType
+from veiculos import Bem
 from Clima import Clima
-from typing import List
 
 class Zona:
     def __init__(self, name, id=-1, bloqueado = False, gravidade=0, densidade=0, abastecimento = 100, acessibilidade = None, clima = {}, necessidades={}, iteracoes = 0):     
@@ -33,11 +33,11 @@ class Zona:
         self.gravidade = gravidade
         self.densidade = densidade
         self.prioridade = self.calculatePrioridade(gravidade, densidade)
-        if len(acessibilidade) == 3 and all(x in [0, 1] for x in acessibilidade): self.acessibilidade = acessibilidade
-        else: self.acessibilidade = [0, 0, 0]
+        if acessibilidade != None and (len(acessibilidade) == 3 and all(x in [False,True] for x in acessibilidade)): self.acessibilidade = acessibilidade
+        else: self.acessibilidade = [False, False, False]
         self.abastecimento = abastecimento
-        self.clima : List[Clima] = clima 
-        self.necessidades: List[Bem] = necessidades
+        self.clima = list(necessidades) #: List[Clima] = clima 
+        self.necessidades = list(necessidades) #: List[Bem] = necessidades
         self.iteracoes = iteracoes
 
     def __eq__(self, other):
@@ -52,7 +52,10 @@ class Zona:
         return gravidade * densidade
 
     def __str__(self):
-        return f"Zona : {self.name}"
+        return (f"Zona : {self.name}\nID : {self.id}\nBlocked : {self.bloquado}\n"+
+                f"Gravidade : {self.gravidade}\nPriority : {self.prioridade}\n" + 
+                f"Acessibilidade : {self.acessibilidade}\nAbastecimento : {self.abastecimento}\n" +
+                f"Climate : {self.clima}\nNecessidades : {self.necessidades}\nIter : {self.iteracoes}")
 
     def __repr__(self):
         return f"Zona : {self.name}"
@@ -131,9 +134,9 @@ class Zona:
         """Define se a Zona é acessível por via aérea."""
         self.acessibilidade[2] = acessivel
 
-    def setAcessibilidade(self, acessibilidade : List[int]):
+    def setAcessibilidade(self, acessibilidade : list[bool]):
         """Define a acessibilidade da Zona."""
-        if len(acessibilidade) != 3 or not all(x in [0, 1] for x in acessibilidade):
+        if len(acessibilidade) != 3 or not all(x in [False, True] for x in acessibilidade):
             return
         self.acessibilidade = acessibilidade
 
@@ -143,15 +146,15 @@ class Zona:
 
     def isAcessivelMaritima(self):
         """Retorna se a Zona é acessível por via marítima."""
-        return self.acessibilidade[0] == 1
+        return self.acessibilidade[0]
 
     def isAcessivelTerrestre(self):
         """Retorna se a Zona é acessível por via terrestre."""
-        return self.acessibilidade[1] == 1
+        return self.acessibilidade[1]
 
     def isAcessivelAerea(self):
         """Retorna se a Zona é acessível por via aérea."""
-        return self.acessibilidade[2] == 1
+        return self.acessibilidade[2]
 
     # Métodos para 'clima'
     def isGoingToBeBlocked(self):
@@ -171,7 +174,7 @@ class Zona:
             self.clima.pop(clima)
 
     # Métodos para 'necessidades'
-    def setNecessidades(self, necessidades: List[Bem]):
+    def setNecessidades(self, necessidades: list[Bem.Bem]):
         """
         Adiciona uma lista de objetos do tipo 'Bem' às necessidades.
         Se o bem já existir, atualiza seu peso somando ao peso atual.
@@ -188,7 +191,7 @@ class Zona:
                 # Adiciona um novo bem às necessidades
                 self.necessidades.append(necessidade)
 
-    def removeNecessidades(self, necessidades: List[Bem]):
+    def removeNecessidades(self, necessidades: list[Bem.Bem]):
         """
         Remove uma lista de objetos do tipo 'Bem' das necessidades.
         O bem será removido somente se o peso do bem for igual ao peso registrado.
