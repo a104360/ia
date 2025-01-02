@@ -268,10 +268,11 @@ class Graph:
         visited.add(start)
         
         bens : list[Bem.Bem] = veiculo.getBensAvailable
-        if start == end or len(bens) <= 0 or iter >= self.iteracoes:
+        if start == end or len(bens) <= 0 or self.iteracoes >= iter:
             custoT = self.calcula_custo(path)
+            iterCopia = self.iteracoes
             self.iteracoes = 0
-            return (path,custoT)
+            return (path,iterCopia)
         
         #remover a carga que se deixou na Zona 
         
