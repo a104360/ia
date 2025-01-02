@@ -89,7 +89,7 @@ class Zona:
     
     def shouldBeBlocked(self):
         """Retorna se a Zona está deve ser bloquada ou não e retorna o estado final."""
-        if self.iteracoes <= self.janela: 
+        if self.iteracoes <= self.janela or self.getNecessidades() == None: 
             self.bloqueado = False
             return False
         else:
@@ -203,7 +203,7 @@ class Zona:
         """
         for necessidade in necessidades:
             if necessidade in self.necessidades:
-                necessidade_removido: Bem = self.necessidades[necessidade]
+                necessidade_removido: Bem.Bem = self.necessidades[necessidade]
                 peso_removido = necessidade_removido.getPeso()
 
                 # Verifica se o peso do bem removido é igual ao peso atual
@@ -212,7 +212,7 @@ class Zona:
                     self.necessidades.pop(necessidade)
                     
                 else :
-                    necessidade_existente : Bem = self.necessidades[necessidade]
+                    necessidade_existente : Bem.Bem = self.necessidades[necessidade]
                     necessidade_existente.setPeso(necessidade_existente.getPeso() - peso_removido)
 
     def getNecessidades(self):
@@ -221,7 +221,7 @@ class Zona:
         """
         return self.necessidades
 
-    def addNecessidade(self, necessidade: Bem):
+    def addNecessidade(self, necessidade: Bem.Bem):
         """
         Adiciona um Bem às necessidades da Zona.
 
@@ -229,31 +229,35 @@ class Zona:
         """
         if necessidade in self.necessidades:
             # Atualiza o peso se o Bem já existir
-            necessidade_existente : Bem = self.necessidades[necessidade]
+            necessidade_existente : Bem.Bem = self.necessidades[necessidade]
             peso_novo = necessidade_existente.getPeso() + necessidade.getPeso()
             necessidade_existente.setPeso(peso_novo)
         else:
             # Adiciona um novo Bem às necessidades
             self.necessidades.append(necessidade)
 
-    def removeNecessidade(self, necessidade: Bem):
+    def removeNecessidade(self, necessidade: Bem.Bem):
         """
-        Remove um Bem das necessidades da Zona pelo ID.
+        Remove um Bem das necessidades da Zona pelo ID e retorna a necessidade caso tenha peso de sobra.
 
         necessidade - Objeto do tipo 'Bem'
         """
         if necessidade in self.necessidades:
-            necessidade_removido: Bem = self.necessidades[necessidade]
+            necessidade_removido : Bem.Bem = self.necessidades[necessidade]
             peso_removido = necessidade_removido.getPeso()
 
             # Verifica se o peso do bem removido é igual ao peso atual
-            if peso_removido >= self.cargaAtual:
+            if peso_removido > self.cargaAtual:
                 # Remove o bem do dicionário sem afetar o peso diretamente
                 self.necessidades.pop(necessidade)
-                    
+                necessidade.setPeso(necessidade.getPeso() - peso_removido)
+                return necessidade
             else :
-                necessidade_existente : Bem = self.necessidades[necessidade]
+                necessidade_existente : Bem.Bem = self.necessidades[necessidade]
                 necessidade_existente.setPeso(necessidade_existente.getPeso() - peso_removido)
+                return None
+        else: 
+            return necessidade
 
     #Metodos para iteracoes
     def setIteracoes(self, iteracoes : int):

@@ -60,7 +60,7 @@ class Veiculo:
 
     # Métodos para 'combustivel'
     def walkedKm(self, km : int):
-        """Removes the liters equivalent to the amount of miles travelled"""
+        """Removes the liters equivalent to the amount of interações travelled"""
         self.combustivel.spend(km)
 
     def refuel(self, liters : int):
