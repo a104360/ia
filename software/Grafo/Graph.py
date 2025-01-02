@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt  # idem
 from Entidades.Zona import Zona
 from Entidades.Clima import Clima
 from Entidades.veiculos.Veiculo import Veiculo
+from Entidades.veiculos.Bem import Bem
 
 
 # Constructor
@@ -73,7 +74,7 @@ class Graph:
         zona.shouldBeBlocked() # ve se iteracao e maior que a janela
 
     ################################
-    #   encontrar regiao pelo nome
+    #   encontrar zona pelo nome
     ################################
 
     def get_zona_by_name(self, name):
@@ -91,9 +92,9 @@ class Graph:
     def imprime_aresta(self):
         listaA = ""
         lista = self.m_graph.keys()
-        for regiao in lista:
-            for (regiao2, custo) in self.m_graph[regiao]:
-                listaA = listaA + regiao + " ->" + regiao2 + " custo:" + str(custo) + "\n"
+        for zona in lista:
+            for (zona2, custo) in self.m_graph[zona]:
+                listaA = listaA + zona + " ->" + zona2 + " custo:" + str(custo) + "\n"
         return listaA
 
     ######################
@@ -125,7 +126,7 @@ class Graph:
             self.m_graph[zona2].append((zona1, distance))
 
     #############################
-    # devolver regiaos
+    # devolver zonas
     #############################
 
     def getZonas(self):
@@ -137,9 +138,9 @@ class Graph:
 
     def get_arc_cost(self, zona1, zona2):
         custoT = math.inf
-        a = self.m_graph[zona1]  # lista de arestas para aquele regiao
-        for (regiao, custo) in a:
-            if regiao == zona2:
+        a = self.m_graph[zona1]  # lista de arestas para aquele zona
+        for (zona, custo) in a:
+            if zona == zona2:
                 custoT = custo
 
         return custoT
@@ -149,7 +150,7 @@ class Graph:
     ###############################
 
     def calcula_custo(self, caminho):
-        # caminho é uma lista de regiaos
+        # caminho é uma lista de zonas
         teste = caminho
         custo = 0
         i = 0
@@ -157,6 +158,88 @@ class Graph:
             custo = custo + self.get_arc_cost(teste[i], teste[i + 1])
             i = i + 1
         return custo
+    
+    #################################################
+    #  Proxima Zona a escolher Procura não Informada
+    #################################################
+    def proximaZona(self, veiculo : Veiculo, currentZona : Zona):  #Devolve o melhor visinho para a zona atual
+        zonas : list[Zona, int] = self.getNeighbours(currentZona)
+    
+        proximaZona = None
+        maiorPrioridade = 0  # Define prioridade mínima inicial
+
+        listZonas : list[Zona] = []
+        tipo = veiculo.getType()
+
+        #ACESSIBILIDADE TIPO VEICULO
+        for z, _ in zonas: #verifica para todos os visinhos os que são acessiveis e adiciona a uma lista
+            if z.isBloqueado() == False: #zona não esta bloqueada
+                if tipo == "terra":
+                    if z.isAcessivelTerrestre():
+                        listZonas.append(z)
+                if tipo == "ar":
+                    if z.isAcessivelAerea():
+                        listZonas.append(z)
+                if tipo == "agua":
+                    if z.isAcessivelMaritima():
+                        listZonas.append(z)
+        
+        if listZonas == None: #se estiver vazia o veiculo já não pode ir para mais lugar nenhum
+            return None
+
+        #consegue percorrer a distancia
+        for zn, distancia in zonas:
+            if veiculo.getAutonomy() < distancia:
+                listZonas.remove(zn)
+                listZonas.sort(distancia)
+
+
+        bensVeiculo : list[Bem] = veiculo.getBensAvailable()
+        encontrou = False
+
+        listZonasSemPrio : list[Zona] = []
+        #BENS NECESSARIOS
+        for z1 in listZonas: #verifica se os vizinhos precisam de bens que o veiculo leva caso não precisem remove da lista
+            bens : list[Bem]  = z1.getNecessidades()
+
+            for b in bens: #vai à lista de bens da Zona e percorre todos
+                if encontrou == True: #se tiver encontrado um bem em comum para
+                    break
+                for bV in bensVeiculo: #vai à lista de bens do veiculo e percorre todos
+                    if b == bV: #se encontrar um bem em comum com a zona sai do ciclo mudando encontrou para True
+                        encontrou = True
+                        break
+            
+            if encontrou == False: #se não tive encontrado remove essa zona da lista
+                listZonas.remove(z1)
+                listZonasSemPrio.append(z1)
+            
+            if encontrou == True: #volta o encontrou para False depois de ter verificado uma Zona
+                encontrou = False
+
+
+        if listZonas == None: #se estiver vazia o veiculo recebe uma das zonas para onde pode ir sem alimentos
+            listPrio : list[Zona] = []
+            maiorPrio = 0
+            for zPrio in listZonasSemPrio: # ve a maior prioridade
+                if zPrio.getPrioridade() > maiorPrio :
+                    maiorPrio = zPrio.getPrioridade()
+            
+            for zAddMostPrio in listZonasSemPrio: # guarda os com maior prio numa lista
+                if zAddMostPrio.getPrioridade() == maiorPrio:
+                    listPrio.append(zAddMostPrio)
+
+            if listPrio.count() <= 1: # retorna se so houver 1 com maior prio ou a lista for vazia
+                return listPrio
+            
+
+
+            
+            
+
+        
+
+        return proximaZona
 
     ####################################################################################
     #     procura DFS  -- depth first search
@@ -168,7 +251,7 @@ class Graph:
         if start == end:
             custoT = self.calcula_custo(path)
             return custoT
-        for(adjacente, peso) in self.m_graph[start]:
+        for(adjacente, distancia) in self.m_graph[start]:
             if adjacente not in visited:
                 resultado = self.procura_DFS(adjacente, end, path, visited)
                 if (resultado) is not None:
@@ -215,10 +298,10 @@ class Graph:
     # funçãop  getneighbours, devolve vizinhos de um nó
     ##############################
 
-    def getNeighbours(self, regiao):
+    def getNeighbours(self, zona):
         lista = []
-        for (adjacente, peso) in self.m_graph[regiao]:
-            lista.append((adjacente, peso))
+        for (adjacente, distancia) in self.m_graph[zona]:
+            lista.append((adjacente, distancia))
         return lista
 
     ###########################
@@ -230,13 +313,13 @@ class Graph:
         lista_v = self.m_zonas
         lista_a = []
         g = nx.Graph()
-        for regiao in lista_v:
-            n = regiao.getName()
+        for zona in lista_v:
+            n = zona.getName()
             g.add_node(n)
-            for (adjacente, peso) in self.m_graph[n]:
+            for (adjacente, distancia) in self.m_graph[n]:
                 lista = (n, adjacente)
                 # lista_a.append(lista)
-                g.add_edge(n, adjacente, distance=peso)
+                g.add_edge(n, adjacente, distance=distancia)
 
         pos = nx.spring_layout(g)
         nx.draw_networkx(g, pos, with_labels=True)
@@ -247,7 +330,7 @@ class Graph:
         plt.show()
 
     ####################################
-    #    add_heuristica   -> define heuristica para cada regiao 1 por defeito....
+    #    add_heuristica   -> define heuristica para cada zona 1 por defeito....
     ####################################
 
     def add_heuristica(self, n, estima):
@@ -264,7 +347,7 @@ class Graph:
     def procura_aStar(self, start, end):
         # tuplo de lista dos nomes com custo do caminho pretendido
         path = ([start], 0)
-        #set com nomes dos regiaos
+        #set com nomes dos zonas
         visited = {start}
 
         q = deque([start])
@@ -273,12 +356,12 @@ class Graph:
         # String nextZona
         currentZona = start 
         
-        # vizinhos mantém as ligações ao regiao que estamos a analisar
+        # vizinhos mantém as ligações ao zona que estamos a analisar
         vizinhos = self.getNeighbours(currentZona)
 
         while vizinhos:
             visited.add(currentZona)
-            # heuristics guarda o nome dos regiaos e a sua heuristica
+            # heuristics guarda o nome dos zonas e a sua heuristica
             heuristics = []
 
             for (zona, custo) in vizinhos:
@@ -316,14 +399,14 @@ class Graph:
         
 
     ####################################
-    # devolve heuristica do regiao
+    # devolve heuristica do zona
     ####################################
 
-    def getH(self, regiao):
-        if regiao not in self.m_h.keys():
+    def getH(self, zona):
+        if zona not in self.m_h.keys():
             return 1000
         else:
-            return (self.m_h[regiao])
+            return (self.m_h[zona])
 
 
     ##########################################
@@ -334,18 +417,18 @@ class Graph:
         # tuplo de lista dos nomes com custo do caminho pretendido
         path = ([start],0)
         
-        #set com nomes dos regiaos
+        #set com nomes dos zonas
         visited = {start}
 
         # String nextZona
         currentZona = start 
         
-        # vizinhos mantém as ligações ao regiao que estamos a analisar
+        # vizinhos mantém as ligações ao zona que estamos a analisar
         vizinhos = self.getNeighbours(currentZona)
 
         while vizinhos:
             visited.add(currentZona)
-            # heuristics guarda o nome dos regiaos e a sua heuristica
+            # heuristics guarda o nome dos zonas e a sua heuristica
             heuristics = []
 
             for zona in vizinhos:
