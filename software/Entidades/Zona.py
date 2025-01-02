@@ -2,7 +2,7 @@ from .veiculos import Bem
 from . import Clima
 
 class Zona:
-    def __init__(self, name, id=-1, bloqueado = False, gravidade=0, densidade=0, abastecimento = 100, acessibilidade = None, clima = None, necessidades={}, iteracoes = 0,janela = 0,tempo = 0):     
+    def __init__(self, name, id=-1, bloqueado = False, gravidade=0, densidade=0, abastecimento = 100, acessibilidade = None, clima = None, necessidades={}, iteracoes = 0,janela = 0):     
         """
             id - valor único de cada Zona
 
@@ -20,7 +20,7 @@ class Zona:
 
             acessibilidade - lista [marítima, terrestre, aérea] (0 não tem ou 1 tem)
 
-            clima - Lista de objetos Clima associados à Zona
+            clima - Objeto clima
 
             necessidades - dicionário de Bens que a Zona necessita
 
@@ -31,14 +31,14 @@ class Zona:
         self.bloquado = bloqueado
         self.gravidade = gravidade
         self.densidade = densidade
-        self.prioridade = self.calculatePrioridade()
-        if acessibilidade != None and (len(acessibilidade) == 3 and all(x in [False,True] for x in acessibilidade)): self.acessibilidade = acessibilidade
-        else: self.acessibilidade = [False, False, False]
         self.abastecimento = abastecimento
         self.clima = clima
         self.necessidades = dict(necessidades)
-        self.iteracoes = iteracoes 
+        self.iteracoes = iteracoes
         self.janela = janela
+        self.prioridade = self.calculatePrioridade()
+        if acessibilidade != None and (len(acessibilidade) == 3 and all(x in [False,True] for x in acessibilidade)): self.acessibilidade = acessibilidade
+        else: self.acessibilidade = [False, False, False]
 
     def __eq__(self, other):
         """Compara os objetos Zona apenas pelo nome"""
@@ -118,7 +118,7 @@ class Zona:
         return self.densidade
 
     # Métodos para 'prioridade'
-    def getPrioridade(self):
+    def  getPrioridade(self):
         """Retorna a prioridade da Zona."""
         return self.prioridade
 
@@ -268,5 +268,5 @@ class Zona:
         """Retorna a janela da Zona."""
         return self.janela
 
-    def passaTempo(self,time : int):
-        self.janela -= time
+    def nextIter(self,time : int):
+        self.iteracoes += 1

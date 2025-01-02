@@ -20,11 +20,12 @@ from Entidades.Zona import Zona
 
 
 class Graph:
-    def __init__(self, directed=False):
-        self.m_zonas : list[Zona] = []  
+    def __init__(self, directed=False,zonas : list[Zona] = []):
+        self.m_zonas : list[Zona] = zonas  
         self.m_directed = directed
         self.m_graph = {}  
-        self.m_h = {}  
+        self.m_h = {}
+        self.counter = 0
 
     #############
     #    escrever o grafo como string
@@ -377,7 +378,4 @@ class Graph:
         return ([],-1)
 
     
-
-
-
-
+    

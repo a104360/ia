@@ -1,4 +1,5 @@
 from Grafo import Graph
+import Entidades
 import os
 
 
@@ -110,9 +111,8 @@ if __name__ == "__main__":
     main()
 
 
-def simular():
+def simular(iteracoes : int):
     #INICIALIZAR AS VARIÁVEIS
-    
     #CICLO PARA TRATAR AS ITERAÇÕES
     #APRESENTAR MÉTRICAS
     print(2)

@@ -12,7 +12,7 @@ class Empresa:
     def __init__(self,tempoTotal,cidade : dict[int,set[int]]):
         self.mapa = cidade
         self.frota = dict()
-        self.posicoesAgentes = dict()
+        self.posicoesAgentes = list()
         self.tempoTotal = tempoTotal
         self.tabelaCustos = dict(str,int)
     
