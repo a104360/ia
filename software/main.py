@@ -17,17 +17,17 @@ def main():
     g.add_edge("arraiolos", "alcacer", 90)
     g.add_edge("alcacer", "palmela", 35)
     g.add_edge("palmela", "almada", 25)
-    g.add_edge("palmela", "barreiro", 20)  # Adjusted to align with realistic values
-    g.add_edge("barreiro", "palmela", 20)  # Bidirectional route
+    g.add_edge("palmela", "barreiro", 20)
+    g.add_edge("barreiro", "palmela", 20)
     g.add_edge("almada", "lisboa", 15)
     g.add_edge("elvas", "alandroal", 40)
     g.add_edge("alandroal", "redondo", 25)
     g.add_edge("redondo", "monsaraz", 30)
-    g.add_edge("monsaraz", "barreiro", 110)  # Adjusted to reflect approximate location
+    g.add_edge("monsaraz", "barreiro", 110)
     g.add_edge("barreiro", "baixadabanheira", 5)
-    g.add_edge("baixadabanheira", "moita", 5)  # Slightly adjusted for accuracy
-    g.add_edge("moita", "alcochete", 15)  # Adjusted closer to real-world distances
-    g.add_edge("alcochete", "lisboa", 15)  # Approximated realistic value
+    g.add_edge("baixadabanheira", "moita", 5)
+    g.add_edge("moita", "alcochete", 15)
+    g.add_edge("alcochete", "lisboa", 15)
 
 
     
@@ -101,7 +101,9 @@ def main():
             print(g.greedy(inicio, fim))
             l = input("prima enter para continuar")
         elif saida == 9:
-            simular()
+            time = input("Limite de iteracoes->")
+            simular(time)
+            l = input("prima enter para continuar")
         else:
             print("you didn't add anything")
             l = input("prima enter para continuar")

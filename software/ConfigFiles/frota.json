@@ -1,65 +1,65 @@
 [
     {
         "id": 2,
-        "name": "Air Runner-2",
+        "name": "Helicoptero",
         "capacidade": 1017,
         "combustivel": 685,
-        "tipo": "Helicoptero"
+        "tipo": "ar"
     },
     {
         "id": 3,
-        "name": "Road Man-3",
+        "name": "Carro",
         "capacidade": 1641,
         "combustivel": 216,
-        "tipo": "Carro"
+        "tipo": "terra"
     },
     {
         "id": 4,
-        "name": "Road Man-4",
+        "name": "Carro",
         "capacidade": 972,
         "combustivel": 536,
-        "tipo": "Carro"
+        "tipo": "terra"
     },
     {
         "id": 5,
-        "name": "Road Beast-5",
+        "name": "Camiao",
         "capacidade": 221,
         "combustivel": 547,
-        "tipo": "Camiao"
+        "tipo": "terra"
     },
     {
         "id": 6,
-        "name": "Trailblazer-6",
+        "name": "Barco",
         "capacidade": 318,
         "combustivel": 826,
-        "tipo": "Barco"
+        "tipo": "mar"
     },
     {
         "id": 7,
-        "name": "Road Beast-7",
+        "name": "Camiao",
         "capacidade": 275,
         "combustivel": 735,
-        "tipo": "Camiao"
+        "tipo": "terra"
     },
     {
         "id": 8,
-        "name": "Trailblazer-8",
+        "name": "Barco",
         "capacidade": 1979,
         "combustivel": 438,
-        "tipo": "Barco"
+        "tipo": "mar"
     },
     {
         "id": 9,
-        "name": "Road Man-9",
+        "name": "Carro",
         "capacidade": 359,
         "combustivel": 845,
-        "tipo": "Carro"
+        "tipo": "mar"
     },
     {
         "id": 10,
-        "name": "Road Beast-10",
+        "name": "Camiao",
         "capacidade": 1143,
         "combustivel": 387,
-        "tipo": "Camiao"
+        "tipo": "terra"
     }
 ]

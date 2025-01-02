@@ -3,7 +3,7 @@ from .Carga import Carga
 from . import Bem
 
 class Veiculo:
-    def __init__(self, name, id,zona , capacidade = 100, cargaAtual = 0, bens = {}, level = 150, limit = 300, consumption = 10, tipo = None):   
+    def __init__(self, name, id,zona , capacidade = 100, cargaAtual = 0, bens = {}, level = 150, limit = 300, consumption = 10, tipo = None,toLoad = []):   
         """
             id - valor único de cada veiculo
 
@@ -21,6 +21,7 @@ class Veiculo:
         self.combustivel = Combustivel.Combustivel(level, limit, consumption)
         self.tipo = tipo
         self.zona = zona
+        self.toLoad = toLoad
 
     def __str__(self):
         return f"ID : {self.id}\nNome : {self.name}\nCarga maxima : {self.capacidade}\n" + self.combustivel.__str__()
