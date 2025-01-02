@@ -107,10 +107,10 @@ def main():
                 print(g.imprime_aresta())
                 l = input("prima enter para continuar")
             elif saida == 5: # DFS
-                getVeiculo(frota)
+                v = getVeiculo(frota)
                 inicio = input("Regiao inicial->")
-                fim = input("Regiao final->")
-                print(g.procura_DFS(inicio, fim, path=[], visited=set()))
+                #fim = input("Regiao final->")
+                print(g.procura_DFS(g.get_zona_by_name(inicio),v,500, path=[], visited=set()))
                 l = input("prima enter para continuar")
             elif saida == 6:# BFS
                 inicio = input("Regiao inicial->")

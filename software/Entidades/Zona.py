@@ -78,6 +78,8 @@ class Zona:
             return self.name == other.name
         return False
     
+    def __hash__(self):
+        return hash(self.name)
 
     def calculatePrioridade(self):
         """Calcula a prioridade com base na gravidade, densidade e iteracoes."""

@@ -31,14 +31,23 @@ class Veiculo:
         }
     
     def from_dict(self,dict):
-        #tipo = dict["name"]
-        #if tipo == "Helicoptero":
+        necessidades = list()
+        for a in dict["carga"]["bens"]:
+            if a["nome"] == "Gorro":
+                necessidades.append(Bem.Gorro(a["id"],a["peso"]))
+            if a["nome"] == "Bruffen":
+                necessidades.append(Bem.Bruffen(a["id"],a["peso"]))
+            if a["nome"] == "Leite":
+                necessidades.append(Bem.Leite(a["id"],a["peso"]))
+            if a["nome"] == "Arroz":
+                necessidades.append(Bem.Arroz(a["id"],a["peso"]))
         return Veiculo(
             dict["name"],
             dict["id"],
             dict["carga"]["maxCarga"],
             dict["carga"]["cargaAtual"],
-            dict["carga"]["bens"],
+            #dict["carga"]["bens"],
+            necessidades,
             dict["combustivel"]["level"],
             dict["combustivel"]["limit"],
             dict["combustivel"]["consumption"],
