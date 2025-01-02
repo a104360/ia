@@ -31,13 +31,13 @@ class Zona:
         self.bloquado = bloqueado
         self.gravidade = gravidade
         self.densidade = densidade
+        self.iteracoes = iteracoes 
         self.prioridade = self.calculatePrioridade()
         if acessibilidade != None and (len(acessibilidade) == 3 and all(x in [False,True] for x in acessibilidade)): self.acessibilidade = acessibilidade
         else: self.acessibilidade = [False, False, False]
         self.abastecimento = abastecimento
         self.clima = clima
         self.necessidades = dict(necessidades)
-        self.iteracoes = iteracoes 
         self.janela = janela
 
     def __eq__(self, other):

@@ -7,6 +7,8 @@ import random
 import networkx as nx  # biblioteca de tratamento de grafos necessária para desnhar graficamente o grafo
 import matplotlib.pyplot as plt  # idem
 from Entidades.Zona import Zona
+from Entidades.veiculos import Veiculo
+from Entidades.veiculos import Bem
 
 
 # Constructor
@@ -159,9 +161,68 @@ class Graph:
             custo = custo + self.get_arc_cost(teste[i], teste[i + 1])
             i = i + 1
         return custo
+    
+
+    #################################################
+    #  Proxima Zona a escolher Procura não Informada
+    #################################################
+    def proximaZona(self, veiculo : Veiculo.Veiculo ):  #Devolve o melhor visinho para a zona atual
+        zonas : list[Zona] = self.getNeighbours()
+    
+        proximaZona = None
+        maiorPrioridade = 0  # Define prioridade mínima inicial
+
+        listZonas : list[Zona] = []
+        tipo = veiculo.getType()
+
+        #ACESSIBILIDADE TIPO VEICULO
+        for z in zonas: #verifica para todos os visinhos os que são acessiveis e adiciona a uma lista
+            if tipo == "terra":
+                if z.isAcessivelTerrestre():
+                    listZonas.append(z)
+            if tipo == "ar":
+                if z.isAcessivelAerea():
+                    listZonas.append(z)
+            else:
+                if z.isAcessivelMaritima():
+                    listZonas.append(z)
+        
+        if listZonas == None: #se estiver vazia o veiculo já não pode ir para mais lugar nenhum
+            return None
+        
+
+        bensVeiculo : list[Bem.Bem] = veiculo.getBensAvailable
+        encontrou = False
+
+        #BENS NECESSARIOS
+        for z1 in listZonas: #verifica se os vizinhos precisam de bens que o veiculo leva caso não precisem remove da lista
+            bens : list[Bem.Bem]  = z1.getNecessidades()
+
+            for b in bens: #vai à lista de bens da Zona e percorre todos
+                if encontrou == True: #se tiver encontrado um bem em comum para
+                    break
+                for bV in bensVeiculo: #vai à lista de bens do veiculo e percorre todos
+                    if b.getId == bV.getId: #se encontrar um bem em comum com a zona sai do ciclo mudando encontrou para True
+                        encontrou = True
+                        break
+            
+            if encontrou == False: #se não tive encontrado remove essa zona da lista
+                listZonas.remove(z1)
+            
+            if encontrou == True: #volta o encontrou para False depois de ter verificado uma Zona
+                encontrou = False
+
+
+        if listZonas == None: #se estiver vazia o veiculo já não pode ir para mais lugar nenhum
+            return None
+
+        
+
+        return proximaZona
+
 
     ####################################################################################
-    #     procura DFS  -- depth first search
+    #  Procura DFS  -- depth first search
     ####################################################################################
     def procura_DFS(self, start, end, path=[], visited=set()):
         path.append(start)
@@ -169,7 +230,7 @@ class Graph:
 
         if start == end:
             custoT = self.calcula_custo(path)
-            return custoT
+            return (path,custoT)
         for(adjacente, peso) in self.m_graph[start]:
             if adjacente not in visited:
                 resultado = self.procura_DFS(adjacente, end, path, visited)
@@ -212,7 +273,7 @@ class Graph:
                                 finalPath[0].append(a)
                         return (finalPath[0],cost)
 
-  
+            
     ##############################
     # funçãop  getneighbours, devolve vizinhos de um nó
     ##############################
@@ -223,6 +284,7 @@ class Graph:
             lista.append((adjacente, peso))
         return lista
 
+    
     ###########################
     # desenha grafo  modo grafico
     ###########################
