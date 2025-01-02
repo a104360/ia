@@ -78,6 +78,10 @@ class Veiculo:
         """Retira bens ao veiculo"""
         return self.carga.distribute(bens)
     
+    def updateCargaAvailable(self, sum : int):
+        """Faz update a carga disponivel do veiculo"""
+        return self.carga.updateCargaAtual(sum)
+    
     def getCargaAvailable(self):
         """Returns a carga disponivel do veiculo"""
         return self.carga.getCargaDisponivel()

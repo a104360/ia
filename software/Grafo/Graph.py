@@ -279,12 +279,18 @@ class Graph:
         else:
             return False
 
-    def consomeBens(self, carroBens : list[Bem], zona : Zona):
+    def consomeBens(self, carro : Veiculo, zona : Zona):
         """
             retira das necessidades da zona as presentes no veiculo
         """
+        carroBens = carro.getBensAvailable()
         for bem in carroBens:
-            bem = zona.removeNecessidade(bem)            
+            pesoAtual = bem.getPeso()
+            bem = zona.removeNecessidade(bem)   
+            pesoNovo = 0
+            if bem : pesoNovo = bem.getPeso()
+            pesoAmais = pesoAtual - pesoNovo
+            carro.updateCargaAvailable(- pesoAmais)    
 
 
     ####################################################################################
@@ -297,14 +303,14 @@ class Graph:
         if visit == False: visited.add(start)
         
         bens : list[Bem] = veiculo.getBensAvailable()
-        if bens is None or self.iteracoes > iter:
+        if len(bens) == 0 or self.iteracoes > iter:
             custoT = self.calcula_custo(path)
             iterCopia = self.iteracoes - 1 #comeca com 1 iteracao a mais
             self.iteracoes = 0
             self.zonaDefiner(0)
             return (path, custoT, iterCopia)
         
-        self.consomeBens(bens, start) # tirar do veiculo e zona os bens em comum
+        self.consomeBens(veiculo, start) # tirar do veiculo e zona os bens em comum
         start.shouldBeBlocked() # ve se depois de tirar os bens a zona esta safe
 
         moveOn = True

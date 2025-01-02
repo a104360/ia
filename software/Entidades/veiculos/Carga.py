@@ -91,25 +91,31 @@ class Carga:
             total += b.getDistributionTime()
         return total
 
-    def getBemById(self, id: int):
+    def getBem(self, bem: Bem.Bem):
         """
-        Retorna um objeto 'Bem' pelo ID, se existir.
+        Retorna um objeto 'Bem', se existir.
         """
-        return self.bens[id]
+        return self.bens[bem]
 
-    def removeBemById(self, id: int):
+    def removeBem(self, bem: Bem.Bem):
         """
-        Remove um objeto 'Bem' da carga pelo ID, se existir.
+        Remove um objeto 'Bem', se existir.
         """
-        bem : Bem = self.bens.pop(id, None)
-        if bem:
-            self.cargaAtual -= bem.getPeso()
+        temp : Bem.Bem = self.bens.pop(bem)
+        if temp:
+            self.cargaAtual -= temp.getPeso()
 
     def getCargaAtual(self):
         """
         Retorna a carga atual.
         """
         return self.cargaAtual
+    
+    def updateCargaAtual(self, addSub : int):
+        """
+        Atualiza a carga atual.
+        """
+        self.cargaAtual += addSub
 
     def getMaxCarga(self):
         """
