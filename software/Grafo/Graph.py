@@ -162,7 +162,7 @@ class Graph:
     #################################################
     #  Proxima Zona a escolher Procura Informada
     #################################################
-    def proximaZona(self, veiculo : Veiculo.Veiculo, currentZona : Zona):  #Devolve o melhor visinho para a zona atual
+    def proximaZona(self, veiculo : Veiculo, currentZona : Zona):  #Devolve o melhor visinho para a zona atual
         zonas = self.getNeighbours(currentZona)
     
         proximaZona = None
@@ -263,7 +263,7 @@ class Graph:
     ####################################################################################
     #  Procura DFS  -- depth first search
     ####################################################################################
-    def procura_DFS(self, start, end, veiculo : Veiculo.Veiculo ,path=[], visited=set()):
+    def procura_DFS(self, start, end, veiculo : Veiculo ,path=[], visited=set()):
         path.append(start)
         visited.add(start)
         

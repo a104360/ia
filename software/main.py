@@ -66,47 +66,50 @@ def main():
         print("9-Iniciar")
         print("0-Saír")
 
-        saida = int(input("introduza a sua opcao-> "))
-        if saida == 0:
-            print("saindo.......")
-        elif saida == 1:
-            print(g.m_graph)
-            l = input("prima enter para continuar")
-        elif saida == 2:
-            g.desenha()
-        elif saida == 3:
-            print(g.m_graph.keys())
-            l = input("prima enter para continuar")
-        elif saida == 4:
-            print(g.imprime_aresta())
-            l = input("prima enter para continuar")
-        elif saida == 5:
-            inicio = input("Regiao inicial->")
-            fim = input("Regiao final->")
-            print(g.procura_DFS(inicio, fim, path=[], visited=set()))
-            l = input("prima enter para continuar")
-        elif saida == 6:
-            inicio = input("Regiao inicial->")
-            fim = input("Regiao final->")
-            print(g.procura_BFS(inicio, fim))
-            l = input("prima enter para continuar")
-        elif saida == 7:
-            inicio = input("Regiao inicial->")
-            fim = input("Regiao final->")
-            print(g.procura_aStar(inicio, fim))
-            l = input("prima enter para continuar")
-        elif saida == 8:
-            inicio = input("Regiao inicial->")
-            fim = input("Regiao final->")
-            print(g.greedy(inicio, fim))
-            l = input("prima enter para continuar")
-        elif saida == 9:
-            time = input("Limite de iteracoes->")
-            simular(time)
-            l = input("prima enter para continuar")
-        else:
-            print("you didn't add anything")
-            l = input("prima enter para continuar")
+        try:
+            saida = int(input("introduza a sua opcao-> "))
+            if saida == 0:
+                print("saindo.......")
+            elif saida == 1:
+                print(g.m_graph)
+                l = input("prima enter para continuar")
+            elif saida == 2:
+                g.desenha()
+            elif saida == 3:
+                print(g.m_graph.keys())
+                l = input("prima enter para continuar")
+            elif saida == 4:
+                print(g.imprime_aresta())
+                l = input("prima enter para continuar")
+            elif saida == 5:
+                inicio = input("Regiao inicial->")
+                fim = input("Regiao final->")
+                print(g.procura_DFS(inicio, fim, path=[], visited=set()))
+                l = input("prima enter para continuar")
+            elif saida == 6:
+                inicio = input("Regiao inicial->")
+                fim = input("Regiao final->")
+                print(g.procura_BFS(inicio, fim))
+                l = input("prima enter para continuar")
+            elif saida == 7:
+                inicio = input("Regiao inicial->")
+                fim = input("Regiao final->")
+                print(g.procura_aStar(inicio, fim))
+                l = input("prima enter para continuar")
+            elif saida == 8:
+                inicio = input("Regiao inicial->")
+                fim = input("Regiao final->")
+                print(g.greedy(inicio, fim))
+                l = input("prima enter para continuar")
+            elif saida == 9:
+                time = input("Limite de iteracoes->")
+                simular(time)
+                l = input("prima enter para continuar")
+            else:
+                print("you didn't add anything")
+                l = input("prima enter para continuar")
+        except ValueError:
+            continue
 
 
 if __name__ == "__main__":
