@@ -88,6 +88,8 @@ def main():
         print("8-Gulosa")
         print("9-Iniciar")
         print("0-Saír")
+
+        print(type(g.m_zonas[0]))
         
         try:
             saida = int(input("introduza a sua opcao-> "))

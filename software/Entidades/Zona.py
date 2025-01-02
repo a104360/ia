@@ -40,6 +40,38 @@ class Zona:
         if acessibilidade != None and (len(acessibilidade) == 3 and all(x in [False,True] for x in acessibilidade)): self.acessibilidade = acessibilidade
         else: self.acessibilidade = [False, False, False]
 
+    def from_dict(self,dict):
+        clima : Clima.Clima = None
+        if dict["clima"]["type"] == "Chuva":
+            clima = Clima.Chuva(1,dict["clima"]["probabilidade"])
+        if dict["clima"]["type"] == "Neve":
+            clima = Clima.Neve(1,dict["clima"]["probabilidade"])
+        if dict["clima"]["type"] == "Ensolarado":
+            clima = Clima.Ensolarado(1,dict["clima"]["probabilidade"])
+        necessidades = list()
+        for a in dict["necessidades"]:
+            if a["nome"] == "Gorro":
+                necessidades.append(Bem.Gorro(a["id"],a["peso"]))
+            if a["nome"] == "Bruffen":
+                necessidades.append(Bem.Bruffen(a["id"],a["peso"]))
+            if a["nome"] == "Leite":
+                necessidades.append(Bem.Leite(a["id"],a["peso"]))
+            if a["nome"] == "Arroz":
+                necessidades.append(Bem.Arroz(a["id"],a["peso"]))
+        return Zona(
+            dict["name"],
+            dict["id"],
+            dict["bloqueado"],
+            dict["gravidade"],
+            dict["densidade"],
+            dict["abastecimento"],
+            dict["acessibilidade"],
+            clima,
+            necessidades,
+            dict["iteracoes"],
+            dict["janela"]
+        )
+
     def __eq__(self, other):
         """Compara os objetos Zona apenas pelo nome"""
         if isinstance(other, Zona):

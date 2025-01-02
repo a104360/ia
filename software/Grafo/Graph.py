@@ -25,12 +25,16 @@ from Entidades.veiculos.Bem import Bem
 
 class Graph:
     def __init__(self, directed=False,zonas = None):
+        self.m_zonas = list()
         if zonas != None: self.m_zonas : list[Zona] = zonas
         else: 
             with open("ConfigFiles/mapa.json","r") as f:
-                self.m_zonas = json.load(f)
+                lista = json.load(f)
+                for a in lista:
+                    self.m_zonas.append(Zona("").from_dict(a))
+        #print(self.m_zonas)
         self.m_directed = directed
-        self.m_graph : dict[Zona, list[tuple[Zona, int]]] = {}  
+        self.m_graph : dict[Zona, list[tuple[Zona, int]]] = dict() 
         self.m_h = {}
         self.iter = 0
 
@@ -95,9 +99,9 @@ class Graph:
     ################################
 
     def get_zona_by_name(self, name):
-        search_zona = Zona(name)
+        search_zona = name
         for zona in self.m_zonas:
-            if zona == search_zona:
+            if zona.getName() == name:
                 return zona
           
         return None
@@ -119,27 +123,27 @@ class Graph:
     ######################
 
     def add_edge(self, zona1, zona2, distance):
-        n1 = Zona(zona1)
-        n2 = Zona(zona2)
+
+        n1 = self.get_zona_by_name(zona1)
+        n2 = self.get_zona_by_name(zona2)
+
         if (n1 not in self.m_zonas):
             n1_id = len(self.m_zonas)  # numeração sequencial
             n1.setId(n1_id)
             self.m_zonas.append(n1)
             self.m_graph[zona1] = []
-        else:
-            n1 = self.get_zona_by_name(zona1)
 
         if (n2 not in self.m_zonas):
             n2_id = len(self.m_zonas)  # numeração sequencial
             n2.setId(n2_id)
             self.m_zonas.append(n2)
             self.m_graph[zona2] = []
-        else:
-            n2 = self.get_zona_by_name(zona2)
-
+        
+        self.m_graph[zona1] = list()
         self.m_graph[zona1].append((zona2, distance)) 
 
         if not self.m_directed:
+            self.m_graph[zona2] = list()
             self.m_graph[zona2].append((zona1, distance))
 
     #############################

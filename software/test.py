@@ -29,11 +29,13 @@ def roleta():
 
 with open("ConfigFiles/mapa.json","r") as f:
     mapa = json.load(f)
-    for z in mapa:
-        z["necessidades"] = roleta()
+    print(type(mapa[0]["acessibilidade"][0]))
 
-with open("ConfigFiles/mapa.json","w") as f:
-    json.dump(mapa,f,indent=5)
+    #for z in mapa:
+    #    z["necessidades"] = roleta()
+
+#with open("ConfigFiles/mapa.json","w") as f:
+#    json.dump(mapa,f,indent=5)
 
 
 #file = open("./ConfigFiles/frota.json","r")
