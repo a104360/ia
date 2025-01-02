@@ -56,7 +56,7 @@ class Graph:
     def zonotron(self, zona : Zona):
         """
         Para uma Zona, muda alguns dos seus parametros para refletir a vida real, se as suas iteracoes 
-        for superior à sua janela então a zona ficará permanenentemente ploqueada
+        for superior à sua janela então a zona ficará permanenentemente bloqueada
         """
 
         if zona.isBloqueado(): return
@@ -67,10 +67,10 @@ class Graph:
         clima : Clima = zona.getClima() # clima da Zona
         prbClima = clima.getProbabilidade() # prob do clima
         newClima = random.randint(prbClima, 10) # entre a prob e 10
-        clima.setProbabilidade(newClima) # nova prob, se 10 aumenta a iteracao e volta prob a 0
+        clima.setProbabilidade(newClima) # nova prob
         zona.setClima(clima)
-        iteracao = zona.getIteracoes()
-        zona.setIteracoes(iteracao + 1)
+        zona.isGoingToBeBlocked() #se 10 aumenta a iteracao e volta prob a 0
+        zona.nextIter()
         zona.shouldBeBlocked() # ve se iteracao e maior que a janela
 
     ################################
@@ -272,8 +272,15 @@ class Graph:
             custoT = self.calcula_custo(path)
             return (path,custoT)
         
+        #remover a carga que se deixou na Zona
+        
         for(adjacente, distancia) in self.m_graph[start]:
             if adjacente not in visited and self.verificaAdjacente(adjacente,veiculo) :
+
+                #percorrer todas as zonas e chamar o zonotron
+
+                #verificar se tem combustivel pra ir pro adjacente (se nao tiver, abastecer) chamar o zonotron
+
                 resultado = self.procura_DFS(adjacente, end, path, visited)
                 if (resultado) is not None:
                     return resultado

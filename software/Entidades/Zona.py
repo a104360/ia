@@ -274,5 +274,5 @@ class Zona:
         """Retorna a janela da Zona."""
         return self.janela
 
-    def nextIter(self,time : int):
+    def nextIter(self):
         self.iteracoes += 1
