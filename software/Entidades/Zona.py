@@ -2,7 +2,7 @@ from .veiculos import Bem
 from . import Clima
 
 class Zona:
-    def __init__(self, name, id=-1, bloqueado = False, gravidade=0, densidade=0, abastecimento = 100, acessibilidade = None, clima = None, necessidades={}, iteracoes = 0,janela = 0):     
+    def __init__(self, name, id=-1, bloqueado = False, gravidade=0, densidade=0, abastecimento = 100, acessibilidade = None, clima : Clima = None, necessidades={}, iteracoes = 0,janela = 0):     
         """
             id - valor único de cada Zona
 
@@ -89,10 +89,12 @@ class Zona:
     
     def shouldBeBlocked(self):
         """Retorna se a Zona está deve ser bloquada ou não e retorna o estado final."""
-        if self.isGoingToBeBlocked() == 0: 
+        if self.iteracoes <= self.janela: 
             self.bloqueado = False
             return False
         else:
+            acessos = [False,False,False]
+            self.setAcessibilidade(acessos)
             self.bloquado = True
             return True
     
@@ -168,6 +170,10 @@ class Zona:
     def setClima(self, clima : Clima):
         """Adiciona ou substitui um objeto Clima à Zona."""
         self.clima = clima
+
+    def getClima(self):
+        """Returns um objeto Clima à Zona."""
+        return self.clima
 
     # Métodos para 'necessidades'
     def setNecessidades(self, necessidades: list[Bem.Bem]):

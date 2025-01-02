@@ -7,6 +7,8 @@ import random
 import networkx as nx  # biblioteca de tratamento de grafos necessária para desnhar graficamente o grafo
 import matplotlib.pyplot as plt  # idem
 from Entidades.Zona import Zona
+from Entidades.Clima import Clima
+from Entidades.veiculos.Veiculo import Veiculo
 
 
 # Constructor
@@ -36,44 +38,39 @@ class Graph:
             out = out + "zona" + str(key) + ": " + str(self.m_graph[key]) + "\n"
         return out
 
-    #############
-    # funcao para ver se a zona tem alguma zona não bloqueada que leve a si, para que n existam bloqueios no randotron
-    #############
-
-
-    #############
-    #    modifica valores para outros de maneira semi-random
-    #############
-    def randotron(self):
+    def movimento(self, veiculo : Veiculo, zona : Zona, tipo):
         """
-        Para cada zona em m_zonas, muda alguns dos seus parametros para refletir a vida real
+        Para uma Zona e um Veiculo, faz uma ação, desde encher o tanque, deixar carga ou movimentar
         """
-        for zona in self.m_zonas:
-            acessos = [random.randint(0, 1) for _ in range(3)] # lista com 3 valores random 0 ou 1
-            zona.setAcessibilidade(acessos)
-
-            populacao = random.randint(0, 100)
-            prioritou = False
-            gravidade = zona.getGravidade()
-            densidade = zona.getDensidade()
-            if populacao < 10 and densidade != 1:
-                zona.setDensidade(densidade - 1)
-                if populacao == 0 and gravidade != 0:
-                    prioritou = True
-                    zona.setGravidade(gravidade - 1)
-
-            elif populacao > 90 and densidade != 5:
-                zona.setDensidade(densidade + 1)
-                if populacao == 100 and gravidade != 5:
-                    prioritou = True
-                    zona.setGravidade(gravidade + 1)
-
-            #num rando de 1 a 100 e se prioritou for false aumentar a gravidade se ...
-
-            iteracao = zona.getIteracoes()
-            #3 num random para os clima de 0 a 100, se for 100 a prob eles sao bloq por 1 ronda e a prob passa a -5, se a prob for neg incrementar e ...
-            #algo para aumentar os produtos, como se a densidade aumentar e a gravidade, depois guardar a localizacao dos veiculos e algo para fazer descarga e assim
+        if tipo == 0: #passar pela zona
             return
+        if tipo == 1: #abastecer na Zona
+            return
+        if tipo == 2: #airdrop na Zona
+            return
+
+    #############
+    #    modifica valores para uma Zona de maneira semi-random
+    #############
+    def zonotron(self, zona : Zona):
+        """
+        Para uma Zona, muda alguns dos seus parametros para refletir a vida real, se as suas iteracoes 
+        for superior à sua janela então a zona ficará permanenentemente ploqueada
+        """
+
+        if zona.isBloqueado(): return
+
+        acessos = [bool(random.randint(0, 1)) for _ in range(3)] # lista com 3 valores random True ou False 
+        zona.setAcessibilidade(acessos)
+
+        clima : Clima = zona.getClima() # clima da Zona
+        prbClima = clima.getProbabilidade() # prob do clima
+        newClima = random.randint(prbClima, 10) # entre a prob e 10
+        clima.setProbabilidade(newClima) # nova prob, se 10 aumenta a iteracao e volta prob a 0
+        zona.setClima(clima)
+        iteracao = zona.getIteracoes()
+        zona.setIteracoes(iteracao + 1)
+        zona.shouldBeBlocked() # ve se iteracao e maior que a janela
 
     ################################
     #   encontrar regiao pelo nome
