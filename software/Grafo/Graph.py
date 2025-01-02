@@ -160,19 +160,20 @@ class Graph:
         return custo
     
     #################################################
-    #  Proxima Zona a escolher Procura não Informada
+    #  Proxima Zona a escolher Procura Informada
     #################################################
-    def proximaZona(self, veiculo : Veiculo, currentZona : Zona):  #Devolve o melhor visinho para a zona atual
-        zonas : list[Zona, int] = self.getNeighbours(currentZona)
+    def proximaZona(self, veiculo : Veiculo.Veiculo, currentZona : Zona):  #Devolve o melhor visinho para a zona atual
+        zonas = self.getNeighbours(currentZona)
     
         proximaZona = None
-        maiorPrioridade = 0  # Define prioridade mínima inicial
 
         listZonas : list[Zona] = []
-        tipo = veiculo.getType()
+        tipo = veiculo.getType
 
         #ACESSIBILIDADE TIPO VEICULO
-        for z, _ in zonas: #verifica para todos os visinhos os que são acessiveis e adiciona a uma lista
+        for z, distancia in zonas: #verifica para todos os visinhos os que são acessiveis e adiciona a uma lista
+            if veiculo.getAutonomy() < distancia:
+                continue
             if z.isBloqueado() == False: #zona não esta bloqueada
                 if tipo == "terra":
                     if z.isAcessivelTerrestre():
@@ -184,23 +185,16 @@ class Graph:
                     if z.isAcessivelMaritima():
                         listZonas.append(z)
         
-        if listZonas == None: #se estiver vazia o veiculo já não pode ir para mais lugar nenhum
+        if len(listZonas) == 0: #se estiver vazia o veiculo já não pode ir para mais lugar nenhum
             return None
 
-        #consegue percorrer a distancia
-        for zn, distancia in zonas:
-            if veiculo.getAutonomy() < distancia:
-                listZonas.remove(zn)
-                listZonas.sort(distancia)
-
-
-        bensVeiculo : list[Bem] = veiculo.getBensAvailable()
+        bensVeiculo : list[Bem.Bem] = veiculo.getBensAvailable()
         encontrou = False
 
-        listZonasSemPrio : list[Zona] = []
+        listZonasSemNecessidade : list[Zona] = []
         #BENS NECESSARIOS
         for z1 in listZonas: #verifica se os vizinhos precisam de bens que o veiculo leva caso não precisem remove da lista
-            bens : list[Bem]  = z1.getNecessidades()
+            bens : list[Bem.Bem]  = z1.getNecessidades()
 
             for b in bens: #vai à lista de bens da Zona e percorre todos
                 if encontrou == True: #se tiver encontrado um bem em comum para
@@ -212,47 +206,74 @@ class Graph:
             
             if encontrou == False: #se não tive encontrado remove essa zona da lista
                 listZonas.remove(z1)
-                listZonasSemPrio.append(z1)
+                listZonasSemNecessidade.append(z1)
             
             if encontrou == True: #volta o encontrou para False depois de ter verificado uma Zona
                 encontrou = False
 
 
-        if listZonas == None: #se estiver vazia o veiculo recebe uma das zonas para onde pode ir sem alimentos
+        if len(listZonas) == 0: #se estiver vazia o veiculo recebe uma das zonas para onde pode ir sem alimentos
             listPrio : list[Zona] = []
             maiorPrio = 0
-            for zPrio in listZonasSemPrio: # ve a maior prioridade
+            for zPrio in listZonasSemNecessidade: # ve a maior prioridade
                 if zPrio.getPrioridade() > maiorPrio :
                     maiorPrio = zPrio.getPrioridade()
             
-            for zAddMostPrio in listZonasSemPrio: # guarda os com maior prio numa lista
-                if zAddMostPrio.getPrioridade() == maiorPrio:
+            for zAddMostPrio in listZonasSemNecessidade: # guarda os com maior prio numa lista
+                if zAddMostPrio.getPrioridade() == maiorPrio :
                     listPrio.append(zAddMostPrio)
 
             if listPrio.count() <= 1: # retorna se so houver 1 com maior prio ou a lista for vazia
-                return listPrio
+                return listPrio[0]
+            else: # se existirem mais de uma zona vai se ver a que possuir menor janela
+                menorJanela = math.inf
+                for lP in listPrio:
+                    x = lP.getJanela() - lP.getIteracoes()
+                    if(x < menorJanela):
+                        proximaZona = lP
+                        menorJanela = x
+
             
-
-
-            
-            
-
-        
-
         return proximaZona
 
+    ################################################
+    #   Verifica se pode ir para o adjacente
+    ################################################
+
+    def verificaAdjacente(self, adjacente : Zona,veiculo : Veiculo):
+        tipo = veiculo.getType
+
+        if adjacente.isBloqueado() == True: #zona está bloqueada
+            return False
+        #ACESSIBILIDADE TIPO VEICULO
+        if tipo == "terra":
+            if adjacente.isAcessivelTerrestre():
+                return True
+        elif tipo == "ar":
+            if adjacente.isAcessivelAerea():
+                return True
+        elif tipo == "agua":
+            if adjacente.isAcessivelMaritima():
+                return True
+        else:
+            return False
+
+
+
     ####################################################################################
-    #     procura DFS  -- depth first search
+    #  Procura DFS  -- depth first search
     ####################################################################################
-    def procura_DFS(self, start, end, path=[], visited=set()):
+    def procura_DFS(self, start, end, veiculo : Veiculo.Veiculo ,path=[], visited=set()):
         path.append(start)
         visited.add(start)
-
-        if start == end:
+        
+        bens : list[Bem.Bem] = veiculo.getBensAvailable
+        if start == end or len(bens) <= 0:
             custoT = self.calcula_custo(path)
-            return custoT
+            return (path,custoT)
+        
         for(adjacente, distancia) in self.m_graph[start]:
-            if adjacente not in visited:
+            if adjacente not in visited and self.verificaAdjacente(adjacente,veiculo) :
                 resultado = self.procura_DFS(adjacente, end, path, visited)
                 if (resultado) is not None:
                     return resultado
@@ -293,7 +314,7 @@ class Graph:
                                 finalPath[0].append(a)
                         return (finalPath[0],cost)
 
-  
+            
     ##############################
     # funçãop  getneighbours, devolve vizinhos de um nó
     ##############################
@@ -304,6 +325,7 @@ class Graph:
             lista.append((adjacente, distancia))
         return lista
 
+    
     ###########################
     # desenha grafo  modo grafico
     ###########################

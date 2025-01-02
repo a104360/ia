@@ -33,7 +33,7 @@ class Zona:
         self.densidade = densidade
         self.abastecimento = abastecimento
         self.clima = clima
-        self.necessidades = dict(necessidades)
+        self.necessidades = list(necessidades)
         self.iteracoes = iteracoes
         self.janela = janela
         self.prioridade = self.calculatePrioridade()
