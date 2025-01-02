@@ -99,7 +99,7 @@ class Carga:
         """
         Retorna a capacidade de carga disponivel.
         """
-        return self.maxCarga - self.cargaAtual
+        return self.cargaAtual
     
     def getBens(self):
         """
