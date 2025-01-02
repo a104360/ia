@@ -9,6 +9,22 @@ class Combustivel:
         self.limit = limit
         self.consumption = consumption
 
+    def to_dict(self):
+        return {
+            "level" : self.level,
+            "limit" : self.limit,
+            "consumption" : self.consumption
+        }
+
+    def from_dict(self,dict):
+        return Combustivel(
+            dict["level"], 
+            dict["limit"], 
+            dict["consumption"]
+        )
+        
+
+
     def __str__(self):
         return f"Nivel (litros) : {self.level}L\nLimite (litros) : {self.limit}L\nConsumo: {self.consumption}L/100Km\n"
 

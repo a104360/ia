@@ -271,7 +271,7 @@ class Graph:
         path.append(start)
         visited.add(start)
         
-        bens : list[Bem.Bem] = veiculo.getBensAvailable
+        bens : list[Bem] = veiculo.getBensAvailable()
         if start == end or len(bens) <= 0:
             custoT = self.calcula_custo(path)
             return (path,custoT)
