@@ -7,13 +7,13 @@ class Veiculo:
         """
             id - valor único de cada veiculo
 
-            name - nome do veiculo
+            name - Helicoptero, Barco, Carro, Camiao, Aviao
 
             capacidade - carga do veiculo
 
             combustivel - autonomia de combustivel
 
-            tipo - se e drone, helicóptero, barco, camiao, etc.
+            tipo - Terra | Mar | Ar
         """
         self.id = id
         self.name = str(name)
@@ -77,7 +77,7 @@ class Veiculo:
         self.tipo = tipo
 
     def getType(self):
-        return None
+        return self.tipo
         
     def setZona(self,zona):
         self.zona = zona
