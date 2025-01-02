@@ -1,21 +1,830 @@
 [
-    {"name": "elvas", "id": 1, "bloqueado": false, "gravidade": 3, "densidade": 2, "abastecimento": 100, "acessibilidade": [true, true, true], "clima": {"type": "temperate", "blocked": false}, "necessidades": [], "iteracoes": 0, "janela": 0},
-    {"name": "borba", "id": 2, "bloqueado": false, "gravidade": 2, "densidade": 1, "abastecimento": 80, "acessibilidade": [true, false, true], "clima": {"type": "dry", "blocked": false}, "necessidades": [], "iteracoes": 0, "janela": 0},
-    {"name": "estremoz", "id": 3, "bloqueado": false, "gravidade": 4, "densidade": 3, "abastecimento": 90, "acessibilidade": [true, true, true], "clima": {"type": "rainy", "blocked": false}, "necessidades": [], "iteracoes": 0, "janela": 0},
-    {"name": "evora", "id": 4, "bloqueado": false, "gravidade": 5, "densidade": 4, "abastecimento": 110, "acessibilidade": [true, true, true], "clima": {"type": "sunny", "blocked": false}, "necessidades": [], "iteracoes": 0, "janela": 0},
-    {"name": "montemor", "id": 5, "bloqueado": false, "gravidade": 3, "densidade": 2, "abastecimento": 85, "acessibilidade": [false, true, true], "clima": {"type": "windy", "blocked": false}, "necessidades": [], "iteracoes": 0, "janela": 0},
-    {"name": "vendasnovas", "id": 6, "bloqueado": false, "gravidade": 2, "densidade": 3, "abastecimento": 95, "acessibilidade": [false, true, true], "clima": {"type": "temperate", "blocked": false}, "necessidades": [], "iteracoes": 0, "janela": 0},
-    {"name": "arraiolos", "id": 7, "bloqueado": false, "gravidade": 3, "densidade": 2, "abastecimento": 100, "acessibilidade": [true, true, false], "clima": {"type": "dry", "blocked": false}, "necessidades": [], "iteracoes": 0, "janela": 0},
-    {"name": "alcacer", "id": 8, "bloqueado": false, "gravidade": 4, "densidade": 3, "abastecimento": 110, "acessibilidade": [true, true, true], "clima": {"type": "rainy", "blocked": false}, "necessidades": [], "iteracoes": 0, "janela": 0},
-    {"name": "palmela", "id": 9, "bloqueado": false, "gravidade": 5, "densidade": 4, "abastecimento": 90, "acessibilidade": [true, true, true], "clima": {"type": "sunny", "blocked": false}, "necessidades": [], "iteracoes": 0, "janela": 0},
-    {"name": "almada", "id": 10, "bloqueado": false, "gravidade": 4, "densidade": 5, "abastecimento": 100, "acessibilidade": [true, true, true], "clima": {"type": "windy", "blocked": false}, "necessidades": [], "iteracoes": 0, "janela": 0},
-    {"name": "alandroal", "id": 11, "bloqueado": false, "gravidade": 2, "densidade": 1, "abastecimento": 80, "acessibilidade": [true, false, true], "clima": {"type": "dry", "blocked": false}, "necessidades": [], "iteracoes": 0, "janela": 0},
-    {"name": "redondo", "id": 12, "bloqueado": false, "gravidade": 3, "densidade": 2, "abastecimento": 85, "acessibilidade": [true, true, false], "clima": {"type": "temperate", "blocked": false}, "necessidades": [], "iteracoes": 0, "janela": 0},
-    {"name": "monsaraz", "id": 13, "bloqueado": false, "gravidade": 5, "densidade": 3, "abastecimento": 100, "acessibilidade": [true, true, true], "clima": {"type": "rainy", "blocked": false}, "necessidades": [], "iteracoes": 0, "janela": 0},
-    {"name": "barreiro", "id": 14, "bloqueado": false, "gravidade": 4, "densidade": 4, "abastecimento": 110, "acessibilidade": [true, true, true], "clima": {"type": "sunny", "blocked": false}, "necessidades": [], "iteracoes": 0, "janela": 0},
-    {"name": "baixadabanheira", "id": 15, "bloqueado": false, "gravidade": 3, "densidade": 3, "abastecimento": 95, "acessibilidade": [true, true, false], "clima": {"type": "windy", "blocked": false}, "necessidades": [], "iteracoes": 0, "janela": 0},
-    {"name": "moita", "id": 16, "bloqueado": false, "gravidade": 2, "densidade": 2, "abastecimento": 80, "acessibilidade": [false, true, true], "clima": {"type": "dry", "blocked": false}, "necessidades": [], "iteracoes": 0, "janela": 0},
-    {"name": "alcochete", "id": 17, "bloqueado": false, "gravidade": 4, "densidade": 3, "abastecimento": 90, "acessibilidade": [true, true, true], "clima": {"type": "temperate", "blocked": false}, "necessidades": [], "iteracoes": 0, "janela": 0},
-    {"name": "lisboa", "id": 18, "bloqueado": false, "gravidade": 5, "densidade": 5, "abastecimento": 120, "acessibilidade": [true, true, true], "clima": {"type": "sunny", "blocked": false}, "necessidades": [], "iteracoes": 0, "janela": 0}
+     {
+          "name": "elvas",
+          "id": 1,
+          "bloqueado": false,
+          "gravidade": 3,
+          "densidade": 2,
+          "abastecimento": 100,
+          "acessibilidade": [
+               true,
+               true,
+               true
+          ],
+          "clima": {
+               "type": "Chuva",
+               "blocked": false,
+               "probabilidade": 5
+          },
+          "necessidades": [
+               {
+                    "id": 0,
+                    "nome": "Leite",
+                    "peso": 18,
+                    "tipo": "Liquido"
+               },
+               {
+                    "id": 1,
+                    "nome": "Bruffen",
+                    "peso": 17,
+                    "tipo": "Medicamento"
+               },
+               {
+                    "id": 2,
+                    "nome": "Gorro",
+                    "peso": 18,
+                    "tipo": "Roupa"
+               },
+               {
+                    "id": 3,
+                    "nome": "Arroz",
+                    "peso": 20,
+                    "tipo": "Comida"
+               }
+          ],
+          "iteracoes": 0,
+          "janela": 26
+     },
+     {
+          "name": "borba",
+          "id": 2,
+          "bloqueado": false,
+          "gravidade": 2,
+          "densidade": 1,
+          "abastecimento": 80,
+          "acessibilidade": [
+               true,
+               false,
+               true
+          ],
+          "clima": {
+               "type": "Ensolarado",
+               "blocked": false,
+               "probabilidade": 3
+          },
+          "necessidades": [
+               {
+                    "id": 0,
+                    "nome": "Leite",
+                    "peso": 14,
+                    "tipo": "Liquido"
+               },
+               {
+                    "id": 1,
+                    "nome": "Gorro",
+                    "peso": 10,
+                    "tipo": "Roupa"
+               },
+               {
+                    "id": 2,
+                    "nome": "Arroz",
+                    "peso": 18,
+                    "tipo": "Comida"
+               },
+               {
+                    "id": 3,
+                    "nome": "Bruffen",
+                    "peso": 11,
+                    "tipo": "Medicamento"
+               }
+          ],
+          "iteracoes": 0,
+          "janela": 14
+     },
+     {
+          "name": "estremoz",
+          "id": 3,
+          "bloqueado": false,
+          "gravidade": 4,
+          "densidade": 3,
+          "abastecimento": 90,
+          "acessibilidade": [
+               true,
+               true,
+               true
+          ],
+          "clima": {
+               "type": "Neve",
+               "blocked": false,
+               "probabilidade": 1
+          },
+          "necessidades": [
+               {
+                    "id": 0,
+                    "nome": "Gorro",
+                    "peso": 12,
+                    "tipo": "Roupa"
+               },
+               {
+                    "id": 1,
+                    "nome": "Leite",
+                    "peso": 18,
+                    "tipo": "Liquido"
+               },
+               {
+                    "id": 2,
+                    "nome": "Arroz",
+                    "peso": 15,
+                    "tipo": "Comida"
+               },
+               {
+                    "id": 3,
+                    "nome": "Bruffen",
+                    "peso": 17,
+                    "tipo": "Medicamento"
+               }
+          ],
+          "iteracoes": 0,
+          "janela": 11
+     },
+     {
+          "name": "evora",
+          "id": 4,
+          "bloqueado": false,
+          "gravidade": 5,
+          "densidade": 4,
+          "abastecimento": 110,
+          "acessibilidade": [
+               true,
+               true,
+               true
+          ],
+          "clima": {
+               "type": "Ensolarado",
+               "blocked": false,
+               "probabilidade": 2
+          },
+          "necessidades": [
+               {
+                    "id": 0,
+                    "nome": "Gorro",
+                    "peso": 18,
+                    "tipo": "Roupa"
+               },
+               {
+                    "id": 1,
+                    "nome": "Leite",
+                    "peso": 12,
+                    "tipo": "Liquido"
+               },
+               {
+                    "id": 2,
+                    "nome": "Bruffen",
+                    "peso": 19,
+                    "tipo": "Medicamento"
+               },
+               {
+                    "id": 3,
+                    "nome": "Arroz",
+                    "peso": 20,
+                    "tipo": "Comida"
+               }
+          ],
+          "iteracoes": 0,
+          "janela": 20
+     },
+     {
+          "name": "montemor",
+          "id": 5,
+          "bloqueado": false,
+          "gravidade": 3,
+          "densidade": 2,
+          "abastecimento": 85,
+          "acessibilidade": [
+               false,
+               true,
+               true
+          ],
+          "clima": {
+               "type": "Ensolarado",
+               "blocked": false,
+               "probabilidade": 9
+          },
+          "necessidades": [
+               {
+                    "id": 0,
+                    "nome": "Gorro",
+                    "peso": 16,
+                    "tipo": "Roupa"
+               },
+               {
+                    "id": 1,
+                    "nome": "Arroz",
+                    "peso": 17,
+                    "tipo": "Comida"
+               },
+               {
+                    "id": 2,
+                    "nome": "Bruffen",
+                    "peso": 16,
+                    "tipo": "Medicamento"
+               },
+               {
+                    "id": 3,
+                    "nome": "Leite",
+                    "peso": 13,
+                    "tipo": "Liquido"
+               }
+          ],
+          "iteracoes": 0,
+          "janela": 18
+     },
+     {
+          "name": "vendasnovas",
+          "id": 6,
+          "bloqueado": false,
+          "gravidade": 2,
+          "densidade": 3,
+          "abastecimento": 95,
+          "acessibilidade": [
+               false,
+               true,
+               true
+          ],
+          "clima": {
+               "type": "Chuva",
+               "blocked": false,
+               "probabilidade": 9
+          },
+          "necessidades": [
+               {
+                    "id": 0,
+                    "nome": "Arroz",
+                    "peso": 20,
+                    "tipo": "Comida"
+               },
+               {
+                    "id": 1,
+                    "nome": "Bruffen",
+                    "peso": 12,
+                    "tipo": "Medicamento"
+               },
+               {
+                    "id": 2,
+                    "nome": "Gorro",
+                    "peso": 19,
+                    "tipo": "Roupa"
+               },
+               {
+                    "id": 3,
+                    "nome": "Leite",
+                    "peso": 19,
+                    "tipo": "Liquido"
+               }
+          ],
+          "iteracoes": 0,
+          "janela": 24
+     },
+     {
+          "name": "arraiolos",
+          "id": 7,
+          "bloqueado": false,
+          "gravidade": 3,
+          "densidade": 2,
+          "abastecimento": 100,
+          "acessibilidade": [
+               true,
+               true,
+               false
+          ],
+          "clima": {
+               "type": "Ensolarado",
+               "blocked": false,
+               "probabilidade": 1
+          },
+          "necessidades": [
+               {
+                    "id": 0,
+                    "nome": "Bruffen",
+                    "peso": 17,
+                    "tipo": "Medicamento"
+               },
+               {
+                    "id": 1,
+                    "nome": "Arroz",
+                    "peso": 11,
+                    "tipo": "Comida"
+               },
+               {
+                    "id": 2,
+                    "nome": "Leite",
+                    "peso": 11,
+                    "tipo": "Liquido"
+               },
+               {
+                    "id": 3,
+                    "nome": "Gorro",
+                    "peso": 19,
+                    "tipo": "Roupa"
+               }
+          ],
+          "iteracoes": 0,
+          "janela": 27
+     },
+     {
+          "name": "alcacer",
+          "id": 8,
+          "bloqueado": false,
+          "gravidade": 4,
+          "densidade": 3,
+          "abastecimento": 110,
+          "acessibilidade": [
+               true,
+               true,
+               true
+          ],
+          "clima": {
+               "type": "Neve",
+               "blocked": false,
+               "probabilidade": 5
+          },
+          "necessidades": [
+               {
+                    "id": 0,
+                    "nome": "Arroz",
+                    "peso": 19,
+                    "tipo": "Comida"
+               },
+               {
+                    "id": 1,
+                    "nome": "Leite",
+                    "peso": 12,
+                    "tipo": "Liquido"
+               },
+               {
+                    "id": 2,
+                    "nome": "Bruffen",
+                    "peso": 19,
+                    "tipo": "Medicamento"
+               },
+               {
+                    "id": 3,
+                    "nome": "Gorro",
+                    "peso": 19,
+                    "tipo": "Roupa"
+               }
+          ],
+          "iteracoes": 0,
+          "janela": 18
+     },
+     {
+          "name": "palmela",
+          "id": 9,
+          "bloqueado": false,
+          "gravidade": 5,
+          "densidade": 4,
+          "abastecimento": 90,
+          "acessibilidade": [
+               true,
+               true,
+               true
+          ],
+          "clima": {
+               "type": "Ensolarado",
+               "blocked": false,
+               "probabilidade": 2
+          },
+          "necessidades": [
+               {
+                    "id": 0,
+                    "nome": "Arroz",
+                    "peso": 17,
+                    "tipo": "Comida"
+               },
+               {
+                    "id": 1,
+                    "nome": "Leite",
+                    "peso": 11,
+                    "tipo": "Liquido"
+               },
+               {
+                    "id": 2,
+                    "nome": "Bruffen",
+                    "peso": 11,
+                    "tipo": "Medicamento"
+               },
+               {
+                    "id": 3,
+                    "nome": "Gorro",
+                    "peso": 16,
+                    "tipo": "Roupa"
+               }
+          ],
+          "iteracoes": 0,
+          "janela": 30
+     },
+     {
+          "name": "almada",
+          "id": 10,
+          "bloqueado": false,
+          "gravidade": 4,
+          "densidade": 5,
+          "abastecimento": 100,
+          "acessibilidade": [
+               true,
+               true,
+               true
+          ],
+          "clima": {
+               "type": "Ensolarado",
+               "blocked": false,
+               "probabilidade": 5
+          },
+          "necessidades": [
+               {
+                    "id": 0,
+                    "nome": "Gorro",
+                    "peso": 10,
+                    "tipo": "Roupa"
+               },
+               {
+                    "id": 1,
+                    "nome": "Leite",
+                    "peso": 20,
+                    "tipo": "Liquido"
+               },
+               {
+                    "id": 2,
+                    "nome": "Bruffen",
+                    "peso": 18,
+                    "tipo": "Medicamento"
+               },
+               {
+                    "id": 3,
+                    "nome": "Arroz",
+                    "peso": 16,
+                    "tipo": "Comida"
+               }
+          ],
+          "iteracoes": 0,
+          "janela": 29
+     },
+     {
+          "name": "alandroal",
+          "id": 11,
+          "bloqueado": false,
+          "gravidade": 2,
+          "densidade": 1,
+          "abastecimento": 80,
+          "acessibilidade": [
+               true,
+               false,
+               true
+          ],
+          "clima": {
+               "type": "Ensolarado",
+               "blocked": false,
+               "probabilidade": 9
+          },
+          "necessidades": [
+               {
+                    "id": 0,
+                    "nome": "Gorro",
+                    "peso": 19,
+                    "tipo": "Roupa"
+               },
+               {
+                    "id": 1,
+                    "nome": "Arroz",
+                    "peso": 14,
+                    "tipo": "Comida"
+               },
+               {
+                    "id": 2,
+                    "nome": "Leite",
+                    "peso": 17,
+                    "tipo": "Liquido"
+               },
+               {
+                    "id": 3,
+                    "nome": "Bruffen",
+                    "peso": 19,
+                    "tipo": "Medicamento"
+               }
+          ],
+          "iteracoes": 0,
+          "janela": 18
+     },
+     {
+          "name": "redondo",
+          "id": 12,
+          "bloqueado": false,
+          "gravidade": 3,
+          "densidade": 2,
+          "abastecimento": 85,
+          "acessibilidade": [
+               true,
+               true,
+               false
+          ],
+          "clima": {
+               "type": "Chuva",
+               "blocked": false,
+               "probabilidade": 1
+          },
+          "necessidades": [
+               {
+                    "id": 0,
+                    "nome": "Bruffen",
+                    "peso": 16,
+                    "tipo": "Medicamento"
+               },
+               {
+                    "id": 1,
+                    "nome": "Arroz",
+                    "peso": 15,
+                    "tipo": "Comida"
+               },
+               {
+                    "id": 2,
+                    "nome": "Leite",
+                    "peso": 10,
+                    "tipo": "Liquido"
+               },
+               {
+                    "id": 3,
+                    "nome": "Gorro",
+                    "peso": 12,
+                    "tipo": "Roupa"
+               }
+          ],
+          "iteracoes": 0,
+          "janela": 22
+     },
+     {
+          "name": "monsaraz",
+          "id": 13,
+          "bloqueado": false,
+          "gravidade": 5,
+          "densidade": 3,
+          "abastecimento": 100,
+          "acessibilidade": [
+               true,
+               true,
+               true
+          ],
+          "clima": {
+               "type": "Neve",
+               "blocked": false,
+               "probabilidade": 0
+          },
+          "necessidades": [
+               {
+                    "id": 0,
+                    "nome": "Bruffen",
+                    "peso": 15,
+                    "tipo": "Medicamento"
+               },
+               {
+                    "id": 1,
+                    "nome": "Gorro",
+                    "peso": 19,
+                    "tipo": "Roupa"
+               },
+               {
+                    "id": 2,
+                    "nome": "Leite",
+                    "peso": 10,
+                    "tipo": "Liquido"
+               },
+               {
+                    "id": 3,
+                    "nome": "Arroz",
+                    "peso": 12,
+                    "tipo": "Comida"
+               }
+          ],
+          "iteracoes": 0,
+          "janela": 28
+     },
+     {
+          "name": "barreiro",
+          "id": 14,
+          "bloqueado": false,
+          "gravidade": 4,
+          "densidade": 4,
+          "abastecimento": 110,
+          "acessibilidade": [
+               true,
+               true,
+               true
+          ],
+          "clima": {
+               "type": "Ensolarado",
+               "blocked": false,
+               "probabilidade": 5
+          },
+          "necessidades": [
+               {
+                    "id": 0,
+                    "nome": "Arroz",
+                    "peso": 10,
+                    "tipo": "Comida"
+               },
+               {
+                    "id": 1,
+                    "nome": "Bruffen",
+                    "peso": 12,
+                    "tipo": "Medicamento"
+               },
+               {
+                    "id": 2,
+                    "nome": "Leite",
+                    "peso": 17,
+                    "tipo": "Liquido"
+               },
+               {
+                    "id": 3,
+                    "nome": "Gorro",
+                    "peso": 18,
+                    "tipo": "Roupa"
+               }
+          ],
+          "iteracoes": 0,
+          "janela": 14
+     },
+     {
+          "name": "baixadabanheira",
+          "id": 15,
+          "bloqueado": false,
+          "gravidade": 3,
+          "densidade": 3,
+          "abastecimento": 95,
+          "acessibilidade": [
+               true,
+               true,
+               false
+          ],
+          "clima": {
+               "type": "Ensolarado",
+               "blocked": false,
+               "probabilidade": 6
+          },
+          "necessidades": [
+               {
+                    "id": 0,
+                    "nome": "Arroz",
+                    "peso": 10,
+                    "tipo": "Comida"
+               },
+               {
+                    "id": 1,
+                    "nome": "Leite",
+                    "peso": 11,
+                    "tipo": "Liquido"
+               },
+               {
+                    "id": 2,
+                    "nome": "Bruffen",
+                    "peso": 12,
+                    "tipo": "Medicamento"
+               },
+               {
+                    "id": 3,
+                    "nome": "Gorro",
+                    "peso": 18,
+                    "tipo": "Roupa"
+               }
+          ],
+          "iteracoes": 0,
+          "janela": 26
+     },
+     {
+          "name": "moita",
+          "id": 16,
+          "bloqueado": false,
+          "gravidade": 2,
+          "densidade": 2,
+          "abastecimento": 80,
+          "acessibilidade": [
+               false,
+               true,
+               true
+          ],
+          "clima": {
+               "type": "Ensolarado",
+               "blocked": false,
+               "probabilidade": 1
+          },
+          "necessidades": [
+               {
+                    "id": 0,
+                    "nome": "Arroz",
+                    "peso": 15,
+                    "tipo": "Comida"
+               },
+               {
+                    "id": 1,
+                    "nome": "Bruffen",
+                    "peso": 17,
+                    "tipo": "Medicamento"
+               },
+               {
+                    "id": 2,
+                    "nome": "Gorro",
+                    "peso": 14,
+                    "tipo": "Roupa"
+               },
+               {
+                    "id": 3,
+                    "nome": "Leite",
+                    "peso": 17,
+                    "tipo": "Liquido"
+               }
+          ],
+          "iteracoes": 0,
+          "janela": 15
+     },
+     {
+          "name": "alcochete",
+          "id": 17,
+          "bloqueado": false,
+          "gravidade": 4,
+          "densidade": 3,
+          "abastecimento": 90,
+          "acessibilidade": [
+               true,
+               true,
+               true
+          ],
+          "clima": {
+               "type": "Chuva",
+               "blocked": false,
+               "probabilidade": 8
+          },
+          "necessidades": [
+               {
+                    "id": 0,
+                    "nome": "Bruffen",
+                    "peso": 20,
+                    "tipo": "Medicamento"
+               },
+               {
+                    "id": 1,
+                    "nome": "Arroz",
+                    "peso": 11,
+                    "tipo": "Comida"
+               },
+               {
+                    "id": 2,
+                    "nome": "Gorro",
+                    "peso": 11,
+                    "tipo": "Roupa"
+               },
+               {
+                    "id": 3,
+                    "nome": "Leite",
+                    "peso": 16,
+                    "tipo": "Liquido"
+               }
+          ],
+          "iteracoes": 0,
+          "janela": 12
+     },
+     {
+          "name": "lisboa",
+          "id": 18,
+          "bloqueado": false,
+          "gravidade": 5,
+          "densidade": 5,
+          "abastecimento": 120,
+          "acessibilidade": [
+               true,
+               true,
+               true
+          ],
+          "clima": {
+               "type": "Ensolarado",
+               "blocked": false,
+               "probabilidade": 7
+          },
+          "necessidades": [
+               {
+                    "id": 0,
+                    "nome": "Bruffen",
+                    "peso": 12,
+                    "tipo": "Medicamento"
+               },
+               {
+                    "id": 1,
+                    "nome": "Gorro",
+                    "peso": 18,
+                    "tipo": "Roupa"
+               },
+               {
+                    "id": 2,
+                    "nome": "Leite",
+                    "peso": 14,
+                    "tipo": "Liquido"
+               },
+               {
+                    "id": 3,
+                    "nome": "Arroz",
+                    "peso": 11,
+                    "tipo": "Comida"
+               }
+          ],
+          "iteracoes": 0,
+          "janela": 15
+     }
 ]
-  

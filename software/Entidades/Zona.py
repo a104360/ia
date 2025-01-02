@@ -186,7 +186,7 @@ class Zona:
         for necessidade in necessidades:
             if necessidade in self.necessidades:
                 # Atualiza o peso da necessidade existente
-                necessidade_existente : Bem = self.necessidades[necessidade]
+                necessidade_existente : Bem.Bem = self.necessidades[necessidade]
                 peso_novo = necessidade_existente.getPeso() + necessidade.getPeso()
                 necessidade_existente.setPeso(peso_novo)
             else:
@@ -207,11 +207,11 @@ class Zona:
                 peso_removido = necessidade_removido.getPeso()
 
                 # Verifica se o peso do bem removido é igual ao peso atual
-                if peso_removido >= self.cargaAtual:
+                if peso_removido >= necessidade.getPeso():
                     # Remove o bem do dicionário sem afetar o peso diretamente
                     self.necessidades.pop(necessidade)
                     
-                else :
+                else:
                     necessidade_existente : Bem.Bem = self.necessidades[necessidade]
                     necessidade_existente.setPeso(necessidade_existente.getPeso() - peso_removido)
 
@@ -247,7 +247,7 @@ class Zona:
             peso_removido = necessidade_removido.getPeso()
 
             # Verifica se o peso do bem removido é igual ao peso atual
-            if peso_removido > self.cargaAtual:
+            if peso_removido > necessidade.getPeso():
                 # Remove o bem do dicionário sem afetar o peso diretamente
                 self.necessidades.pop(necessidade)
                 necessidade.setPeso(necessidade.getPeso() - peso_removido)
