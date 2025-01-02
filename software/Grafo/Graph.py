@@ -25,14 +25,22 @@ from Entidades.veiculos.Bem import Bem
 
 class Graph:
     def __init__(self, directed=False,zonas = None):
+        self.m_zonas = list()
         if zonas != None: self.m_zonas : list[Zona] = zonas
         else: 
             with open("ConfigFiles/mapa.json","r") as f:
-                self.m_zonas = json.load(f)
+                lista = json.load(f)
+                for a in lista:
+                    self.m_zonas.append(Zona("").from_dict(a))
+        #print(self.m_zonas)
         self.m_directed = directed
-        self.m_graph = {}  
+        self.m_graph : dict[Zona, list[tuple[Zona, int]]] = dict() 
         self.m_h = {}
+<<<<<<< HEAD
         self.iteracoes = 0
+=======
+        self.iter = 0
+>>>>>>> 27d78baf9b6619dabea36b00d3ff60f980629752
 
     #############
     #    escrever o grafo como string
@@ -43,21 +51,25 @@ class Graph:
             out = out + "zona" + str(key) + ": " + str(self.m_graph[key]) + "\n"
         return out
 
-    def movimento(self, veiculo : Veiculo, zona : Zona, tipo):
+    def zonaDefiner(self, iteracoes : int):
         """
-        Para uma Zona e um Veiculo, faz uma ação, desde encher o tanque, deixar carga ou movimentar
+        Incrementa o numero de iteracoes de todas as Zonas em iteracoes, 
+        se iteracoes for 0, então este irá meter as iterações de todas as Zonas a 0
         """
-        if tipo == 0: #passar pela zona
-            return
-        if tipo == 1: #abastecer na Zona
-            return
-        if tipo == 2: #airdrop na Zona
-            return
+        if iteracoes == 0:
+            for m_zona in self.m_zonas:
+                m_zona.setIteracoes(0)
+        else:
+            for m_zona in self.m_zonas:
+                if m_zona.getNecessidades() != None or m_zona.isBloqueado() == False:
+                    iter = m_zona.getIteracoes()
+                    m_zona.setIteracoes(iter + iteracoes)
+            
 
     #############
     #    modifica valores para uma Zona de maneira semi-random
     #############
-    def zonotron(self, zona : Zona):
+    def randomZona(self, zona : Zona):
         """
         Para uma Zona, muda alguns dos seus parametros para refletir a vida real, se as suas iteracoes 
         for superior à sua janela então a zona ficará permanenentemente bloqueada
@@ -77,14 +89,23 @@ class Graph:
         zona.nextIter()
         zona.shouldBeBlocked() # ve se iteracao e maior que a janela
 
+    def randomZonas(self, zonas : list[Zona]):
+        """
+        Para uma lista de Zona, muda alguns dos seus parametros para refletir a vida real, se as suas iteracoes 
+        for superior à sua janela então a zona ficará permanenentemente bloqueada
+        """
+
+        for zona in zonas:
+            self.randomZona(zona)
+
     ################################
     #   encontrar zona pelo nome
     ################################
 
     def get_zona_by_name(self, name):
-        search_zona = Zona(name)
+        search_zona = name
         for zona in self.m_zonas:
-            if zona == search_zona:
+            if zona.getName() == name:
                 return zona
           
         return None
@@ -106,27 +127,27 @@ class Graph:
     ######################
 
     def add_edge(self, zona1, zona2, distance):
-        n1 = Zona(zona1)
-        n2 = Zona(zona2)
+
+        n1 = self.get_zona_by_name(zona1)
+        n2 = self.get_zona_by_name(zona2)
+
         if (n1 not in self.m_zonas):
             n1_id = len(self.m_zonas)  # numeração sequencial
             n1.setId(n1_id)
             self.m_zonas.append(n1)
             self.m_graph[zona1] = []
-        else:
-            n1 = self.get_zona_by_name(zona1)
 
         if (n2 not in self.m_zonas):
             n2_id = len(self.m_zonas)  # numeração sequencial
             n2.setId(n2_id)
             self.m_zonas.append(n2)
             self.m_graph[zona2] = []
-        else:
-            n2 = self.get_zona_by_name(zona2)
-
+        
+        self.m_graph[zona1] = list()
         self.m_graph[zona1].append((zona2, distance)) 
 
         if not self.m_directed:
+            self.m_graph[zona2] = list()
             self.m_graph[zona2].append((zona1, distance))
 
     #############################
@@ -262,11 +283,24 @@ class Graph:
         else:
             return False
 
+    def consomeBens(self, carro : Veiculo, zona : Zona):
+        """
+            retira das necessidades da zona as presentes no veiculo
+        """
+        carroBens = carro.getBensAvailable()
+        for bem in carroBens:
+            pesoAtual = bem.getPeso()
+            bem = zona.removeNecessidade(bem)   
+            pesoNovo = 0
+            if bem : pesoNovo = bem.getPeso()
+            pesoAmais = pesoAtual - pesoNovo
+            carro.updateCargaAvailable(- pesoAmais)    
 
 
     ####################################################################################
     #  Procura DFS  -- depth first search
     ####################################################################################
+<<<<<<< HEAD
     def procura_DFS(self, start, end, veiculo : Veiculo.Veiculo, iter,path=[], visited=set()):
         path.append(start)
         visited.add(start)
@@ -279,53 +313,92 @@ class Graph:
             return (path,iterCopia)
         
         #remover a carga que se deixou na Zona 
+=======
+    def procura_DFS(self, start : Zona, veiculo : Veiculo, iter,path=[], visited=set(), visit = False):
+
+        self.iteracoes += 1
+        path.append(start) #ira repetir a mesma zona caso n tenha como ir para outra momentaneamente
+        if visit == False: visited.add(start)
         
+        bens : list[Bem] = veiculo.getBensAvailable()
+        if len(bens) == 0 or self.iteracoes > iter:
+            custoT = self.calcula_custo(path)
+            iterCopia = self.iteracoes - 1 #comeca com 1 iteracao a mais
+            self.iteracoes = 0
+            self.zonaDefiner(0)
+            return (path, custoT, iterCopia)
+>>>>>>> 27d78baf9b6619dabea36b00d3ff60f980629752
+        
+        self.consomeBens(veiculo, start) # tirar do veiculo e zona os bens em comum
+        start.shouldBeBlocked() # ve se depois de tirar os bens a zona esta safe
+
+        moveOn = True
         for(adjacente, distancia) in self.m_graph[start]:
-            if adjacente not in visited and self.verificaAdjacente(adjacente,veiculo) :
+            # se ja se esteve lá ou se fez refil
+            if adjacente not in visited or visit:
+                # se a zona esta fechada 
+                if adjacente.isBloqueado() == False:
+                    # se tem iteracoes para chegar lá
+                    if veiculo.getAutonomy() >= distancia:
+                        # se o teu tipo de veiculo e permitido
+                        if self.verificaAdjacente(adjacente, veiculo):
+                            moveOn = False
 
-                #percorrer todas as zonas e chamar o zonotron
+                            veiculo.walkedKm(distancia) #instancias usadas para mover
+                            self.randomZonas(self.m_zonas)
+                            self.procura_DFS(adjacente, veiculo, path, visited, False)
 
-                #verificar se tem combustivel pra ir pro adjacente (se nao tiver, abastecer) chamar o zonotron
+        if moveOn:
+            veiculo.refuel() #refil
+            self.zonaDefiner(1)
+            self.procura_DFS(adjacente, veiculo, path, visited, True)
+                
 
-                resultado = self.procura_DFS(adjacente, end, path, visited)
-                if (resultado) is not None:
-                    return resultado
     
     ######################################################
     # Procura BFS  -- pesquisa em largura
     ######################################################
 
-    def procura_BFS(self,start,end):
-        if start == end:
-            return [start]
+    def procura_BFS(self,start : Zona, veiculo : Veiculo, iter):
         
         visited = set([start])
-        q = deque([start])
+        q = deque([(start, 0)])     
 
-        path = {start:([start],0)}
-        print(path)
+        path = {start:([start], 0)}
         
         cost = 0
 
         while q:
-            zona = q.popleft()
+            #atualizar o shouldBeBlocked para todos os do q
+            (zona, distancia) = q.popleft()
+            if zona.shouldBeBlocked() == False: #verificar pois podem ter valores dentro de q que entretanto ficaram bloqueados
+                return
 
-            for (adjacent,zonaCost) in self.m_graph[zona]:
+            for (adjacent, zonaCost) in self.m_graph[zona]:
+                  #  se ja se esteve lá
                 if adjacent not in visited:
-                    visited.add(adjacent)
                     q.append(adjacent)
 
-                    path[adjacent] = path[zona] + (adjacent,zonaCost)
-                    
-                    if adjacent == end:
-                        finalPath = path[start]
+                      #     se a zona esta fechada         se tem iteracoes para chegar lá       se o teu tipo de veiculo e permitido
+                    if adjacent.isBloqueado() == False and veiculo.getAutonomy() >= zonaCost and self.verificaAdjacente(adjacent, veiculo):
+                        visited.add(adjacent)
 
-                        for a in path[adjacent]:
-                            if a.__class__ == int:
-                                cost += a
-                            else:
-                                finalPath[0].append(a)
-                        return (finalPath[0],cost)
+                        path[adjacent] = path[zona] + (adjacent,zonaCost)
+                        self.zonaDefiner(zonaCost - 1)
+                        self.randomZonas(self.m_zonas)
+                        
+                        if adjacent.shouldBeBlocked() == False:
+                            return
+                        
+                        if adjacent in self.m_graph:
+                            finalPath = path[start]
+
+                            for a in path[adjacent]:
+                                if a.__class__ == int:
+                                    cost += a
+                                else:
+                                    finalPath[0].append(a)
+                            return (finalPath[0],cost)
 
             
     ##############################

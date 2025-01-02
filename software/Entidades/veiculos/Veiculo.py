@@ -21,6 +21,34 @@ class Veiculo:
         self.combustivel = Combustivel.Combustivel(level, limit, consumption)
         self.tipo = tipo
 
+    def to_dict(self):
+        return {
+            "id":self.id,
+            "name" : self.name,
+            "carga": self.carga.__dict__,
+            "combustivel" : self.combustivel.__dict__,
+            "tipo" : self.tipo
+        }
+    
+    def from_dict(self,dict):
+        #tipo = dict["name"]
+        #if tipo == "Helicoptero":
+        return Veiculo(
+            dict["name"],
+            dict["id"],
+            dict["carga"]["maxCarga"],
+            dict["carga"]["cargaAtual"],
+            dict["carga"]["bens"],
+            dict["combustivel"]["level"],
+            dict["combustivel"]["limit"],
+            dict["combustivel"]["consumption"],
+            #Carga(1).from_dict(dict["carga"]),
+            #Combustivel.Combustivel(1,2).from_dict(dict["combustivel"]),
+            dict["tipo"]
+        )
+            
+
+
     def __str__(self):
         return f"ID : {self.id}\nNome : {self.name}\nCarga maxima : {self.carga}\n" + self.combustivel.__str__()
 
@@ -50,6 +78,10 @@ class Veiculo:
         """Retira bens ao veiculo"""
         return self.carga.distribute(bens)
     
+    def updateCargaAvailable(self, sum : int):
+        """Faz update a carga disponivel do veiculo"""
+        return self.carga.updateCargaAtual(sum)
+    
     def getCargaAvailable(self):
         """Returns a carga disponivel do veiculo"""
         return self.carga.getCargaDisponivel()
@@ -60,7 +92,7 @@ class Veiculo:
 
     # Métodos para 'combustivel'
     def walkedKm(self, km : int):
-        """Removes the liters equivalent to the amount of miles travelled"""
+        """Removes the liters equivalent to the amount of interações travelled"""
         self.combustivel.spend(km)
 
     def refuel(self, liters : int):
