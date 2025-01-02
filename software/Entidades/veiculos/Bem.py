@@ -1,5 +1,5 @@
 class Bem:
-    def __init__(self, id : int, nome : str, peso : int, tipo : str):
+    def __init__(self, id : int = 1, nome : str = "", peso : int = 0, tipo : str = ""):
         """
             id - valor único de cada bem
 
@@ -14,6 +14,23 @@ class Bem:
         self.peso = peso
         self.tipo = tipo
 
+    def to_dict(self):
+        return {
+            "id" : self.id,
+            "nome" : self.nome,
+            "peso" : self.peso,
+            "tipo" : self.tipo
+        }
+    
+    def from_dict(self,dict):
+        return Bem(
+            dict["id"],
+            dict["nome"],
+            dict["peso"],
+            dict["tipo"],
+        )
+
+
     def __eq__(self, other):
         """Compara os objetos Bem apenas pelo nome"""
         if isinstance(other, Bem):
@@ -21,7 +38,7 @@ class Bem:
         return False
     
     def __str__(self):
-        return f"ID : {self.id}\nNome : {self.nome}\nPeso : {self.peso}kg\nTipo : {self.limit}\n"
+        return f"ID : {self.id}\nNome : {self.nome}\nPeso : {self.peso}kg\nTipo : {self.tipo}\n"
 
     def getId(self):
         """Returns o id do Bem"""

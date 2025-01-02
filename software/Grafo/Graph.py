@@ -3,6 +3,7 @@ from collections import deque
 import math
 from queue import Queue
 import random
+import json
 
 import networkx as nx  # biblioteca de tratamento de grafos necessária para desnhar graficamente o grafo
 import matplotlib.pyplot as plt  # idem
@@ -23,8 +24,11 @@ from Entidades.veiculos.Bem import Bem
 
 
 class Graph:
-    def __init__(self, directed=False, zonas : list[Zona] = []):
-        self.m_zonas : list[Zona] = zonas  
+    def __init__(self, directed=False,zonas = None):
+        if zonas != None: self.m_zonas : list[Zona] = zonas
+        else: 
+            with open("ConfigFiles/mapa.json","r") as f:
+                self.m_zonas = json.load(f)
         self.m_directed = directed
         self.m_graph : dict[Zona, list[tuple[Zona, int]]] = {}  
         self.m_h = {}

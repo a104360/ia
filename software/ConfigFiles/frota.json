@@ -1,65 +1,30 @@
 [
     {
-        "id": 2,
+        "id": 0,
         "name": "Helicoptero",
         "capacidade": 1017,
         "combustivel": 685,
         "tipo": "ar"
     },
     {
-        "id": 3,
+        "id": 1,
         "name": "Carro",
         "capacidade": 1641,
         "combustivel": 216,
         "tipo": "terra"
     },
     {
-        "id": 4,
-        "name": "Carro",
-        "capacidade": 972,
-        "combustivel": 536,
-        "tipo": "terra"
-    },
-    {
-        "id": 5,
+        "id": 2,
         "name": "Camiao",
         "capacidade": 221,
         "combustivel": 547,
         "tipo": "terra"
     },
     {
-        "id": 6,
+        "id": 3,
         "name": "Barco",
         "capacidade": 318,
         "combustivel": 826,
         "tipo": "mar"
-    },
-    {
-        "id": 7,
-        "name": "Camiao",
-        "capacidade": 275,
-        "combustivel": 735,
-        "tipo": "terra"
-    },
-    {
-        "id": 8,
-        "name": "Barco",
-        "capacidade": 1979,
-        "combustivel": 438,
-        "tipo": "mar"
-    },
-    {
-        "id": 9,
-        "name": "Carro",
-        "capacidade": 359,
-        "combustivel": 845,
-        "tipo": "mar"
-    },
-    {
-        "id": 10,
-        "name": "Camiao",
-        "capacidade": 1143,
-        "combustivel": 387,
-        "tipo": "terra"
     }
 ]
