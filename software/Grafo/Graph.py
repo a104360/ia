@@ -28,7 +28,7 @@ class Graph:
         self.m_directed = directed
         self.m_graph = {}  
         self.m_h = {}
-        self.counter = 0
+        self.iteracoes = 0
 
     #############
     #    escrever o grafo como string
@@ -263,16 +263,17 @@ class Graph:
     ####################################################################################
     #  Procura DFS  -- depth first search
     ####################################################################################
-    def procura_DFS(self, start, end, veiculo : Veiculo.Veiculo ,path=[], visited=set()):
+    def procura_DFS(self, start, end, veiculo : Veiculo.Veiculo, iter,path=[], visited=set()):
         path.append(start)
         visited.add(start)
         
         bens : list[Bem.Bem] = veiculo.getBensAvailable
-        if start == end or len(bens) <= 0:
+        if start == end or len(bens) <= 0 or iter >= self.iteracoes:
             custoT = self.calcula_custo(path)
+            self.iteracoes = 0
             return (path,custoT)
         
-        #remover a carga que se deixou na Zona
+        #remover a carga que se deixou na Zona 
         
         for(adjacente, distancia) in self.m_graph[start]:
             if adjacente not in visited and self.verificaAdjacente(adjacente,veiculo) :
