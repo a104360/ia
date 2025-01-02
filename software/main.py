@@ -1,9 +1,14 @@
 from Grafo import Graph
-import Entidades
+from Entidades.veiculos import Veiculo
+import json
 import os
 
 
 def main():
+    frota : list[Veiculo.Veiculo] = None 
+    with open("ConfigFiles/frota.json","r") as f:
+        frota = json.load(f)
+
     g = Graph.Graph()
 
     #Ficha2
@@ -65,7 +70,7 @@ def main():
         print("8-Gulosa")
         print("9-Iniciar")
         print("0-Saír")
-
+        
         try:
             saida = int(input("introduza a sua opcao-> "))
             if saida == 0:
