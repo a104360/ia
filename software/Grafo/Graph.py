@@ -192,13 +192,13 @@ class Graph:
         if len(listZonas) == 0: #se estiver vazia o veiculo já não pode ir para mais lugar nenhum
             return None
 
-        bensVeiculo : list[Bem.Bem] = veiculo.getBensAvailable()
+        bensVeiculo : list[Bem] = veiculo.getBensAvailable()
         encontrou = False
 
         listZonasSemNecessidade : list[Zona] = []
         #BENS NECESSARIOS
         for z1 in listZonas: #verifica se os vizinhos precisam de bens que o veiculo leva caso não precisem remove da lista
-            bens : list[Bem.Bem]  = z1.getNecessidades()
+            bens : list[Bem]  = z1.getNecessidades()
 
             for b in bens: #vai à lista de bens da Zona e percorre todos
                 if encontrou == True: #se tiver encontrado um bem em comum para
@@ -267,7 +267,7 @@ class Graph:
     ####################################################################################
     #  Procura DFS  -- depth first search
     ####################################################################################
-    def procura_DFS(self, start, end, veiculo : Veiculo.Veiculo, iter,path=[], visited=set()):
+    def procura_DFS(self, start, end, veiculo : Veiculo, iter,path=[], visited=set()):
         path.append(start)
         visited.add(start)
         
