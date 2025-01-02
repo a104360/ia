@@ -8,7 +8,7 @@ class Zona:
 
             name - nome da Zona
 
-            bloquado - se e possivel ir para a zona ou não
+            bloqueado - se e possivel ir para a zona ou não
 
             gravidade - gravidade do problema
 
@@ -28,7 +28,7 @@ class Zona:
         """
         self.id = id
         self.name = name
-        self.bloquado = bloqueado
+        self.bloqueado = bloqueado
         self.gravidade = gravidade
         self.densidade = densidade
         self.abastecimento = abastecimento
@@ -52,7 +52,7 @@ class Zona:
         return self.gravidade + self.densidade + self.iteracoes
 
     def __str__(self):
-        return (f"Zona : {self.name}\nID : {self.id}\nBlocked : {self.bloquado}\n"+
+        return (f"Zona : {self.name}\nID : {self.id}\nBlocked : {self.bloqueado}\n"+
                 f"Gravidade : {self.gravidade}\nPriority : {self.prioridade}\n" + 
                 f"Acessibilidade : {self.acessibilidade}\nAbastecimento : {self.abastecimento}\n" +
                 f"Climate : {self.clima}\nNecessidades : {self.necessidades}\nIter : {self.iteracoes}")
@@ -95,7 +95,7 @@ class Zona:
         else:
             acessos = [False,False,False]
             self.setAcessibilidade(acessos)
-            self.bloquado = True
+            self.bloqueado = True
             return True
     
     # Métodos para 'gravidade'

@@ -271,7 +271,7 @@ class Graph:
         path.append(start)
         visited.add(start)
         
-        bens : list[Bem.Bem] = veiculo.getBensAvailable
+        bens : list[Bem] = veiculo.getBensAvailable
         if start == end or len(bens) <= 0 or self.iteracoes >= iter:
             custoT = self.calcula_custo(path)
             iterCopia = self.iteracoes
@@ -493,4 +493,50 @@ class Graph:
         return ([],-1)
 
     
+    def greedy_recursive(self, currentZona, end, path=None, visited=None):
+        """
+        Método de busca Greedy recursiva.
+        :param currentZona: Nome da zona atual.
+        :param end: Nome da zona de destino.
+        :param path: Tuplo contendo o caminho ([lista de zonas], custo total).
+        :param visited: Conjunto de zonas visitadas.
+        :return: Tuplo ([caminho], custo) ou ([],-1) se não houver caminho.
+        """
+        if path is None:
+            path = ([currentZona], 0)
+        if visited is None:
+            visited = set()
+
+        # Marca a zona atual como visitada
+        visited.add(currentZona)
+
+        # Se chegou ao destino, retorna o caminho e o custo
+        if currentZona == end:
+            return path
     
+        # Obtém vizinhos do nó atual
+        vizinhos = self.getNeighbours(currentZona)
+        heuristics = []
+    
+        # Avalia os vizinhos não visitados
+        for zona in vizinhos:
+            if zona[0] not in visited:
+                heuristics.append((zona[0], self.getH(zona[0])))
+    
+        # Se não houver vizinhos disponíveis, retorna falha
+        if not heuristics:
+            return ([], -1)
+    
+        # Ordena os vizinhos pela heurística
+        heuristics.sort(key=lambda x: x[1])
+    
+        # Escolhe o próximo nó com menor heurística
+        nextZona = heuristics[0][0]
+    
+        # Atualiza o caminho e o custo
+        newPath = list(path[0])  # Copia o caminho atual
+        newPath.append(nextZona)
+        newCost = path[1] + self.get_arc_cost(currentZona, nextZona)
+    
+        # Chamada recursiva para o próximo nó
+        return self.greedy_recursive(nextZona, end, (newPath, newCost), visited)
