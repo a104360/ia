@@ -9,16 +9,26 @@ from . import Zona
 
 
 class Empresa:
-    def __init__(self,tempoTotal):
+    def __init__(self,tempoTotal,cidade : dict[int,set[int]]):
+        self.mapa = cidade
         self.frota = dict()
         self.posicoesAgentes = dict()
         self.tempoTotal = tempoTotal
         self.tabelaCustos = dict(str,int)
     
-    def decisao(self,zonas : list[Zona.Zona],agentes : list[Veiculo.Veiculo]) -> int:
+    def decisao(self) -> int:
         """
             Função para tomada de decisão a cada iteração
         """
+        None
+
+    def moveTo(self,idAgent : int,idZone : int):
+        previous : int = None
+        for a in self.mapa:
+            if self.mapa[a].__contains__(idAgent):
+                self.mapa[a].remove(idAgent)
+                break
+        self.mapa[idZone].add(idAgent)
         None
 
     def runSimulation(self,time = 2880):
@@ -26,6 +36,9 @@ class Empresa:
         """
             Função responsável por efetuar as alterações do estado.
         """
+        # Carregar a frota de veiculos para memoria
+        self.loadFrota("ConfigFiles/frota.json")
+        
         None
 
     def loadFrota(self,filename:str):
