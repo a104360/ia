@@ -7,8 +7,9 @@ import random
 import networkx as nx  # biblioteca de tratamento de grafos necessária para desnhar graficamente o grafo
 import matplotlib.pyplot as plt  # idem
 from Entidades.Zona import Zona
-from Entidades.veiculos import Veiculo
-from Entidades.veiculos import Bem
+from Entidades.Clima import Clima
+from Entidades.veiculos.Veiculo import Veiculo
+from Entidades.veiculos.Bem import Bem
 
 
 # Constructor
@@ -38,47 +39,42 @@ class Graph:
             out = out + "zona" + str(key) + ": " + str(self.m_graph[key]) + "\n"
         return out
 
-    #############
-    # funcao para ver se a zona tem alguma zona não bloqueada que leve a si, para que n existam bloqueios no randotron
-    #############
-
-
-    #############
-    #    modifica valores para outros de maneira semi-random
-    #############
-    def randotron(self):
+    def movimento(self, veiculo : Veiculo, zona : Zona, tipo):
         """
-        Para cada zona em m_zonas, muda alguns dos seus parametros para refletir a vida real
+        Para uma Zona e um Veiculo, faz uma ação, desde encher o tanque, deixar carga ou movimentar
         """
-        for zona in self.m_zonas:
-            acessos = [random.randint(0, 1) for _ in range(3)] # lista com 3 valores random 0 ou 1
-            zona.setAcessibilidade(acessos)
-
-            populacao = random.randint(0, 100)
-            prioritou = False
-            gravidade = zona.getGravidade()
-            densidade = zona.getDensidade()
-            if populacao < 10 and densidade != 1:
-                zona.setDensidade(densidade - 1)
-                if populacao == 0 and gravidade != 0:
-                    prioritou = True
-                    zona.setGravidade(gravidade - 1)
-
-            elif populacao > 90 and densidade != 5:
-                zona.setDensidade(densidade + 1)
-                if populacao == 100 and gravidade != 5:
-                    prioritou = True
-                    zona.setGravidade(gravidade + 1)
-
-            #num rando de 1 a 100 e se prioritou for false aumentar a gravidade se ...
-
-            iteracao = zona.getIteracoes()
-            #3 num random para os clima de 0 a 100, se for 100 a prob eles sao bloq por 1 ronda e a prob passa a -5, se a prob for neg incrementar e ...
-            #algo para aumentar os produtos, como se a densidade aumentar e a gravidade, depois guardar a localizacao dos veiculos e algo para fazer descarga e assim
+        if tipo == 0: #passar pela zona
+            return
+        if tipo == 1: #abastecer na Zona
+            return
+        if tipo == 2: #airdrop na Zona
             return
 
+    #############
+    #    modifica valores para uma Zona de maneira semi-random
+    #############
+    def zonotron(self, zona : Zona):
+        """
+        Para uma Zona, muda alguns dos seus parametros para refletir a vida real, se as suas iteracoes 
+        for superior à sua janela então a zona ficará permanenentemente bloqueada
+        """
+
+        if zona.isBloqueado(): return
+
+        acessos = [bool(random.randint(0, 1)) for _ in range(3)] # lista com 3 valores random True ou False 
+        zona.setAcessibilidade(acessos)
+
+        clima : Clima = zona.getClima() # clima da Zona
+        prbClima = clima.getProbabilidade() # prob do clima
+        newClima = random.randint(prbClima, 10) # entre a prob e 10
+        clima.setProbabilidade(newClima) # nova prob
+        zona.setClima(clima)
+        zona.isGoingToBeBlocked() #se 10 aumenta a iteracao e volta prob a 0
+        zona.nextIter()
+        zona.shouldBeBlocked() # ve se iteracao e maior que a janela
+
     ################################
-    #   encontrar regiao pelo nome
+    #   encontrar zona pelo nome
     ################################
 
     def get_zona_by_name(self, name):
@@ -96,9 +92,9 @@ class Graph:
     def imprime_aresta(self):
         listaA = ""
         lista = self.m_graph.keys()
-        for regiao in lista:
-            for (regiao2, custo) in self.m_graph[regiao]:
-                listaA = listaA + regiao + " ->" + regiao2 + " custo:" + str(custo) + "\n"
+        for zona in lista:
+            for (zona2, custo) in self.m_graph[zona]:
+                listaA = listaA + zona + " ->" + zona2 + " custo:" + str(custo) + "\n"
         return listaA
 
     ######################
@@ -130,7 +126,7 @@ class Graph:
             self.m_graph[zona2].append((zona1, distance))
 
     #############################
-    # devolver regiaos
+    # devolver zonas
     #############################
 
     def getZonas(self):
@@ -142,9 +138,9 @@ class Graph:
 
     def get_arc_cost(self, zona1, zona2):
         custoT = math.inf
-        a = self.m_graph[zona1]  # lista de arestas para aquele regiao
-        for (regiao, custo) in a:
-            if regiao == zona2:
+        a = self.m_graph[zona1]  # lista de arestas para aquele zona
+        for (zona, custo) in a:
+            if zona == zona2:
                 custoT = custo
 
         return custoT
@@ -154,7 +150,7 @@ class Graph:
     ###############################
 
     def calcula_custo(self, caminho):
-        # caminho é uma lista de regiaos
+        # caminho é uma lista de zonas
         teste = caminho
         custo = 0
         i = 0
@@ -163,38 +159,39 @@ class Graph:
             i = i + 1
         return custo
     
-
     #################################################
-    #  Proxima Zona a escolher Procura não Informada
+    #  Proxima Zona a escolher Procura Informada
     #################################################
-    def proximaZona(self, veiculo : Veiculo.Veiculo ):  #Devolve o melhor visinho para a zona atual
-        zonas : list[Zona] = self.getNeighbours()
+    def proximaZona(self, veiculo : Veiculo.Veiculo, currentZona : Zona):  #Devolve o melhor visinho para a zona atual
+        zonas = self.getNeighbours(currentZona)
     
         proximaZona = None
-        maiorPrioridade = 0  # Define prioridade mínima inicial
 
         listZonas : list[Zona] = []
-        tipo = veiculo.getType()
+        tipo = veiculo.getType
 
         #ACESSIBILIDADE TIPO VEICULO
-        for z in zonas: #verifica para todos os visinhos os que são acessiveis e adiciona a uma lista
-            if tipo == "terra":
-                if z.isAcessivelTerrestre():
-                    listZonas.append(z)
-            if tipo == "ar":
-                if z.isAcessivelAerea():
-                    listZonas.append(z)
-            else:
-                if z.isAcessivelMaritima():
-                    listZonas.append(z)
+        for z, distancia in zonas: #verifica para todos os visinhos os que são acessiveis e adiciona a uma lista
+            if veiculo.getAutonomy() < distancia:
+                continue
+            if z.isBloqueado() == False: #zona não esta bloqueada
+                if tipo == "terra":
+                    if z.isAcessivelTerrestre():
+                        listZonas.append(z)
+                if tipo == "ar":
+                    if z.isAcessivelAerea():
+                        listZonas.append(z)
+                if tipo == "agua":
+                    if z.isAcessivelMaritima():
+                        listZonas.append(z)
         
-        if listZonas == None: #se estiver vazia o veiculo já não pode ir para mais lugar nenhum
+        if len(listZonas) == 0: #se estiver vazia o veiculo já não pode ir para mais lugar nenhum
             return None
-        
 
-        bensVeiculo : list[Bem.Bem] = veiculo.getBensAvailable
+        bensVeiculo : list[Bem.Bem] = veiculo.getBensAvailable()
         encontrou = False
 
+        listZonasSemNecessidade : list[Zona] = []
         #BENS NECESSARIOS
         for z1 in listZonas: #verifica se os vizinhos precisam de bens que o veiculo leva caso não precisem remove da lista
             bens : list[Bem.Bem]  = z1.getNecessidades()
@@ -203,37 +200,87 @@ class Graph:
                 if encontrou == True: #se tiver encontrado um bem em comum para
                     break
                 for bV in bensVeiculo: #vai à lista de bens do veiculo e percorre todos
-                    if b.getId == bV.getId: #se encontrar um bem em comum com a zona sai do ciclo mudando encontrou para True
+                    if b == bV: #se encontrar um bem em comum com a zona sai do ciclo mudando encontrou para True
                         encontrou = True
                         break
             
             if encontrou == False: #se não tive encontrado remove essa zona da lista
                 listZonas.remove(z1)
+                listZonasSemNecessidade.append(z1)
             
             if encontrou == True: #volta o encontrou para False depois de ter verificado uma Zona
                 encontrou = False
 
 
-        if listZonas == None: #se estiver vazia o veiculo já não pode ir para mais lugar nenhum
-            return None
+        if len(listZonas) == 0: #se estiver vazia o veiculo recebe uma das zonas para onde pode ir sem alimentos
+            listPrio : list[Zona] = []
+            maiorPrio = 0
+            for zPrio in listZonasSemNecessidade: # ve a maior prioridade
+                if zPrio.getPrioridade() > maiorPrio :
+                    maiorPrio = zPrio.getPrioridade()
+            
+            for zAddMostPrio in listZonasSemNecessidade: # guarda os com maior prio numa lista
+                if zAddMostPrio.getPrioridade() == maiorPrio :
+                    listPrio.append(zAddMostPrio)
 
-        
+            if listPrio.count() <= 1: # retorna se so houver 1 com maior prio ou a lista for vazia
+                return listPrio[0]
+            else: # se existirem mais de uma zona vai se ver a que possuir menor janela
+                menorJanela = math.inf
+                for lP in listPrio:
+                    x = lP.getJanela() - lP.getIteracoes()
+                    if(x < menorJanela):
+                        proximaZona = lP
+                        menorJanela = x
 
+            
         return proximaZona
+
+    ################################################
+    #   Verifica se pode ir para o adjacente
+    ################################################
+
+    def verificaAdjacente(self, adjacente : Zona,veiculo : Veiculo):
+        tipo = veiculo.getType
+
+        if adjacente.isBloqueado() == True: #zona está bloqueada
+            return False
+        #ACESSIBILIDADE TIPO VEICULO
+        if tipo == "terra":
+            if adjacente.isAcessivelTerrestre():
+                return True
+        elif tipo == "ar":
+            if adjacente.isAcessivelAerea():
+                return True
+        elif tipo == "agua":
+            if adjacente.isAcessivelMaritima():
+                return True
+        else:
+            return False
+
 
 
     ####################################################################################
     #  Procura DFS  -- depth first search
     ####################################################################################
-    def procura_DFS(self, start, end, path=[], visited=set()):
+    def procura_DFS(self, start, end, veiculo : Veiculo.Veiculo ,path=[], visited=set()):
         path.append(start)
         visited.add(start)
-
-        if start == end:
+        
+        bens : list[Bem.Bem] = veiculo.getBensAvailable
+        if start == end or len(bens) <= 0:
             custoT = self.calcula_custo(path)
             return (path,custoT)
-        for(adjacente, peso) in self.m_graph[start]:
-            if adjacente not in visited:
+        
+        #remover a carga que se deixou na Zona
+        
+        for(adjacente, distancia) in self.m_graph[start]:
+            if adjacente not in visited and self.verificaAdjacente(adjacente,veiculo) :
+
+                #percorrer todas as zonas e chamar o zonotron
+
+                #verificar se tem combustivel pra ir pro adjacente (se nao tiver, abastecer) chamar o zonotron
+
                 resultado = self.procura_DFS(adjacente, end, path, visited)
                 if (resultado) is not None:
                     return resultado
@@ -279,10 +326,10 @@ class Graph:
     # funçãop  getneighbours, devolve vizinhos de um nó
     ##############################
 
-    def getNeighbours(self, regiao):
+    def getNeighbours(self, zona):
         lista = []
-        for (adjacente, peso) in self.m_graph[regiao]:
-            lista.append((adjacente, peso))
+        for (adjacente, distancia) in self.m_graph[zona]:
+            lista.append((adjacente, distancia))
         return lista
 
     
@@ -295,13 +342,13 @@ class Graph:
         lista_v = self.m_zonas
         lista_a = []
         g = nx.Graph()
-        for regiao in lista_v:
-            n = regiao.getName()
+        for zona in lista_v:
+            n = zona.getName()
             g.add_node(n)
-            for (adjacente, peso) in self.m_graph[n]:
+            for (adjacente, distancia) in self.m_graph[n]:
                 lista = (n, adjacente)
                 # lista_a.append(lista)
-                g.add_edge(n, adjacente, distance=peso)
+                g.add_edge(n, adjacente, distance=distancia)
 
         pos = nx.spring_layout(g)
         nx.draw_networkx(g, pos, with_labels=True)
@@ -312,7 +359,7 @@ class Graph:
         plt.show()
 
     ####################################
-    #    add_heuristica   -> define heuristica para cada regiao 1 por defeito....
+    #    add_heuristica   -> define heuristica para cada zona 1 por defeito....
     ####################################
 
     def add_heuristica(self, n, estima):
@@ -329,7 +376,7 @@ class Graph:
     def procura_aStar(self, start, end):
         # tuplo de lista dos nomes com custo do caminho pretendido
         path = ([start], 0)
-        #set com nomes dos regiaos
+        #set com nomes dos zonas
         visited = {start}
 
         q = deque([start])
@@ -338,12 +385,12 @@ class Graph:
         # String nextZona
         currentZona = start 
         
-        # vizinhos mantém as ligações ao regiao que estamos a analisar
+        # vizinhos mantém as ligações ao zona que estamos a analisar
         vizinhos = self.getNeighbours(currentZona)
 
         while vizinhos:
             visited.add(currentZona)
-            # heuristics guarda o nome dos regiaos e a sua heuristica
+            # heuristics guarda o nome dos zonas e a sua heuristica
             heuristics = []
 
             for (zona, custo) in vizinhos:
@@ -381,14 +428,14 @@ class Graph:
         
 
     ####################################
-    # devolve heuristica do regiao
+    # devolve heuristica do zona
     ####################################
 
-    def getH(self, regiao):
-        if regiao not in self.m_h.keys():
+    def getH(self, zona):
+        if zona not in self.m_h.keys():
             return 1000
         else:
-            return (self.m_h[regiao])
+            return (self.m_h[zona])
 
 
     ##########################################
@@ -399,18 +446,18 @@ class Graph:
         # tuplo de lista dos nomes com custo do caminho pretendido
         path = ([start],0)
         
-        #set com nomes dos regiaos
+        #set com nomes dos zonas
         visited = {start}
 
         # String nextZona
         currentZona = start 
         
-        # vizinhos mantém as ligações ao regiao que estamos a analisar
+        # vizinhos mantém as ligações ao zona que estamos a analisar
         vizinhos = self.getNeighbours(currentZona)
 
         while vizinhos:
             visited.add(currentZona)
-            # heuristics guarda o nome dos regiaos e a sua heuristica
+            # heuristics guarda o nome dos zonas e a sua heuristica
             heuristics = []
 
             for zona in vizinhos:

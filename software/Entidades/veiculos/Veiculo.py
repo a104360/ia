@@ -3,7 +3,7 @@ from .Carga import Carga
 from . import Bem
 
 class Veiculo:
-    def __init__(self, name, id,zona , capacidade = 100, cargaAtual = 0, bens = {}, level = 150, limit = 300, consumption = 10, tipo = None,toLoad = []):   
+    def __init__(self, name, id, capacidade = 100, cargaAtual = 0, bens = {}, level = 150, limit = 300, consumption = 10, tipo = None):   
         """
             id - valor único de cada veiculo
 
@@ -17,14 +17,12 @@ class Veiculo:
         """
         self.id = id
         self.name = str(name)
-        self.capacidade = Carga(capacidade, cargaAtual, bens)
+        self.carga = Carga(capacidade, cargaAtual, bens)
         self.combustivel = Combustivel.Combustivel(level, limit, consumption)
         self.tipo = tipo
-        self.zona = zona
-        self.toLoad = toLoad
 
     def __str__(self):
-        return f"ID : {self.id}\nNome : {self.name}\nCarga maxima : {self.capacidade}\n" + self.combustivel.__str__()
+        return f"ID : {self.id}\nNome : {self.name}\nCarga maxima : {self.carga}\n" + self.combustivel.__str__()
 
     def __repr__(self):
         return self.__str__()#"veiculo " + self.name
@@ -46,19 +44,19 @@ class Veiculo:
     # Métodos para 'capacidade'
     def loadCarga(self, bens: list[Bem.Bem]):
         """Adiciona bens ao veiculo"""
-        self.capacidade.restock(bens)
+        self.carga.restock(bens)
 
     def takeCarga(self, bens: list[Bem.Bem]):
         """Retira bens ao veiculo"""
-        return self.capacidade.distribute(bens)
+        return self.carga.distribute(bens)
     
     def getCargaAvailable(self):
         """Returns a carga disponivel do veiculo"""
-        return self.capacidade.getCargaDisponivel()
+        return self.carga.getCargaDisponivel()
     
     def getBensAvailable(self):
         """Returns os bens do veiculo"""
-        return self.capacidade.getBens()
+        return self.carga.getBens()
 
     # Métodos para 'combustivel'
     def walkedKm(self, km : int):
@@ -79,9 +77,3 @@ class Veiculo:
 
     def getType(self):
         return self.tipo
-        
-    def setZona(self,zona):
-        self.zona = zona
-    
-    def getZona(self):
-        return self.zona
