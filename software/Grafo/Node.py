@@ -1,4 +1,3 @@
-from typing import List
 
 class Node:
     def __init__(self, name, id=-1):     #  construtor do nodo....."
