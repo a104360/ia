@@ -548,10 +548,12 @@ class Graph:
         # Se não houver vizinhos disponíveis, retorna falha
         # Ordena os vizinhos pela heurística
         # Escolhe o próximo nó com menor heurística
-        nextZona = self.proximaZona(veiculo, start)
+        (nextZona, distancia) = self.proximaZona(veiculo, start, visited)
     
         if nextZona is not None:
             # Atualiza o caminho e o custo
+            veiculo.walkedKm(distancia) #instancias usadas para mover
+            self.randomZonas(self.m_zonas)
             newPath = list(path[0])  # Copia o caminho atual
             newPath.append(nextZona)        
             # Chamada recursiva para o próximo nó
