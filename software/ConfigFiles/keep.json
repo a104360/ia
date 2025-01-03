@@ -3,31 +3,31 @@
         "id": 0,
         "name": "Helicoptero",
         "carga": {
-            "maxCarga": 200,
-            "cargaAtual": 0,
+            "maxCarga": 400,
+            "cargaAtual": 400,
             "bens": [
                 {
-                    "id": 0,
+                    "id": 2,
                     "nome": "Gorro",
-                    "peso": 50,
+                    "peso": 100,
                     "tipo": "Roupa"
                 },
                 {
-                    "id": 1,
+                    "id": 0,
                     "nome": "Leite",
-                    "peso": 50,
+                    "peso": 100,
                     "tipo": "Liquido"
                 },
                 {
                     "id": 1,
                     "nome": "Bruffen",
-                    "peso": 50,
+                    "peso": 100,
                     "tipo": "Medicamento"
                 },
                 {
-                    "id": 1,
+                    "id": 3,
                     "nome": "Arroz",
-                    "peso": 50,
+                    "peso": 100,
                     "tipo": "Comida"
                 }
             ]
@@ -44,7 +44,7 @@
         "name": "Camiao",
         "carga": {
             "maxCarga": 300,
-            "cargaAtual": 0,
+            "cargaAtual": 15,
             "bens": [
                 {
                     "id": 0,
@@ -72,18 +72,18 @@
         "name": "Carro",
         "carga": {
             "maxCarga": 100,
-            "cargaAtual": 0,
+            "cargaAtual": 50,
             "bens": [
                 {
                     "id": 1,
                     "nome": "Leite",
-                    "peso": 2,
+                    "peso": 25,
                     "tipo": "Liquido"
                 },
                 {
                     "id": 3,
                     "nome": "Bruffen",
-                    "peso": 1,
+                    "peso": 25,
                     "tipo": "Medicamento"
                 }
             ]
@@ -100,7 +100,7 @@
         "name": "Barco",
         "carga": {
             "maxCarga": 400,
-            "cargaAtual": 0,
+            "cargaAtual": 25,
             "bens": [
                 {
                     "id": 2,

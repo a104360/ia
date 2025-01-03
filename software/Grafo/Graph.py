@@ -588,7 +588,6 @@ class Graph:
         # Ordena os vizinhos pela heurística
         # Escolhe o próximo nó com menor heurística
         (nextZona, distancia) = self.proximaZona(veiculo, start, visited)
-    
         if nextZona is not None:
             # Atualiza o caminho e o custo
             veiculo.walkedKm(distancia) #instancias usadas para mover

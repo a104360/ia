@@ -31,7 +31,6 @@ def main():
 
     g = Graph.Graph()
 
-    #Ficha2
     g.add_edge("elvas", "borba", 15)
     g.add_edge("borba", "estremoz", 15)
     g.add_edge("estremoz", "evora", 40)
@@ -55,31 +54,6 @@ def main():
     g.add_edge("alcochete", "lisboa", 15)
 
 
-
-
-    
-
-    #Ficha2
-    """
-    g.add_heuristica("elvas", 270)
-    g.add_heuristica("borba", 250)
-    g.add_heuristica("estremoz", 145)
-    g.add_heuristica("evora", 95)
-    g.add_heuristica("montemor", 70)
-    g.add_heuristica("vendasnovas", 45)
-    g.add_heuristica("arraiolos", 220)
-    g.add_heuristica("alcacer", 140)
-    g.add_heuristica("palmela", 85)
-    g.add_heuristica("almada", 25)
-    g.add_heuristica("alandroal", 180)
-    g.add_heuristica("redondo", 170)
-    g.add_heuristica("monsaraz", 120)
-    g.add_heuristica("barreiro", 30)
-    g.add_heuristica("baixadabanheira", 33)
-    g.add_heuristica("moita", 35)
-    g.add_heuristica("alcochete", 26)
-    g.add_heuristica("lisboa", 0)
-    """
 
     saida = -1
     while saida != 0:
@@ -114,7 +88,11 @@ def main():
                 l = input("prima enter para continuar")
             elif saida == 5: # DFS
                 v = getVeiculo(frota)
-                inicio = input("Regiao inicial->")
+                contador = 0
+                for gN in g.m_zonas:
+                    print(gN.name)
+                    contador += 1
+                inicio = input("Nome regiao inicial->")
                 i = input("Iterações disponíveis (Entre 15 e 25)->")
                 i = int(i)
                 if i < 15: i = 15
@@ -123,21 +101,25 @@ def main():
                 print("saindo.......")
                 saida = 0
             elif saida == 8:# BFS
-                inicio = input("Regiao inicial->")
-                fim = input("Regiao final->")
-                print(g.procura_BFS(inicio, fim))
-                l = input("prima enter para continuar")
-                print("saindo.......")
+                #inicio = input("Regiao inicial->")
+                #fim = input("Regiao final->")
+                #print(g.procura_BFS(inicio, fim))
+                #l = input("prima enter para continuar")
+                #print("saindo.......")
                 saida = 0
             elif saida == 7: # A*
-                inicio = input("Regiao inicial->")
-                fim = input("Regiao final->")
-                print(g.procura_aStar(inicio, fim))
-                l = input("prima enter para continuar")
-                print("saindo.......")
+                #inicio = input("Regiao inicial->")
+                #fim = input("Regiao final->")
+                #print(g.procura_aStar(inicio, fim))
+                #l = input("prima enter para continuar")
+                #print("saindo.......")
                 saida = 0
             elif saida == 6: # Gulosa
                 v = getVeiculo(frota)
+                contador = 0
+                for gN in g.m_zonas:
+                    print(gN.name)
+                    contador += 1
                 inicio = input("Regiao inicial->")
                 i = input("Iterações disponíveis (Entre 15 e 25) ->")
                 i = int(i)
@@ -147,9 +129,10 @@ def main():
                 print("saindo.......")
                 saida = 0
             elif saida == 9:
-                time = input("Limite de iteracoes->")
-                simular(time)
-                l = input("prima enter para continuar")
+                #time = input("Limite de iteracoes->")
+                #simular(time)
+                #l = input("prima enter para continuar")
+                saida = 0
             else:
                 print("you didn't add anything")
                 l = input("prima enter para continuar")
