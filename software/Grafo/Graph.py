@@ -341,10 +341,19 @@ class Graph:
     #################################################
     def proximaZona(self, veiculo : Veiculo, currentZona : Zona, visitados : set = set()):  #Devolve o melhor visinho para a zona atual    
         proximaZona : Zona = None
-        finalDis : int = 0
+        finalDis : int = -1
 
         listZonas : list[tuple[Zona, int]] = []
         tipo = veiculo.getType()
+
+        #Bloqueamento da Zona
+        for (zed, distancia) in self.m_graph[currentZona.getName()]: #verifica para todos os visinhos estão bloqueados
+            z = self.get_zona_by_name(zed)
+            if z.isBloqueado() == False:
+                finalDis = 0
+                break
+        
+        if finalDis == -1: return (proximaZona, finalDis)
 
         #ACESSIBILIDADE TIPO VEICULO
         for (zed, distancia) in self.m_graph[currentZona.getName()]: #verifica para todos os visinhos os que são acessiveis e adiciona a uma lista
@@ -465,21 +474,22 @@ class Graph:
         if visited is None:
             visited = set()
 
+        # Se não houver vizinhos disponíveis, retorna falha
+        # Ordena os vizinhos pela heurística
+        # Escolhe o próximo nó com menor heurística
+        (nextZona, distancia) = self.proximaZona(veiculo, start, visited)
+        self.consomeBens(veiculo, start) # tirar do veiculo e zona os bens em comum
+        start.shouldBeBlocked() # ve se depois de tirar os bens a zona esta safe
+
+
         bens : list[Bem] = veiculo.getBensAvailable()
-        if len(bens) == 0 or self.iter > iter:
+        if len(bens) == 0 or self.iter > iter or distancia == -1:
             #custoT = self.calcula_custo(path)
             iterCopia = self.iter - 1 #comeca com 1 iteracao a mais
             self.iter = 0
             self.zonaDefiner(0)
             return (path, iterCopia)#custoT, iterCopia)
 
-        self.consomeBens(veiculo, start) # tirar do veiculo e zona os bens em comum
-        start.shouldBeBlocked() # ve se depois de tirar os bens a zona esta safe
-
-        # Se não houver vizinhos disponíveis, retorna falha
-        # Ordena os vizinhos pela heurística
-        # Escolhe o próximo nó com menor heurística
-        (nextZona, distancia) = self.proximaZona(veiculo, start, visited)
         if nextZona is not None:
             # Atualiza o caminho e o custo
             veiculo.walkedKm(distancia) #instancias usadas para mover
