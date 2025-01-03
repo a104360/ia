@@ -120,7 +120,7 @@ def main():
                 for gN in g.m_zonas:
                     print(gN.name)
                     contador += 1
-                inicio = input("Regiao inicial->")
+                inicio = input("Nome regiao inicial->")
                 i = input("Iterações disponíveis (Entre 15 e 25) ->")
                 i = int(i)
                 if i < 15: i = 15

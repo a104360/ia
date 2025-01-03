@@ -233,14 +233,14 @@ class Graph:
     ####################################################################################
     def procura_DFS(self, start : Zona, veiculo : Veiculo, iterM,path : list[Zona] = list(), visited:set=set(), visit = False):
         #print(start)
-        if self.iter > 0:print(self.iter-1)
         print(start.name)
+        if self.iter > 0:print("Iterações até momento:"+str(self.iter)+"\n")
         self.iter += 1
         path.append(start) #ira repetir a mesma zona caso n tenha como ir para outra momentaneamente
         if visit == False: visited.add(start)
         
         bens : list[Bem] = veiculo.getBensAvailable()
-        if len(bens) == 0 or self.iter >= iterM:
+        if len(bens) == 0 or self.iter >= iterM -1:
             #custoT = self.calcula_custo(path)
             iterCopia = self.iter - 1 #comeca com 1 iteracao a mais
             #self.iter = 0
@@ -267,7 +267,7 @@ class Graph:
 
                             veiculo.walkedKm(distancia) #instancias usadas para mover
                             self.randomZonas(self.m_zonas)
-                            self.procura_DFS(zona, veiculo,iterM, path, visited, False)
+                            return self.procura_DFS(zona, veiculo,iterM, path, visited, False)
 
         if moveOn:
             #iterCopia = self.iter - 1 #comeca com 1 iteracao a mais
@@ -276,54 +276,7 @@ class Graph:
             #return (path, iterCopia)
             veiculo.refuel() #refil
             self.zonaDefiner(1)
-            self.procura_DFS(zona, veiculo,iterM, path,visited, True)
-                
-
-    
-    ######################################################
-    # Procura BFS  -- pesquisa em largura
-    ######################################################
-
-    def procura_BFS(self,start : Zona, veiculo : Veiculo, iter):
-        
-        visited = set([start])
-        q = deque([(start, 0)])     
-
-        path = {start:([start], 0)}
-        
-        cost = 0
-
-        while q:
-            #atualizar o shouldBeBlocked para todos os do q
-            (zona, distancia) = q.popleft()
-            if zona.shouldBeBlocked() == False: #verificar pois podem ter valores dentro de q que entretanto ficaram bloqueados
-                return
-
-            for (adjacent, zonaCost) in self.m_graph[zona]:
-                  #  se ja se esteve lá
-                if adjacent not in visited:
-                    q.append(adjacent)
-
-                      #     se a zona esta fechada         se tem iteracoes para chegar lá       se o teu tipo de veiculo e permitido
-                    if adjacent.isBloqueado() == False and veiculo.getAutonomy() >= zonaCost and self.verificaAdjacente(adjacent, veiculo):
-                        visited.add(adjacent)
-
-                        path[adjacent] = path[zona] + (adjacent,zonaCost)
-                        self.zonaDefiner(zonaCost - 1)
-                        self.randomZonas(self.m_zonas)
-                        
-                        if adjacent.shouldBeBlocked() == False:
-                            return
-                        
-                        if adjacent in self.m_graph:
-                            finalPath = path[start]
-
-                            for a in path[adjacent]:
-                                if a.__class__ == int:
-                                    cost += a
-                                else:
-                                    finalPath[0].append(a)
-                            return (finalPath[0],cost)
+            return self.procura_DFS(zona, veiculo,iterM, path,visited, True)
 
             
     ##############################
@@ -370,65 +323,6 @@ class Graph:
         n1 = Zona(n)
         if n1 in self.m_zonas:
             self.m_h[n] = estima
-
-
-
-    ##########################################
-    #    A* - greedy mas somas distancia
-    ##########################################
-                
-    def procura_aStar(self, start, end):
-        # tuplo de lista dos nomes com custo do caminho pretendido
-        path = ([start], 0)
-        #set com nomes dos zonas
-        visited = {start}
-
-        q = deque([start])
-        custoPath = {start:([start],0)}
-
-        # String nextZona
-        currentZona = start 
-        
-        # vizinhos mantém as ligações ao zona que estamos a analisar
-        vizinhos = self.getNeighbours(currentZona)
-
-        while vizinhos:
-            visited.add(currentZona)
-            # heuristics guarda o nome dos zonas e a sua heuristica
-            heuristics = []
-
-            for (zona, custo) in vizinhos:
-                if zona not in visited:
-
-                    q.append(zona)
-                    lista = custoPath[currentZona][0].copy()
-                    lista.append(zona)
-                    custoZona = custoPath[currentZona][1]
-                    custoPath[zona] = (lista,custoZona+custo)
-
-                    heuristics.append((zona,self.getH(zona) + custoPath[zona][1]))
-            
-            heuristics.sort(key=lambda x: x[1])
-            
-            # nextZona = (nome,heuristic)
-            nextZona = heuristics[0]
-
-            changePath = path[0]
-            changePath.append(nextZona[0])
-            changeCost = path[1]
-            changeCost += self.get_arc_cost(currentZona,nextZona[0])
-            path = (changePath,changeCost)
-
-            #print(path)
-
-            if nextZona[0] == end:
-                return path
-
-            
-            currentZona = nextZona[0]
-            vizinhos = self.getNeighbours(nextZona[0])
-
-        return ([],-1)
         
 
     ####################################
