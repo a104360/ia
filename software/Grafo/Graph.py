@@ -234,7 +234,7 @@ class Graph:
     def procura_DFS(self, start : Zona, veiculo : Veiculo, iterM,path : list[Zona] = list(), visited:set=set(), visit = False):
         #print(start)
         print(start.name)
-        if self.iter > 0:print("Iterações até momento:"+str(self.iter)+"\n")
+        if self.iter > 0:print("Iterações até momento: "+str(self.iter)+"\n")
         self.iter += 1
         path.append(start) #ira repetir a mesma zona caso n tenha como ir para outra momentaneamente
         if visit == False: visited.add(start)
@@ -464,7 +464,7 @@ class Graph:
     def greedy(self, start : Zona, veiculo : Veiculo, iter : int, path : list[Zona] = None, visited : set = None, visit = False):
 
         print(start.name)
-        print("Iterações até momento"+str(self.iter))
+        print("Iterações até momento: "+str(self.iter))
         self.iter += 1
         path.append(start) #ira repetir a mesma zona caso n tenha como ir para outra momentaneamente
         if visit == False: visited.add(start)
