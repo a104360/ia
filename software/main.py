@@ -53,9 +53,12 @@ def main():
     g.add_edge("alcochete", "lisboa", 15)
 
 
+
+
     
 
     #Ficha2
+    """
     g.add_heuristica("elvas", 270)
     g.add_heuristica("borba", 250)
     g.add_heuristica("estremoz", 145)
@@ -74,6 +77,7 @@ def main():
     g.add_heuristica("moita", 35)
     g.add_heuristica("alcochete", 26)
     g.add_heuristica("lisboa", 0)
+    """
 
     saida = -1
     while saida != 0:
@@ -110,7 +114,7 @@ def main():
                 v = getVeiculo(frota)
                 inicio = input("Regiao inicial->")
                 #fim = input("Regiao final->")
-                print(g.procura_DFS(g.get_zona_by_name(inicio),v,500, path=[], visited=set()))
+                print(g.procura_DFS(g.get_zona_by_name(inicio),v,30, path=list(), visited=set()))
                 l = input("prima enter para continuar")
             elif saida == 6:# BFS
                 inicio = input("Regiao inicial->")

@@ -9,14 +9,26 @@
                 {
                     "id": 0,
                     "nome": "Gorro",
-                    "peso": 1,
+                    "peso": 50,
                     "tipo": "Roupa"
                 },
                 {
                     "id": 1,
                     "nome": "Leite",
-                    "peso": 1,
+                    "peso": 50,
                     "tipo": "Liquido"
+                },
+                {
+                    "id": 1,
+                    "nome": "Bruffen",
+                    "peso": 50,
+                    "tipo": "Medicamento"
+                },
+                {
+                    "id": 1,
+                    "nome": "Arroz",
+                    "peso": 50,
+                    "tipo": "Comida"
                 }
             ]
         },

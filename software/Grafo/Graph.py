@@ -139,11 +139,11 @@ class Graph:
             self.m_zonas.append(n2)
             self.m_graph[zona2] = []
         
-        self.m_graph[zona1] = list()
+        if not self.m_graph.__contains__(zona1) :self.m_graph[zona1] = list()
         self.m_graph[zona1].append((zona2, distance)) 
 
         if not self.m_directed:
-            self.m_graph[zona2] = list()
+            if not self.m_graph.__contains__(zona2): self.m_graph[zona2] = list()
             self.m_graph[zona2].append((zona1, distance))
 
     #############################
@@ -159,7 +159,8 @@ class Graph:
 
     def get_arc_cost(self, zona1, zona2):
         custoT = math.inf
-        a = self.m_graph[zona1]  # lista de arestas para aquele zona
+        print(zona1)
+        a = self.m_graph[self.get_zona_by_name(zona1)]  # lista de arestas para aquele zona
         for (zona, custo) in a:
             if zona == zona2:
                 custoT = custo
@@ -262,7 +263,7 @@ class Graph:
     ################################################
 
     def verificaAdjacente(self, adjacente : Zona,veiculo : Veiculo):
-        tipo = veiculo.getType
+        tipo = veiculo.getType()
 
         if adjacente.isBloqueado() == True: #zona está bloqueada
             return False
@@ -292,49 +293,58 @@ class Graph:
             pesoNovo = 0
             if bem : pesoNovo = bem.getPeso()
             pesoAmais = pesoAtual - pesoNovo
-            carro.updateCargaAvailable(- pesoAmais)    
+            carro.updateCargaAvailable(-pesoAmais)    
 
 
     ####################################################################################
     #  Procura DFS  -- depth first search
     ####################################################################################
-    def procura_DFS(self, start : Zona, veiculo : Veiculo, iter,path=[], visited=set(), visit = False):
-
+    def procura_DFS(self, start : Zona, veiculo : Veiculo, iter,path : list[Zona] = list(), visited:set=set(), visit = False):
+        #print(start)
+        print(self.iter)
+        print(start.name)
         self.iter += 1
         path.append(start) #ira repetir a mesma zona caso n tenha como ir para outra momentaneamente
         if visit == False: visited.add(start)
         
         bens : list[Bem] = veiculo.getBensAvailable()
         if len(bens) == 0 or self.iter > iter:
-            custoT = self.calcula_custo(path)
+            #custoT = self.calcula_custo(path)
             iterCopia = self.iter - 1 #comeca com 1 iteracao a mais
             self.iter = 0
             self.zonaDefiner(0)
-            return (path, custoT, iterCopia)
+            return (path, iterCopia)#custoT, iterCopia)
         
         self.consomeBens(veiculo, start) # tirar do veiculo e zona os bens em comum
         start.shouldBeBlocked() # ve se depois de tirar os bens a zona esta safe
 
         moveOn = True
-        for(adjacente, distancia) in self.m_graph[start]:
+
+
+        for(adjacente, distancia) in self.m_graph[start.getName()]:
+            zona = self.get_zona_by_name(adjacente)
             # se ja se esteve lá ou se fez refil
-            if adjacente not in visited or visit:
+            if zona not in visited or visit:
                 # se a zona esta fechada 
-                if adjacente.isBloqueado() == False:
+                if zona.isBloqueado() == False:
                     # se tem iteracoes para chegar lá
                     if veiculo.getAutonomy() >= distancia:
                         # se o teu tipo de veiculo e permitido
-                        if self.verificaAdjacente(adjacente, veiculo):
+                        if self.verificaAdjacente(zona, veiculo):
                             moveOn = False
 
                             veiculo.walkedKm(distancia) #instancias usadas para mover
                             self.randomZonas(self.m_zonas)
-                            self.procura_DFS(adjacente, veiculo, path, visited, False)
+                            self.procura_DFS(zona, veiculo,iter, path, visited, False)
 
         if moveOn:
+            #iterCopia = self.iter - 1 #comeca com 1 iteracao a mais
+            #self.iter = 0
+            #self.zonaDefiner(0)
+            #return (path, iterCopia)
             veiculo.refuel() #refil
             self.zonaDefiner(1)
-            self.procura_DFS(adjacente, veiculo, path, visited, True)
+            self.procura_DFS(zona, veiculo,iter, path,visited, True)
                 
 
     
@@ -409,10 +419,10 @@ class Graph:
             g.add_node(n)
             for (adjacente, distancia) in self.m_graph[n]:
                 lista = (n, adjacente)
-                # lista_a.append(lista)
+                lista_a.append(lista)
                 g.add_edge(n, adjacente, distance=distancia)
 
-        pos = nx.spring_layout(g)
+        pos = nx.spring_layout(g,iterations=1)
         nx.draw_networkx(g, pos, with_labels=True)
         labels = nx.get_edge_attributes(g, 'distance')
         nx.draw_networkx_edge_labels(g, pos, edge_labels=labels)
