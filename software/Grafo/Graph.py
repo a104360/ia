@@ -26,7 +26,6 @@ from Entidades.veiculos.Bem import Bem
 class Graph:
     def __init__(self, directed=False,zonas = None):
         self.m_zonas = list()
-        self.m_zonas = list()
         if zonas != None: self.m_zonas : list[Zona] = zonas
         else: 
             with open("ConfigFiles/mapa.json","r") as f:
@@ -48,7 +47,6 @@ class Graph:
             out = out + "zona" + str(key) + ": " + str(self.m_graph[key]) + "\n"
         return out
     
-
     def zonaDefiner(self, iteracoes : int):
         """
         Incrementa o numero de iteracoes de todas as Zonas em iteracoes, 
@@ -452,13 +450,12 @@ class Graph:
         finalDis : int = 0
 
         listZonas : list[tuple[Zona, int]] = []
-        tipo = veiculo.getType
+        tipo = veiculo.getType()
 
         #ACESSIBILIDADE TIPO VEICULO
-        for (z, distancia) in self.m_graph[currentZona.getName()]: #verifica para todos os visinhos os que são acessiveis e adiciona a uma lista
-            if veiculo.getAutonomy() < distancia or z in visitados: #se chega lá ou se ja se esteve lá
-                continue
-            if z.isBloqueado() == False: #zona não esta bloqueada
+        for (zed, distancia) in self.m_graph[currentZona.getName()]: #verifica para todos os visinhos os que são acessiveis e adiciona a uma lista
+            z = self.get_zona_by_name(zed)
+            if veiculo.getAutonomy() >= distancia and z not in visitados and z.isBloqueado() == False: #zona não esta bloqueada
                 if tipo == "terra":
                     if z.isAcessivelTerrestre():
                         listZonas.append((z, distancia))
@@ -470,7 +467,7 @@ class Graph:
                         listZonas.append((z, distancia))
         
         if len(listZonas) == 0: #se estiver vazia o veiculo já não pode ir para mais lugar nenhum
-            return None
+            return (None, 0)
 
         bensVeiculo : list[Bem] = veiculo.getBensAvailable()
         encontrou = False
@@ -504,9 +501,9 @@ class Graph:
                 if z4.getPrioridade() == maiorPrio:
                     listPrio.append((z4, distancia4))
 
-            if listPrio.count() == 0:
-                return None
-            if listPrio.count() == 1: # retorna se so houver 1 com maior prio
+            if len(listPrio) == 0:
+                return (None, 0)
+            if len(listPrio) == 1: # retorna se so houver 1 com maior prio
                 return listPrio.pop()
             else: # se existirem mais de uma zona vai se ver a 1 que possuir menor janela
                 (proximaZona, finalDis) = listPrio.pop()
@@ -530,9 +527,9 @@ class Graph:
                 if z7.getPrioridade() == maiorPrio2:
                     listPrio2.append((z7, distancia7))
 
-            if listPrio2.count() == 0:
-                return None
-            if listPrio2.count() == 1: # retorna se so houver 1 com maior prio
+            if len(listPrio2) == 0:
+                return (None, 0)
+            if len(listPrio2) == 1: # retorna se so houver 1 com maior prio
                 return listPrio2.pop()
             else: # se existirem mais de uma zona vai se ver a 1 que possuir menor janela
                 (proximaZona, finalDis) = listPrio2.pop()
@@ -596,17 +593,15 @@ class Graph:
             # Atualiza o caminho e o custo
             veiculo.walkedKm(distancia) #instancias usadas para mover
             self.randomZonas(self.m_zonas)
-            newPath = list(path[0])  # Copia o caminho atual
-            newPath.append(nextZona)        
+            path.append(start)
             # Chamada recursiva para o próximo nó
-            return self.greedy(nextZona, veiculo, iter, newPath, visited, False)
+            return self.greedy(nextZona, veiculo, iter, path, visited, False)
         else:
             # Atualiza o caminho e o custo
-            newPath = list(path[0])  # Copia o caminho atual
-            newPath.append(start)
+            path.append(start)
             veiculo.refuel() #refil
             self.zonaDefiner(1)
-            return self.greedy(start, veiculo, iter, newPath, visited, True)
+            return self.greedy(start, veiculo, iter, path, visited, True)
 
     
     def greedy_recursive(self, currentZona, veiculo, path=None, visited=None):

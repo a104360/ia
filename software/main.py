@@ -113,8 +113,10 @@ def main():
             elif saida == 5: # DFS
                 v = getVeiculo(frota)
                 inicio = input("Regiao inicial->")
-                #fim = input("Regiao final->")
-                print(g.procura_DFS(g.get_zona_by_name(inicio),v,20, path=list(), visited=set()))
+                i = input("Iterações disponíveis (Entre 15 e 25) ->")
+                i = int(i)
+                if i < 15: i = 15
+                print(g.procura_DFS(g.get_zona_by_name(inicio),v,i, path=list(), visited=set()))
                 l = input("prima enter para continuar")
             elif saida == 6:# BFS
                 inicio = input("Regiao inicial->")
@@ -127,9 +129,12 @@ def main():
                 print(g.procura_aStar(inicio, fim))
                 l = input("prima enter para continuar")
             elif saida == 8: # Gulosa
+                v = getVeiculo(frota)
                 inicio = input("Regiao inicial->")
-                fim = input("Regiao final->")
-                print(g.greedy(inicio, fim))
+                i = input("Iterações disponíveis (Entre 15 e 25) ->")
+                i = int(i)
+                if i < 15: i = 15
+                print(g.greedy(g.get_zona_by_name(inicio), v, i, path=list(), visited=set()))
                 l = input("prima enter para continuar")
             elif saida == 9:
                 time = input("Limite de iteracoes->")
