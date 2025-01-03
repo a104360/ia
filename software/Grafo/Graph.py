@@ -517,23 +517,21 @@ class Graph:
         elif len(listZonas) == 1:
             return listZonas.pop()
         else:
-            listPrio2 : list[tuple[Zona, int]] = []
             maiorPrio2 = 0
             for (z6, _) in listZonas: # ve a maior prioridade
                 if z6.getPrioridade() > maiorPrio2:
                     maiorPrio = z6.getPrioridade()
             
             for (z7, distancia7) in listZonas: # guarda os com maior prio numa lista
-                if z7.getPrioridade() == maiorPrio2:
-                    listPrio2.append((z7, distancia7))
-
-            if len(listPrio2) == 0:
+                if z7.getPrioridade() < maiorPrio2:
+                    listZonas.remove((z7, distancia7))
+            if len(listZonas) == 0:
                 return (None, 0)
-            if len(listPrio2) == 1: # retorna se so houver 1 com maior prio
-                return listPrio2.pop()
+            if len(listZonas) == 1: # retorna se so houver 1 com maior prio
+                return listZonas.pop()
             else: # se existirem mais de uma zona vai se ver a 1 que possuir menor janela
-                (proximaZona, finalDis) = listPrio2.pop()
-                for (z8, distancia8) in listPrio2:
+                (proximaZona, finalDis) = listZonas.pop()
+                for (z8, distancia8) in listZonas:
                     x = z8.getJanela() - z8.getIteracoes()
                     comp = proximaZona.getJanela() - proximaZona.getIteracoes()
                     if(x < comp):
