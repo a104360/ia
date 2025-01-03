@@ -49,7 +49,6 @@ class Graph:
         return out
 
     def zonaDefiner(self, iteracoes : int):
-    def zonaDefiner(self, iteracoes : int):
         """
         Incrementa o numero de iteracoes de todas as Zonas em iteracoes, 
         se iteracoes for 0, então este irá meter as iterações de todas as Zonas a 0
