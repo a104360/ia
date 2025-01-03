@@ -26,6 +26,7 @@ from Entidades.veiculos.Bem import Bem
 class Graph:
     def __init__(self, directed=False,zonas = None):
         self.m_zonas = list()
+        self.m_zonas = list()
         if zonas != None: self.m_zonas : list[Zona] = zonas
         else: 
             with open("ConfigFiles/mapa.json","r") as f:
@@ -48,10 +49,22 @@ class Graph:
         return out
 
     def zonaDefiner(self, iteracoes : int):
+    def zonaDefiner(self, iteracoes : int):
         """
         Incrementa o numero de iteracoes de todas as Zonas em iteracoes, 
         se iteracoes for 0, então este irá meter as iterações de todas as Zonas a 0
+        Incrementa o numero de iteracoes de todas as Zonas em iteracoes, 
+        se iteracoes for 0, então este irá meter as iterações de todas as Zonas a 0
         """
+        if iteracoes == 0:
+            for m_zona in self.m_zonas:
+                m_zona.setIteracoes(0)
+        else:
+            for m_zona in self.m_zonas:
+                if m_zona.getNecessidades() != None or m_zona.isBloqueado() == False:
+                    iter = m_zona.getIteracoes()
+                    m_zona.setIteracoes(iter + iteracoes)
+            
         if iteracoes == 0:
             for m_zona in self.m_zonas:
                 m_zona.setIteracoes(0)
@@ -299,18 +312,6 @@ class Graph:
     ####################################################################################
     #  Procura DFS  -- depth first search
     ####################################################################################
-<<<<<<< HEAD
-    def procura_DFS(self, start, end, veiculo : Veiculo, iter,path=[], visited=set()):
-        path.append(start)
-        visited.add(start)
-        
-        bens : list[Bem] = veiculo.getBensAvailable
-        if start == end or len(bens) <= 0 or self.iteracoes >= iter:
-            custoT = self.calcula_custo(path)
-            iterCopia = self.iteracoes
-            self.iteracoes = 0
-            return (path,iterCopia)
-=======
     def procura_DFS(self, start : Zona, veiculo : Veiculo, iter,path : list[Zona] = list(), visited:set=set(), visit = False):
         #print(start)
         print(self.iter)
@@ -326,7 +327,6 @@ class Graph:
             self.iter = 0
             self.zonaDefiner(0)
             return (path, iterCopia)#custoT, iterCopia)
->>>>>>> main
         
         self.consomeBens(veiculo, start) # tirar do veiculo e zona os bens em comum
         start.shouldBeBlocked() # ve se depois de tirar os bens a zona esta safe
