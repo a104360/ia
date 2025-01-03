@@ -36,11 +36,7 @@ class Graph:
         self.m_directed = directed
         self.m_graph : dict[Zona, list[tuple[Zona, int]]] = dict() 
         self.m_h = {}
-<<<<<<< HEAD
-        self.iteracoes = 0
-=======
         self.iter = 0
->>>>>>> 27d78baf9b6619dabea36b00d3ff60f980629752
 
     #############
     #    escrever o grafo como string
