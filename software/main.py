@@ -7,8 +7,10 @@ import os
 
 def getVeiculo(lista : list[Veiculo.Veiculo]):
     count = 0
-    print(lista)
-    choice = input("Qual veiculo pretende")
+    for l in lista:
+        print(str(count) + "-" + l.name)
+        count += 1
+    choice = input("Qual veiculo pretende->")
     return lista[int(choice)]
     
 
@@ -87,9 +89,9 @@ def main():
         print("3-Imprimir  regioes de Grafo")
         print("4-Imprimir arestas de Grafo")
         print("5-DFS")
-        #print("6-BFS")
+        print("6-Gulosa")
+        #print("8-BFS")
         #print("7-A*")
-        print("8-Gulosa")
         #print("9-Iniciar")
         print("0-Saír")
 
@@ -113,14 +115,14 @@ def main():
             elif saida == 5: # DFS
                 v = getVeiculo(frota)
                 inicio = input("Regiao inicial->")
-                i = input("Iterações disponíveis (Entre 15 e 25) ->")
+                i = input("Iterações disponíveis (Entre 15 e 25)->")
                 i = int(i)
                 if i < 15: i = 15
                 print(g.procura_DFS(g.get_zona_by_name(inicio),v,i, path=list(), visited=set()))
                 l = input("prima enter para continuar")
                 print("saindo.......")
                 saida = 0
-            elif saida == 6:# BFS
+            elif saida == 8:# BFS
                 inicio = input("Regiao inicial->")
                 fim = input("Regiao final->")
                 print(g.procura_BFS(inicio, fim))
@@ -134,7 +136,7 @@ def main():
                 l = input("prima enter para continuar")
                 print("saindo.......")
                 saida = 0
-            elif saida == 8: # Gulosa
+            elif saida == 6: # Gulosa
                 v = getVeiculo(frota)
                 inicio = input("Regiao inicial->")
                 i = input("Iterações disponíveis (Entre 15 e 25) ->")

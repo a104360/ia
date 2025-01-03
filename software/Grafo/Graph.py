@@ -603,38 +603,3 @@ class Graph:
             self.zonaDefiner(1)
             return self.greedy(start, veiculo, iter, path, visited, True)
 
-    
-    def greedy_recursive(self, currentZona, veiculo, path=None, visited=None):
-        """
-        Método de busca Greedy recursiva.
-        :param currentZona: Nome da zona atual.
-        :param end: Nome da zona de destino.
-        :param path: Tuplo contendo o caminho ([lista de zonas], custo total).
-        :param visited: Conjunto de zonas visitadas.
-        :return: Tuplo ([caminho], custo) ou ([],-1) se não houver caminho.
-        """
-        if path is None:
-            path = ([currentZona], 0)
-        if visited is None:
-            visited = set()
-
-        # Marca a zona atual como visitada
-        visited.add(currentZona)
-
-        # Se chegou ao destino, retorna o caminho e o custo
-        if currentZona == end:
-            return path
-
-    
-        # Se não houver vizinhos disponíveis, retorna falha
-        # Ordena os vizinhos pela heurística
-        # Escolhe o próximo nó com menor heurística
-        nextZona = self.proximaZona(veiculo,currentZona)
-    
-        # Atualiza o caminho e o custo
-        newPath = list(path[0])  # Copia o caminho atual
-        newPath.append(nextZona)
-        newCost = path[1] + self.get_arc_cost(currentZona, nextZona)
-    
-        # Chamada recursiva para o próximo nó
-        return self.greedy_recursive(nextZona, end, (newPath, newCost), visited)
