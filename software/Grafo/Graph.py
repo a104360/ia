@@ -85,8 +85,8 @@ class Graph:
 
         if zona.isBloqueado(): return
 
-        acessos = [bool(random.randint(0, 1)) for _ in range(3)] # lista com 3 valores random True ou False 
-        zona.setAcessibilidade(acessos)
+        #acessos = [bool(random.randint(0, 1)) for _ in range(3)] # lista com 3 valores random True ou False 
+        #zona.setAcessibilidade(acessos)
 
         clima : Clima = zona.getClima() # clima da Zona
         prbClima = clima.getProbabilidade() # prob do clima
@@ -277,8 +277,8 @@ class Graph:
     def verificaAdjacente(self, adjacente : Zona,veiculo : Veiculo):
         tipo = veiculo.getType()
 
-        if adjacente.isBloqueado() == True: #zona está bloqueada
-            return False
+        #if adjacente.isBloqueado() == True: #zona está bloqueada
+        #    return False
         #ACESSIBILIDADE TIPO VEICULO
         if tipo == "terra":
             if adjacente.isAcessivelTerrestre():
@@ -297,9 +297,9 @@ class Graph:
             retira das necessidades da zona as presentes no veiculo
         """
         carroBens = carro.getBensAvailable()
-        print(carroBens)
+        #print(carroBens)
         for bem in carroBens:
-            print(bem)
+            #print(bem)
             pesoAtual = bem.getPeso()
             bem = zona.removeNecessidade(bem)   
             pesoNovo = 0
