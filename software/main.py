@@ -1,13 +1,31 @@
 from Grafo import Graph
 from Entidades.veiculos import Veiculo
+from Entidades.veiculos import *
 import json
 import os
 
 
+def getVeiculo(lista : list[Veiculo.Veiculo]):
+    count = 0
+    print(lista)
+    choice = input("Qual veiculo pretende")
+    return lista[int(choice)]
+    
+
+def loadFrota():
+    lista = None
+    with open("ConfigFiles/keep.json", "r") as f:
+        lista = json.load(f)
+    for i in range(len(lista)):
+        lista[i] = Entidades.veiculos.Veiculo.Veiculo("",2).from_dict(lista[i])
+    return lista
+
 def main():
-    frota : list[Veiculo.Veiculo] = None 
-    with open("ConfigFiles/frota.json","r") as f:
-        frota = json.load(f)
+
+
+    frota = loadFrota()
+
+    
 
     g = Graph.Graph()
 
@@ -35,9 +53,12 @@ def main():
     g.add_edge("alcochete", "lisboa", 15)
 
 
+
+
     
 
     #Ficha2
+    """
     g.add_heuristica("elvas", 270)
     g.add_heuristica("borba", 250)
     g.add_heuristica("estremoz", 145)
@@ -56,6 +77,7 @@ def main():
     g.add_heuristica("moita", 35)
     g.add_heuristica("alcochete", 26)
     g.add_heuristica("lisboa", 0)
+    """
 
     saida = -1
     while saida != 0:
@@ -70,6 +92,8 @@ def main():
         print("8-Gulosa")
         print("9-Iniciar")
         print("0-Saír")
+
+        print(type(g.m_zonas[0]))
         
         try:
             saida = int(input("introduza a sua opcao-> "))
@@ -86,22 +110,23 @@ def main():
             elif saida == 4:
                 print(g.imprime_aresta())
                 l = input("prima enter para continuar")
-            elif saida == 5:
+            elif saida == 5: # DFS
+                v = getVeiculo(frota)
                 inicio = input("Regiao inicial->")
-                fim = input("Regiao final->")
-                print(g.procura_DFS(inicio, fim, path=[], visited=set()))
+                #fim = input("Regiao final->")
+                print(g.procura_DFS(g.get_zona_by_name(inicio),v,30, path=list(), visited=set()))
                 l = input("prima enter para continuar")
-            elif saida == 6:
+            elif saida == 6:# BFS
                 inicio = input("Regiao inicial->")
                 fim = input("Regiao final->")
                 print(g.procura_BFS(inicio, fim))
                 l = input("prima enter para continuar")
-            elif saida == 7:
+            elif saida == 7: # A*
                 inicio = input("Regiao inicial->")
                 fim = input("Regiao final->")
                 print(g.procura_aStar(inicio, fim))
                 l = input("prima enter para continuar")
-            elif saida == 8:
+            elif saida == 8: # Gulosa
                 inicio = input("Regiao inicial->")
                 fim = input("Regiao final->")
                 print(g.greedy(inicio, fim))
@@ -126,3 +151,5 @@ def simular(iteracoes : int):
     #CICLO PARA TRATAR AS ITERAÇÕES
     #APRESENTAR MÉTRICAS
     print(2)
+
+

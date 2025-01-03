@@ -52,16 +52,16 @@ class Clima:
     
 
 class Neve(Clima):
-    def __init__(self, id, probabilidade = 0):
-        super().__init__(id, tipo="Neve", probabilidade=probabilidade)
+    def __init__(self, id = -1, probabilidade = 0):
+        super().__init__("Neve",id, probabilidade=probabilidade)
 
 
 class Chuva(Clima):
-    def __init__(self, id, probabilidade = 0):
-        super().__init__(id, tipo="Chuva", probabilidade=probabilidade)
+    def __init__(self, id = -1, probabilidade = 0):
+        super().__init__("Chuva",id, probabilidade=probabilidade)
 
 
 class Ensolarado(Clima):
-    def __init__(self, id, probabilidade = 0):
-        super().__init__(id, tipo="Ensolarado", probabilidade=probabilidade)
+    def __init__(self, id = -1, probabilidade = 0):
+        super().__init__("Ensolarado",id, probabilidade=probabilidade)
 

@@ -13,6 +13,28 @@ class Carga:
         self.cargaAtual = cargaAtual
         self.bens: list[Bem.Bem] = bens
 
+    def to_dict(self):
+        """
+        Custom method to serialize the Carga instance into a dictionary.
+        """
+        bens = [b.to_dict() for b in self.bens]  # Assume Bem objects have a `to_dict` method
+        return {
+            "maxCarga": self.maxCarga,
+            "cargaAtual": self.cargaAtual,
+            "bens": bens
+        }
+    
+    def from_dict(self,dict):
+        lista = []
+        for a in dict["bens"]:
+            lista.append(Bem.Bem().from_dict(a))
+        return Carga(
+            dict["maxCarga"],
+            dict["cargaAtual"],
+            lista
+        )
+
+
     def __str__(self):
         bens_info = "\n".join(bem.__str__() for bem in self.bens)
         return f"Capacidade Máxima: {self.maxCarga}kg\nCarga Atual: {self.cargaAtual}kg\nBens:\n{bens_info}"
@@ -69,25 +91,31 @@ class Carga:
             total += b.getDistributionTime()
         return total
 
-    def getBemById(self, id: int):
+    def getBem(self, bem: Bem.Bem):
         """
-        Retorna um objeto 'Bem' pelo ID, se existir.
+        Retorna um objeto 'Bem', se existir.
         """
-        return self.bens[id]
+        return self.bens[bem]
 
-    def removeBemById(self, id: int):
+    def removeBem(self, bem: Bem.Bem):
         """
-        Remove um objeto 'Bem' da carga pelo ID, se existir.
+        Remove um objeto 'Bem', se existir.
         """
-        bem : Bem = self.bens.pop(id, None)
-        if bem:
-            self.cargaAtual -= bem.getPeso()
+        temp : Bem.Bem = self.bens.pop(bem)
+        if temp:
+            self.cargaAtual -= temp.getPeso()
 
     def getCargaAtual(self):
         """
         Retorna a carga atual.
         """
         return self.cargaAtual
+    
+    def updateCargaAtual(self, addSub : int):
+        """
+        Atualiza a carga atual.
+        """
+        self.cargaAtual += addSub
 
     def getMaxCarga(self):
         """
