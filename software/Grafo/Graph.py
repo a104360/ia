@@ -436,92 +436,123 @@ class Graph:
     #################################################
     #  Proxima Zona a escolher Procura Informada
     #################################################
-    def proximaZona(self, veiculo : Veiculo, currentZona : Zona):  #Devolve o melhor visinho para a zona atual
-        zonas = self.getNeighbours(currentZona)
-    
-        proximaZona = None
+    def proximaZona(self, veiculo : Veiculo, currentZona : Zona, visitados : set = set()):  #Devolve o melhor visinho para a zona atual    
+        proximaZona : Zona = None
+        finalDis : int = 0
 
-        listZonas : list[Zona] = []
+        listZonas : list[tuple[Zona, int]] = []
         tipo = veiculo.getType
 
         #ACESSIBILIDADE TIPO VEICULO
-        for z, distancia in zonas: #verifica para todos os visinhos os que são acessiveis e adiciona a uma lista
-            if veiculo.getAutonomy() < distancia:
+        for (z, distancia) in self.m_graph[currentZona.getName()]: #verifica para todos os visinhos os que são acessiveis e adiciona a uma lista
+            if veiculo.getAutonomy() < distancia or z in visitados: #se chega lá ou se ja se esteve lá
                 continue
             if z.isBloqueado() == False: #zona não esta bloqueada
                 if tipo == "terra":
                     if z.isAcessivelTerrestre():
-                        listZonas.append(z)
+                        listZonas.append((z, distancia))
                 if tipo == "ar":
                     if z.isAcessivelAerea():
-                        listZonas.append(z)
+                        listZonas.append((z, distancia))
                 if tipo == "agua":
                     if z.isAcessivelMaritima():
-                        listZonas.append(z)
+                        listZonas.append((z, distancia))
         
         if len(listZonas) == 0: #se estiver vazia o veiculo já não pode ir para mais lugar nenhum
             return None
 
-        bensVeiculo : list[Bem.Bem] = veiculo.getBensAvailable()
+        bensVeiculo : list[Bem] = veiculo.getBensAvailable()
         encontrou = False
 
-        listZonasSemNecessidade : list[Zona] = []
+        listZonasSemNecessidade : list[tuple[Zona, int]] = []
         #BENS NECESSARIOS
-        for z1 in listZonas: #verifica se os vizinhos precisam de bens que o veiculo leva caso não precisem remove da lista
-            bens : list[Bem.Bem]  = z1.getNecessidades()
+        for (z2, distancia2) in listZonas: #verifica se os vizinhos precisam de bens que o veiculo leva caso não precisem remove da lista
+            bens : list[Bem]  = z2.getNecessidades()
 
-            for b in bens: #vai à lista de bens da Zona e percorre todos
-                if encontrou == True: #se tiver encontrado um bem em comum para
+            for bV in bensVeiculo: #vai à lista de bens do veiculo e percorre todos
+                if bV in bens: #se encontrar um bem em comum com a zona sai do ciclo mudando encontrou para True
+                    encontrou = True
                     break
-                for bV in bensVeiculo: #vai à lista de bens do veiculo e percorre todos
-                    if b == bV: #se encontrar um bem em comum com a zona sai do ciclo mudando encontrou para True
-                        encontrou = True
-                        break
             
             if encontrou == False: #se não tive encontrado remove essa zona da lista
-                listZonas.remove(z1)
-                listZonasSemNecessidade.append(z1)
+                listZonas.remove((z2, distancia2))
+                listZonasSemNecessidade.append((z2, distancia2))
             
             if encontrou == True: #volta o encontrou para False depois de ter verificado uma Zona
                 encontrou = False
 
 
         if len(listZonas) == 0: #se estiver vazia o veiculo recebe uma das zonas para onde pode ir sem alimentos
-            listPrio : list[Zona] = []
+            listPrio : list[tuple[Zona, int]] = []
             maiorPrio = 0
-            for zPrio in listZonasSemNecessidade: # ve a maior prioridade
-                if zPrio.getPrioridade() > maiorPrio :
-                    maiorPrio = zPrio.getPrioridade()
+            for (z3, _) in listZonasSemNecessidade: # ve a maior prioridade
+                if z3.getPrioridade() > maiorPrio:
+                    maiorPrio = z3.getPrioridade()
             
-            for zAddMostPrio in listZonasSemNecessidade: # guarda os com maior prio numa lista
-                if zAddMostPrio.getPrioridade() == maiorPrio :
-                    listPrio.append(zAddMostPrio)
+            for (z4, distancia4) in listZonasSemNecessidade: # guarda os com maior prio numa lista
+                if z4.getPrioridade() == maiorPrio:
+                    listPrio.append((z4, distancia4))
 
-            if listPrio.count() <= 1: # retorna se so houver 1 com maior prio ou a lista for vazia
-                return listPrio[0]
-            else: # se existirem mais de uma zona vai se ver a que possuir menor janela
-                menorJanela = math.inf
-                for lP in listPrio:
-                    x = lP.getJanela() - lP.getIteracoes()
-                    if(x < menorJanela):
-                        proximaZona = lP
-                        menorJanela = x
-
+            if listPrio.count() == 0:
+                return None
+            if listPrio.count() == 1: # retorna se so houver 1 com maior prio
+                return listPrio.pop()
+            else: # se existirem mais de uma zona vai se ver a 1 que possuir menor janela
+                (proximaZona, finalDis) = listPrio.pop()
+                for (z5, distancia5) in listPrio:
+                    x = z5.getJanela() - z5.getIteracoes()
+                    comp = proximaZona.getJanela() - proximaZona.getIteracoes()
+                    if(x < comp):
+                        proximaZona = z5
+                        finalDis = distancia5
+                return (proximaZona, finalDis)
+        elif len(listZonas) == 1:
+            return listZonas.pop()
+        else:
+            listPrio2 : list[tuple[Zona, int]] = []
+            maiorPrio2 = 0
+            for (z6, _) in listZonas: # ve a maior prioridade
+                if z6.getPrioridade() > maiorPrio2:
+                    maiorPrio = z6.getPrioridade()
             
-        return proximaZona
+            for (z7, distancia7) in listZonas: # guarda os com maior prio numa lista
+                if z7.getPrioridade() == maiorPrio2:
+                    listPrio2.append((z7, distancia7))
 
+            if listPrio2.count() == 0:
+                return None
+            if listPrio2.count() == 1: # retorna se so houver 1 com maior prio
+                return listPrio2.pop()
+            else: # se existirem mais de uma zona vai se ver a 1 que possuir menor janela
+                (proximaZona, finalDis) = listPrio2.pop()
+                for (z8, distancia8) in listPrio2:
+                    x = z8.getJanela() - z8.getIteracoes()
+                    comp = proximaZona.getJanela() - proximaZona.getIteracoes()
+                    if(x < comp):
+                        proximaZona = z8
+                        finalDis = distancia8
+                return (proximaZona, finalDis)
+            
+
+    def takeZona(self, zona : Zona,  options : list[tuple[Zona, int]]):
+        options = [opt for opt in options if opt[0] != zona] #refaz a lista em que nenhuma Zona seja a mesma que a zona dada
+
+
+    def addZona (self, zona: Zona, distancia: int, options: list[tuple[Zona, int]]):
+        for (existing_zona, dist) in enumerate(options):
+            if existing_zona == zona:
+                options.remove((existing_zona, dist))
+                break
+        
+        options.append((zona, distancia))
+
+    def calculateDistancia():
+        return
     ##########################################
-    #   Greedy - so heuristica da vida
+    #   Greedy - so heuristica 
     ##########################################
 
     def greedy(self, start : Zona, veiculo : Veiculo, iter : int, path : list[Zona] = None, visited : set = None, visit = False):
-        """
-        Método de busca Greedy recursiva.
-        :param currentZona: Nome da zona atual.
-        :param path: Tuplo com o caminho lista de Zona.
-        :param visited: Conjunto de zonas visitadas.
-        :return: Tuplo ([Zona], int).
-        """
 
         print(self.iter)
         print(start.name)
