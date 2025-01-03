@@ -47,11 +47,10 @@ class Graph:
         for key in self.m_graph.keys():
             out = out + "zona" + str(key) + ": " + str(self.m_graph[key]) + "\n"
         return out
+    
 
     def zonaDefiner(self, iteracoes : int):
         """
-        Incrementa o numero de iteracoes de todas as Zonas em iteracoes, 
-        se iteracoes for 0, então este irá meter as iterações de todas as Zonas a 0
         Incrementa o numero de iteracoes de todas as Zonas em iteracoes, 
         se iteracoes for 0, então este irá meter as iterações de todas as Zonas a 0
         """
@@ -61,8 +60,8 @@ class Graph:
         else:
             for m_zona in self.m_zonas:
                 if m_zona.getNecessidades() != None or m_zona.isBloqueado() == False:
-                    iter = m_zona.getIteracoes()
-                    m_zona.setIteracoes(iter + iteracoes)
+                    itera = m_zona.getIteracoes()
+                    m_zona.setIteracoes(itera + iteracoes)
             
         if iteracoes == 0:
             for m_zona in self.m_zonas:
@@ -70,8 +69,8 @@ class Graph:
         else:
             for m_zona in self.m_zonas:
                 if m_zona.getNecessidades() != None or m_zona.isBloqueado() == False:
-                    iter = m_zona.getIteracoes()
-                    m_zona.setIteracoes(iter + iteracoes)
+                    itera = m_zona.getIteracoes()
+                    m_zona.setIteracoes(itera + iteracoes)
             
 
     #############
@@ -311,20 +310,20 @@ class Graph:
     ####################################################################################
     #  Procura DFS  -- depth first search
     ####################################################################################
-    def procura_DFS(self, start : Zona, veiculo : Veiculo, iter,path : list[Zona] = list(), visited:set=set(), visit = False):
+    def procura_DFS(self, start : Zona, veiculo : Veiculo, iterM,path : list[Zona] = list(), visited:set=set(), visit = False):
         #print(start)
-        print(self.iter)
+        if self.iter > 0:print(self.iter-1)
         print(start.name)
         self.iter += 1
         path.append(start) #ira repetir a mesma zona caso n tenha como ir para outra momentaneamente
         if visit == False: visited.add(start)
         
         bens : list[Bem] = veiculo.getBensAvailable()
-        if len(bens) == 0 or self.iter > iter:
+        if len(bens) == 0 or self.iter > iterM:
             #custoT = self.calcula_custo(path)
             iterCopia = self.iter - 1 #comeca com 1 iteracao a mais
-            self.iter = 0
-            self.zonaDefiner(0)
+            #self.iter = 0
+            #self.zonaDefiner(0)
             return (path, iterCopia)#custoT, iterCopia)
         
         self.consomeBens(veiculo, start) # tirar do veiculo e zona os bens em comum
@@ -347,7 +346,7 @@ class Graph:
 
                             veiculo.walkedKm(distancia) #instancias usadas para mover
                             self.randomZonas(self.m_zonas)
-                            self.procura_DFS(zona, veiculo,iter, path, visited, False)
+                            self.procura_DFS(zona, veiculo,iterM, path, visited, False)
 
         if moveOn:
             #iterCopia = self.iter - 1 #comeca com 1 iteracao a mais
@@ -356,7 +355,7 @@ class Graph:
             #return (path, iterCopia)
             veiculo.refuel() #refil
             self.zonaDefiner(1)
-            self.procura_DFS(zona, veiculo,iter, path,visited, True)
+            self.procura_DFS(zona, veiculo,iterM, path,visited, True)
                 
 
     
@@ -571,7 +570,7 @@ class Graph:
         return ([],-1)
 
     
-    def greedy_recursive(self, currentZona, end, path=None, visited=None):
+    def greedy_recursive(self, currentZona, veiculo, path=None, visited=None):
         """
         Método de busca Greedy recursiva.
         :param currentZona: Nome da zona atual.
@@ -591,25 +590,12 @@ class Graph:
         # Se chegou ao destino, retorna o caminho e o custo
         if currentZona == end:
             return path
-    
-        # Obtém vizinhos do nó atual
-        vizinhos = self.getNeighbours(currentZona)
-        heuristics = []
-    
-        # Avalia os vizinhos não visitados
-        for zona in vizinhos:
-            if zona[0] not in visited:
-                heuristics.append((zona[0], self.getH(zona[0])))
+
     
         # Se não houver vizinhos disponíveis, retorna falha
-        if not heuristics:
-            return ([], -1)
-    
         # Ordena os vizinhos pela heurística
-        heuristics.sort(key=lambda x: x[1])
-    
         # Escolhe o próximo nó com menor heurística
-        nextZona = heuristics[0][0]
+        nextZona = self.proximaZona(veiculo,currentZona)
     
         # Atualiza o caminho e o custo
         newPath = list(path[0])  # Copia o caminho atual
