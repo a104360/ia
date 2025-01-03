@@ -104,9 +104,12 @@ class Veiculo:
         """Removes the liters equivalent to the amount of interações travelled"""
         self.combustivel.spend(km)
 
-    def refuel(self, liters : int):
+    def refuel(self, liters : int = None):
         """Fills the fuel tank with the indicated liters"""
-        self.combustivel.fill(liters)
+        if liters != None :
+            self.combustivel.fill(liters)
+            return
+        self.combustivel.fill()
 
     def getAutonomy(self):
         """Returns how many Km the vehicle can drive"""
