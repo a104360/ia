@@ -87,13 +87,13 @@ def main():
         print("3-Imprimir  regioes de Grafo")
         print("4-Imprimir arestas de Grafo")
         print("5-DFS")
-        print("6-BFS")
-        print("7-A*")
+        #print("6-BFS")
+        #print("7-A*")
         print("8-Gulosa")
-        print("9-Iniciar")
+        #print("9-Iniciar")
         print("0-Saír")
 
-        print(type(g.m_zonas[0]))
+        #print(type(g.m_zonas[0]))
         
         try:
             saida = int(input("introduza a sua opcao-> "))
@@ -116,21 +116,29 @@ def main():
                 #fim = input("Regiao final->")
                 print(g.procura_DFS(g.get_zona_by_name(inicio),v,20, path=list(), visited=set()))
                 l = input("prima enter para continuar")
+                print("saindo.......")
+                saida = 0
             elif saida == 6:# BFS
                 inicio = input("Regiao inicial->")
                 fim = input("Regiao final->")
                 print(g.procura_BFS(inicio, fim))
                 l = input("prima enter para continuar")
+                print("saindo.......")
+                saida = 0
             elif saida == 7: # A*
                 inicio = input("Regiao inicial->")
                 fim = input("Regiao final->")
                 print(g.procura_aStar(inicio, fim))
                 l = input("prima enter para continuar")
+                print("saindo.......")
+                saida = 0
             elif saida == 8: # Gulosa
                 inicio = input("Regiao inicial->")
                 fim = input("Regiao final->")
                 print(g.greedy(inicio, fim))
                 l = input("prima enter para continuar")
+                print("saindo.......")
+                saida = 0
             elif saida == 9:
                 time = input("Limite de iteracoes->")
                 simular(time)
