@@ -296,7 +296,7 @@ class Graph:
     ####################################################################################
     #  Procura DFS  -- depth first search
     ####################################################################################
-    def procura_DFS(self, start : Zona, veiculo : Veiculo, iter,path=[], visited=set(), visit = False):
+    def procura_DFS(self, start : Zona, veiculo : Veiculo, iter, path=[], visited=set(), visit = False):
 
         self.iteracoes += 1
         path.append(start) #ira repetir a mesma zona caso n tenha como ir para outra momentaneamente
