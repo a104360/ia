@@ -31,14 +31,23 @@ class Veiculo:
         }
     
     def from_dict(self,dict):
-        #tipo = dict["name"]
-        #if tipo == "Helicoptero":
+        necessidades = list()
+        for a in dict["carga"]["bens"]:
+            if a["nome"] == "Gorro":
+                necessidades.append(Bem.Gorro(a["id"],a["peso"]))
+            if a["nome"] == "Bruffen":
+                necessidades.append(Bem.Bruffen(a["id"],a["peso"]))
+            if a["nome"] == "Leite":
+                necessidades.append(Bem.Leite(a["id"],a["peso"]))
+            if a["nome"] == "Arroz":
+                necessidades.append(Bem.Arroz(a["id"],a["peso"]))
         return Veiculo(
             dict["name"],
             dict["id"],
             dict["carga"]["maxCarga"],
             dict["carga"]["cargaAtual"],
-            dict["carga"]["bens"],
+            #dict["carga"]["bens"],
+            necessidades,
             dict["combustivel"]["level"],
             dict["combustivel"]["limit"],
             dict["combustivel"]["consumption"],
@@ -95,9 +104,12 @@ class Veiculo:
         """Removes the liters equivalent to the amount of interações travelled"""
         self.combustivel.spend(km)
 
-    def refuel(self, liters : int):
+    def refuel(self, liters : int = None):
         """Fills the fuel tank with the indicated liters"""
-        self.combustivel.fill(liters)
+        if liters != None :
+            self.combustivel.fill(liters)
+            return
+        self.combustivel.fill()
 
     def getAutonomy(self):
         """Returns how many Km the vehicle can drive"""

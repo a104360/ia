@@ -8,7 +8,7 @@ class Zona:
 
             name - nome da Zona
 
-            bloquado - se e possivel ir para a zona ou não
+            bloqueado - se e possivel ir para a zona ou não
 
             gravidade - gravidade do problema
 
@@ -28,12 +28,12 @@ class Zona:
         """
         self.id = id
         self.name = name
-        self.bloquado = bloqueado
+        self.bloqueado = bloqueado
         self.gravidade = gravidade
         self.densidade = densidade
         self.abastecimento = abastecimento
         self.clima = clima
-        self.necessidades = list(necessidades)
+        self.necessidades : list[Bem.Bem] = list(necessidades)
         self.iteracoes = iteracoes
         self.janela = janela
         self.prioridade = self.calculatePrioridade()
@@ -78,13 +78,15 @@ class Zona:
             return self.name == other.name
         return False
     
+    def __hash__(self):
+        return hash(self.name)
 
     def calculatePrioridade(self):
         """Calcula a prioridade com base na gravidade, densidade e iteracoes."""
         return self.gravidade + self.densidade + self.iteracoes
 
     def __str__(self):
-        return (f"Zona : {self.name}\nID : {self.id}\nBlocked : {self.bloquado}\n"+
+        return (f"Zona : {self.name}\nID : {self.id}\nBlocked : {self.bloqueado}\n"+
                 f"Gravidade : {self.gravidade}\nPriority : {self.prioridade}\n" + 
                 f"Acessibilidade : {self.acessibilidade}\nAbastecimento : {self.abastecimento}\n" +
                 f"Climate : {self.clima}\nNecessidades : {self.necessidades}\nIter : {self.iteracoes}")
@@ -127,7 +129,7 @@ class Zona:
         else:
             acessos = [False,False,False]
             self.setAcessibilidade(acessos)
-            self.bloquado = True
+            self.bloqueado = True
             return True
     
     # Métodos para 'gravidade'
@@ -275,20 +277,30 @@ class Zona:
         necessidade - Objeto do tipo 'Bem'
         """
         if necessidade in self.necessidades:
-            necessidade_removido : Bem.Bem = self.necessidades[necessidade]
+            for a in self.necessidades:
+                if a.getNome() == necessidade.getNome():
+                    necessidade_removido : Bem.Bem = a #self.necessidades[necessidade]
+                    break
+                    
+            #necessidade_removido : Bem.Bem = self.necessidades[necessidade]
             peso_removido = necessidade_removido.getPeso()
 
             # Verifica se o peso do bem removido é igual ao peso atual
             if peso_removido < necessidade.getPeso():
                 # Remove o bem do dicionário sem afetar o peso diretamente
-                self.necessidades.pop(necessidade)
+                self.necessidades.remove(necessidade)
                 necessidade.setPeso(necessidade.getPeso() - peso_removido)
                 return necessidade
             elif peso_removido == necessidade.getPeso() :
-                self.necessidades.pop(necessidade)
+                self.necessidades.remove(necessidade)
                 return None
-            else:   
-                necessidade_existente : Bem.Bem = self.necessidades[necessidade]
+            else:
+                for a in self.necessidades:
+                    if a.getNome() == necessidade.getNome():
+                        necessidade_existente : Bem.Bem = a#self.necessidades[necessidade]
+                        break
+
+                #necessidade_existente : Bem.Bem = self.necessidades[necessidade]
                 necessidade_existente.setPeso(necessidade_existente.getPeso() - peso_removido)
                 return None
         else: 
