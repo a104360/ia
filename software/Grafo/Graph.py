@@ -180,83 +180,6 @@ class Graph:
             custo = custo + self.get_arc_cost(teste[i], teste[i + 1])
             i = i + 1
         return custo
-    
-    #################################################
-    #  Proxima Zona a escolher Procura Informada
-    #################################################
-    def proximaZona(self, veiculo : Veiculo, currentZona : Zona):  #Devolve o melhor visinho para a zona atual
-        zonas = self.getNeighbours(currentZona)
-    
-        proximaZona = None
-
-        listZonas : list[Zona] = []
-        tipo = veiculo.getType
-
-        #ACESSIBILIDADE TIPO VEICULO
-        for z, distancia in zonas: #verifica para todos os visinhos os que são acessiveis e adiciona a uma lista
-            if veiculo.getAutonomy() < distancia:
-                continue
-            if z.isBloqueado() == False: #zona não esta bloqueada
-                if tipo == "terra":
-                    if z.isAcessivelTerrestre():
-                        listZonas.append(z)
-                if tipo == "ar":
-                    if z.isAcessivelAerea():
-                        listZonas.append(z)
-                if tipo == "agua":
-                    if z.isAcessivelMaritima():
-                        listZonas.append(z)
-        
-        if len(listZonas) == 0: #se estiver vazia o veiculo já não pode ir para mais lugar nenhum
-            return None
-
-        bensVeiculo : list[Bem.Bem] = veiculo.getBensAvailable()
-        encontrou = False
-
-        listZonasSemNecessidade : list[Zona] = []
-        #BENS NECESSARIOS
-        for z1 in listZonas: #verifica se os vizinhos precisam de bens que o veiculo leva caso não precisem remove da lista
-            bens : list[Bem.Bem]  = z1.getNecessidades()
-
-            for b in bens: #vai à lista de bens da Zona e percorre todos
-                if encontrou == True: #se tiver encontrado um bem em comum para
-                    break
-                for bV in bensVeiculo: #vai à lista de bens do veiculo e percorre todos
-                    if b == bV: #se encontrar um bem em comum com a zona sai do ciclo mudando encontrou para True
-                        encontrou = True
-                        break
-            
-            if encontrou == False: #se não tive encontrado remove essa zona da lista
-                listZonas.remove(z1)
-                listZonasSemNecessidade.append(z1)
-            
-            if encontrou == True: #volta o encontrou para False depois de ter verificado uma Zona
-                encontrou = False
-
-
-        if len(listZonas) == 0: #se estiver vazia o veiculo recebe uma das zonas para onde pode ir sem alimentos
-            listPrio : list[Zona] = []
-            maiorPrio = 0
-            for zPrio in listZonasSemNecessidade: # ve a maior prioridade
-                if zPrio.getPrioridade() > maiorPrio :
-                    maiorPrio = zPrio.getPrioridade()
-            
-            for zAddMostPrio in listZonasSemNecessidade: # guarda os com maior prio numa lista
-                if zAddMostPrio.getPrioridade() == maiorPrio :
-                    listPrio.append(zAddMostPrio)
-
-            if listPrio.count() <= 1: # retorna se so houver 1 com maior prio ou a lista for vazia
-                return listPrio[0]
-            else: # se existirem mais de uma zona vai se ver a que possuir menor janela
-                menorJanela = math.inf
-                for lP in listPrio:
-                    x = lP.getJanela() - lP.getIteracoes()
-                    if(x < menorJanela):
-                        proximaZona = lP
-                        menorJanela = x
-
-            
-        return proximaZona
 
     ################################################
     #   Verifica se pode ir para o adjacente
@@ -299,7 +222,7 @@ class Graph:
     ####################################################################################
     #  Procura DFS  -- depth first search
     ####################################################################################
-    def procura_DFS(self, start : Zona, veiculo : Veiculo, iter,path : list[Zona] = list(), visited:set=set(), visit = False):
+    def procura_DFS(self, start : Zona, veiculo : Veiculo, iter, path : list[Zona] = list(), visited:set=set(), visit = False):
         #print(start)
         print(self.iter)
         print(start.name)
@@ -510,53 +433,136 @@ class Graph:
             return (self.m_h[zona])
 
 
+    #################################################
+    #  Proxima Zona a escolher Procura Informada
+    #################################################
+    def proximaZona(self, veiculo : Veiculo, currentZona : Zona):  #Devolve o melhor visinho para a zona atual
+        zonas = self.getNeighbours(currentZona)
+    
+        proximaZona = None
+
+        listZonas : list[Zona] = []
+        tipo = veiculo.getType
+
+        #ACESSIBILIDADE TIPO VEICULO
+        for z, distancia in zonas: #verifica para todos os visinhos os que são acessiveis e adiciona a uma lista
+            if veiculo.getAutonomy() < distancia:
+                continue
+            if z.isBloqueado() == False: #zona não esta bloqueada
+                if tipo == "terra":
+                    if z.isAcessivelTerrestre():
+                        listZonas.append(z)
+                if tipo == "ar":
+                    if z.isAcessivelAerea():
+                        listZonas.append(z)
+                if tipo == "agua":
+                    if z.isAcessivelMaritima():
+                        listZonas.append(z)
+        
+        if len(listZonas) == 0: #se estiver vazia o veiculo já não pode ir para mais lugar nenhum
+            return None
+
+        bensVeiculo : list[Bem.Bem] = veiculo.getBensAvailable()
+        encontrou = False
+
+        listZonasSemNecessidade : list[Zona] = []
+        #BENS NECESSARIOS
+        for z1 in listZonas: #verifica se os vizinhos precisam de bens que o veiculo leva caso não precisem remove da lista
+            bens : list[Bem.Bem]  = z1.getNecessidades()
+
+            for b in bens: #vai à lista de bens da Zona e percorre todos
+                if encontrou == True: #se tiver encontrado um bem em comum para
+                    break
+                for bV in bensVeiculo: #vai à lista de bens do veiculo e percorre todos
+                    if b == bV: #se encontrar um bem em comum com a zona sai do ciclo mudando encontrou para True
+                        encontrou = True
+                        break
+            
+            if encontrou == False: #se não tive encontrado remove essa zona da lista
+                listZonas.remove(z1)
+                listZonasSemNecessidade.append(z1)
+            
+            if encontrou == True: #volta o encontrou para False depois de ter verificado uma Zona
+                encontrou = False
+
+
+        if len(listZonas) == 0: #se estiver vazia o veiculo recebe uma das zonas para onde pode ir sem alimentos
+            listPrio : list[Zona] = []
+            maiorPrio = 0
+            for zPrio in listZonasSemNecessidade: # ve a maior prioridade
+                if zPrio.getPrioridade() > maiorPrio :
+                    maiorPrio = zPrio.getPrioridade()
+            
+            for zAddMostPrio in listZonasSemNecessidade: # guarda os com maior prio numa lista
+                if zAddMostPrio.getPrioridade() == maiorPrio :
+                    listPrio.append(zAddMostPrio)
+
+            if listPrio.count() <= 1: # retorna se so houver 1 com maior prio ou a lista for vazia
+                return listPrio[0]
+            else: # se existirem mais de uma zona vai se ver a que possuir menor janela
+                menorJanela = math.inf
+                for lP in listPrio:
+                    x = lP.getJanela() - lP.getIteracoes()
+                    if(x < menorJanela):
+                        proximaZona = lP
+                        menorJanela = x
+
+            
+        return proximaZona
+
     ##########################################
     #   Greedy - so heuristica da vida
     ##########################################
 
-    def greedy(self,start,end):
-        # tuplo de lista dos nomes com custo do caminho pretendido
-        path = ([start],0)
-        
-        #set com nomes dos zonas
-        visited = {start}
+    def greedy(self, start : Zona, veiculo : Veiculo, iter : int, path : list[Zona] = None, visited : set = None, visit = False):
+        """
+        Método de busca Greedy recursiva.
+        :param currentZona: Nome da zona atual.
+        :param path: Tuplo com o caminho lista de Zona.
+        :param visited: Conjunto de zonas visitadas.
+        :return: Tuplo ([Zona], int).
+        """
 
-        # String nextZona
-        currentZona = start 
-        
-        # vizinhos mantém as ligações ao zona que estamos a analisar
-        vizinhos = self.getNeighbours(currentZona)
+        print(self.iter)
+        print(start.name)
+        self.iter += 1
+        path.append(start) #ira repetir a mesma zona caso n tenha como ir para outra momentaneamente
+        if visit == False: visited.add(start)
 
-        while vizinhos:
-            visited.add(currentZona)
-            # heuristics guarda o nome dos zonas e a sua heuristica
-            heuristics = []
+        if path is None:
+            path = ([currentZona], 0)
+        if visited is None:
+            visited = set()
 
-            for zona in vizinhos:
-                if zona[0] not in visited:
-                    heuristics.append((zona[0],self.getH(zona[0])))
-            
-            heuristics.sort(key=lambda x: x[1])
-            
-            # nextZona = (nome,heuristic)
-            nextZona = heuristics[0]
+        bens : list[Bem] = veiculo.getBensAvailable()
+        if len(bens) == 0 or self.iter > iter:
+            #custoT = self.calcula_custo(path)
+            iterCopia = self.iter - 1 #comeca com 1 iteracao a mais
+            self.iter = 0
+            self.zonaDefiner(0)
+            return (path, iterCopia)#custoT, iterCopia)
 
-            changePath = path[0]
-            changePath.append(nextZona[0])
-            changeCost = path[1]
-            changeCost += self.get_arc_cost(currentZona,nextZona[0])
-            path = (changePath,changeCost)
+        self.consomeBens(veiculo, start) # tirar do veiculo e zona os bens em comum
+        start.shouldBeBlocked() # ve se depois de tirar os bens a zona esta safe
 
-            #print(path)
-
-            if nextZona[0] == end:
-                return path
-
-            
-            currentZona = nextZona[0]
-            vizinhos = self.getNeighbours(nextZona[0])
-
-        return ([],-1)
+        # Se não houver vizinhos disponíveis, retorna falha
+        # Ordena os vizinhos pela heurística
+        # Escolhe o próximo nó com menor heurística
+        nextZona = self.proximaZona(veiculo, start)
+    
+        if nextZona is not None:
+            # Atualiza o caminho e o custo
+            newPath = list(path[0])  # Copia o caminho atual
+            newPath.append(nextZona)        
+            # Chamada recursiva para o próximo nó
+            return self.greedy(nextZona, veiculo, iter, newPath, visited, False)
+        else:
+            # Atualiza o caminho e o custo
+            newPath = list(path[0])  # Copia o caminho atual
+            newPath.append(start)
+            veiculo.refuel() #refil
+            self.zonaDefiner(1)
+            return self.greedy(start, veiculo, iter, newPath, visited, True)
 
     
     
