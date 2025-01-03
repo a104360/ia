@@ -240,7 +240,7 @@ class Graph:
         if visit == False: visited.add(start)
         
         bens : list[Bem] = veiculo.getBensAvailable()
-        if len(bens) == 0 or self.iter > iterM:
+        if len(bens) == 0 or self.iter >= iterM:
             #custoT = self.calcula_custo(path)
             iterCopia = self.iter - 1 #comeca com 1 iteracao a mais
             #self.iter = 0
