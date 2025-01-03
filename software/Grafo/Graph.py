@@ -206,7 +206,7 @@ class Graph:
         elif tipo == "ar":
             if adjacente.isAcessivelAerea():
                 return True
-        elif tipo == "agua":
+        elif tipo == "mar":
             if adjacente.isAcessivelMaritima():
                 return True
         else:
@@ -240,7 +240,7 @@ class Graph:
         if visit == False: visited.add(start)
         
         bens : list[Bem] = veiculo.getBensAvailable()
-        if len(bens) == 0 or self.iter >= iterM -1:
+        if len(bens) == 0 or self.iter >= iterM:
             #custoT = self.calcula_custo(path)
             iterCopia = self.iter - 1 #comeca com 1 iteracao a mais
             #self.iter = 0
@@ -356,7 +356,7 @@ class Graph:
                 if tipo == "ar":
                     if z.isAcessivelAerea():
                         listZonas.append((z, distancia))
-                if tipo == "agua":
+                if tipo == "mar":
                     if z.isAcessivelMaritima():
                         listZonas.append((z, distancia))
         
@@ -454,8 +454,8 @@ class Graph:
 
     def greedy(self, start : Zona, veiculo : Veiculo, iter : int, path : list[Zona] = None, visited : set = None, visit = False):
 
-        print(self.iter)
         print(start.name)
+        print("Iterações até momento"+str(self.iter))
         self.iter += 1
         path.append(start) #ira repetir a mesma zona caso n tenha como ir para outra momentaneamente
         if visit == False: visited.add(start)

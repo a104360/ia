@@ -100,18 +100,18 @@
         "name": "Barco",
         "carga": {
             "maxCarga": 400,
-            "cargaAtual": 25,
+            "cargaAtual": 200,
             "bens": [
                 {
                     "id": 2,
                     "nome": "Arroz",
-                    "peso": 20,
+                    "peso": 100,
                     "tipo": "Comida"
                 },
                 {
                     "id": 3,
                     "nome": "Bruffen",
-                    "peso": 5,
+                    "peso": 100,
                     "tipo": "Medicamento"
                 }
             ]
