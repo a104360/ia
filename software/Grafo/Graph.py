@@ -26,6 +26,7 @@ from Entidades.veiculos.Bem import Bem
 class Graph:
     def __init__(self, directed=False,zonas = None):
         self.m_zonas = list()
+        self.m_zonas = list()
         if zonas != None: self.m_zonas : list[Zona] = zonas
         else: 
             with open("ConfigFiles/mapa.json","r") as f:
@@ -46,6 +47,7 @@ class Graph:
         for key in self.m_graph.keys():
             out = out + "zona" + str(key) + ": " + str(self.m_graph[key]) + "\n"
         return out
+    
 
     def zonaDefiner(self, iteracoes : int):
         """
@@ -58,8 +60,17 @@ class Graph:
         else:
             for m_zona in self.m_zonas:
                 if m_zona.getNecessidades() != None or m_zona.isBloqueado() == False:
-                    iter = m_zona.getIteracoes()
-                    m_zona.setIteracoes(iter + iteracoes)
+                    itera = m_zona.getIteracoes()
+                    m_zona.setIteracoes(itera + iteracoes)
+            
+        if iteracoes == 0:
+            for m_zona in self.m_zonas:
+                m_zona.setIteracoes(0)
+        else:
+            for m_zona in self.m_zonas:
+                if m_zona.getNecessidades() != None or m_zona.isBloqueado() == False:
+                    itera = m_zona.getIteracoes()
+                    m_zona.setIteracoes(itera + iteracoes)
             
 
     #############
@@ -222,20 +233,20 @@ class Graph:
     ####################################################################################
     #  Procura DFS  -- depth first search
     ####################################################################################
-    def procura_DFS(self, start : Zona, veiculo : Veiculo, iter, path : list[Zona] = list(), visited:set=set(), visit = False):
+    def procura_DFS(self, start : Zona, veiculo : Veiculo, iterM,path : list[Zona] = list(), visited:set=set(), visit = False):
         #print(start)
-        print(self.iter)
+        if self.iter > 0:print(self.iter-1)
         print(start.name)
         self.iter += 1
         path.append(start) #ira repetir a mesma zona caso n tenha como ir para outra momentaneamente
         if visit == False: visited.add(start)
         
         bens : list[Bem] = veiculo.getBensAvailable()
-        if len(bens) == 0 or self.iter > iter:
+        if len(bens) == 0 or self.iter > iterM:
             #custoT = self.calcula_custo(path)
             iterCopia = self.iter - 1 #comeca com 1 iteracao a mais
-            self.iter = 0
-            self.zonaDefiner(0)
+            #self.iter = 0
+            #self.zonaDefiner(0)
             return (path, iterCopia)#custoT, iterCopia)
         
         self.consomeBens(veiculo, start) # tirar do veiculo e zona os bens em comum
@@ -258,7 +269,7 @@ class Graph:
 
                             veiculo.walkedKm(distancia) #instancias usadas para mover
                             self.randomZonas(self.m_zonas)
-                            self.procura_DFS(zona, veiculo,iter, path, visited, False)
+                            self.procura_DFS(zona, veiculo,iterM, path, visited, False)
 
         if moveOn:
             #iterCopia = self.iter - 1 #comeca com 1 iteracao a mais
@@ -267,7 +278,7 @@ class Graph:
             #return (path, iterCopia)
             veiculo.refuel() #refil
             self.zonaDefiner(1)
-            self.procura_DFS(zona, veiculo,iter, path,visited, True)
+            self.procura_DFS(zona, veiculo,iterM, path,visited, True)
                 
 
     
@@ -598,4 +609,37 @@ class Graph:
             return self.greedy(start, veiculo, iter, newPath, visited, True)
 
     
+    def greedy_recursive(self, currentZona, veiculo, path=None, visited=None):
+        """
+        Método de busca Greedy recursiva.
+        :param currentZona: Nome da zona atual.
+        :param end: Nome da zona de destino.
+        :param path: Tuplo contendo o caminho ([lista de zonas], custo total).
+        :param visited: Conjunto de zonas visitadas.
+        :return: Tuplo ([caminho], custo) ou ([],-1) se não houver caminho.
+        """
+        if path is None:
+            path = ([currentZona], 0)
+        if visited is None:
+            visited = set()
+
+        # Marca a zona atual como visitada
+        visited.add(currentZona)
+
+        # Se chegou ao destino, retorna o caminho e o custo
+        if currentZona == end:
+            return path
+
     
+        # Se não houver vizinhos disponíveis, retorna falha
+        # Ordena os vizinhos pela heurística
+        # Escolhe o próximo nó com menor heurística
+        nextZona = self.proximaZona(veiculo,currentZona)
+    
+        # Atualiza o caminho e o custo
+        newPath = list(path[0])  # Copia o caminho atual
+        newPath.append(nextZona)
+        newCost = path[1] + self.get_arc_cost(currentZona, nextZona)
+    
+        # Chamada recursiva para o próximo nó
+        return self.greedy_recursive(nextZona, end, (newPath, newCost), visited)
