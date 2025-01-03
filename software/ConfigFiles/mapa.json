@@ -13,6 +13,7 @@
           ],
           "clima": {
                "type": "Chuva",
+               "blocked": false,
                "probabilidade": 5
           },
           "necessidades": [
@@ -58,6 +59,7 @@
           ],
           "clima": {
                "type": "Ensolarado",
+               "blocked": false,
                "probabilidade": 3
           },
           "necessidades": [
@@ -103,6 +105,7 @@
           ],
           "clima": {
                "type": "Neve",
+               "blocked": false,
                "probabilidade": 1
           },
           "necessidades": [
@@ -148,6 +151,7 @@
           ],
           "clima": {
                "type": "Ensolarado",
+               "blocked": false,
                "probabilidade": 2
           },
           "necessidades": [
@@ -193,6 +197,7 @@
           ],
           "clima": {
                "type": "Ensolarado",
+               "blocked": false,
                "probabilidade": 9
           },
           "necessidades": [
@@ -238,6 +243,7 @@
           ],
           "clima": {
                "type": "Chuva",
+               "blocked": false,
                "probabilidade": 9
           },
           "necessidades": [
@@ -283,6 +289,7 @@
           ],
           "clima": {
                "type": "Ensolarado",
+               "blocked": false,
                "probabilidade": 1
           },
           "necessidades": [
@@ -328,6 +335,7 @@
           ],
           "clima": {
                "type": "Neve",
+               "blocked": false,
                "probabilidade": 5
           },
           "necessidades": [
@@ -373,6 +381,7 @@
           ],
           "clima": {
                "type": "Ensolarado",
+               "blocked": false,
                "probabilidade": 2
           },
           "necessidades": [
@@ -418,6 +427,7 @@
           ],
           "clima": {
                "type": "Ensolarado",
+               "blocked": false,
                "probabilidade": 5
           },
           "necessidades": [
@@ -463,6 +473,7 @@
           ],
           "clima": {
                "type": "Ensolarado",
+               "blocked": false,
                "probabilidade": 9
           },
           "necessidades": [
@@ -508,6 +519,7 @@
           ],
           "clima": {
                "type": "Chuva",
+               "blocked": false,
                "probabilidade": 1
           },
           "necessidades": [
@@ -553,6 +565,7 @@
           ],
           "clima": {
                "type": "Neve",
+               "blocked": false,
                "probabilidade": 0
           },
           "necessidades": [
@@ -598,6 +611,7 @@
           ],
           "clima": {
                "type": "Ensolarado",
+               "blocked": false,
                "probabilidade": 5
           },
           "necessidades": [
@@ -643,6 +657,7 @@
           ],
           "clima": {
                "type": "Ensolarado",
+               "blocked": false,
                "probabilidade": 6
           },
           "necessidades": [
@@ -688,6 +703,7 @@
           ],
           "clima": {
                "type": "Ensolarado",
+               "blocked": false,
                "probabilidade": 1
           },
           "necessidades": [
@@ -733,6 +749,7 @@
           ],
           "clima": {
                "type": "Chuva",
+               "blocked": false,
                "probabilidade": 8
           },
           "necessidades": [
@@ -778,6 +795,7 @@
           ],
           "clima": {
                "type": "Ensolarado",
+               "blocked": false,
                "probabilidade": 7
           },
           "necessidades": [
